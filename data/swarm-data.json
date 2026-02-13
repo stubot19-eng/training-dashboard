@@ -1,13 +1,13 @@
 {
   "llmSpend": {
-    "today": 8.87,
-    "month": 8.87,
+    "today": 0.78,
+    "month": 10.15,
     "budget": {
       "daily": 1.67,
       "monthly": 50,
-      "remaining": 41.13,
+      "remaining": 39.85,
       "setupPhase": true,
-      "notes": "Feb setup: $50 | After: $20/month"
+      "notes": "REAL: Moonshot $10.15 spent | Claude: ? | Budget: $50"
     },
     "lastUpdate": "2026-02-13T18:51:12.856Z",
     "history": []
