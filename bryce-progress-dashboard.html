@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bryce's Gym Progress Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
+            color: #e4e4e7;
+            padding: 30px 20px;
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #4ade80, #22c55e, #16a34a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .subtitle { color: #71717a; margin-top: 8px; font-size: 1.1rem; }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .stat-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 20px;
+            padding: 24px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-4px);
+            background: rgba(255,255,255,0.05);
+        }
+        .stat-value {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #4ade80;
+        }
+        .stat-label {
+            color: #71717a;
+            font-size: 0.95rem;
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .stat-sub { color: #52525b; font-size: 0.8rem; margin-top: 4px; }
+        
+        .chart-container {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        .chart-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .chart-wrapper {
+            position: relative;
+            height: 300px;
+        }
+        
+        .pr-section {
+            background: rgba(74, 222, 128, 0.05);
+            border: 1px solid rgba(74, 222, 128, 0.2);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        .pr-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #4ade80;
+            margin-bottom: 20px;
+        }
+        .pr-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+        }
+        .pr-item {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .pr-exercise { font-weight: 600; }
+        .pr-weight {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #4ade80;
+        }
+        .pr-reps { color: #71717a; font-size: 0.85rem; }
+        
+        .workout-log {
+            background: rgba(255,255,255,0.03);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        .log-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        .log-entry {
+            border-left: 3px solid #4ade80;
+            padding-left: 16px;
+            margin-bottom: 16px;
+        }
+        .log-date {
+            color: #4ade80;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .log-details {
+            color: #a1a1aa;
+            font-size: 0.9rem;
+            margin-top: 4px;
+            line-height: 1.5;
+        }
+        
+        .progression-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+        .progression-table th,
+        .progression-table td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .progression-table th {
+            color: #71717a;
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+        .progression-table td {
+            color: #e4e4e7;
+        }
+        .weight-increase {
+            color: #4ade80;
+            font-weight: 600;
+        }
+        
+        .two-col {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 24px;
+        }
+        
+        @media (max-width: 768px) {
+            .two-col { grid-template-columns: 1fr; }
+            .stat-value { font-size: 2.5rem; }
+            h1 { font-size: 1.75rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💪 BRYCE'S GYM PROGRESS</h1>
+            <p class="subtitle">6 Weeks of Data • 40+ Workouts • All Gains Documented</p>
+        </header>
+        
+        <!-- Key Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">40+</div>
+                <div class="stat-label">Workouts</div>
+                <div class="stat-sub">Last 6 weeks</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">65</div>
+                <div class="stat-label">DB Bench PR</div>
+                <div class="stat-sub">lbs per hand</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">115</div>
+                <div class="stat-label">Lat Pulldown</div>
+                <div class="stat-sub">lbs max</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">30</div>
+                <div class="stat-label">Pull-ups</div>
+                <div class="stat-sub">Total reps</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">+25</div>
+                <div class="stat-label">Lbs Gained</div>
+                <div class="stat-sub">On bench press</div>
+            </div>
+        </div>
+        
+        <!-- Personal Records -->
+        <div class="pr-section">
+            <div class="pr-title">🏆 CURRENT PERSONAL RECORDS</div>
+            <div class="pr-grid">
+                <div class="pr-item">
+                    <div>
+                        <div class="pr-exercise">DB Bench Press</div>
+                        <div class="pr-reps">Flat, per hand</div>
+                    </div>
+                    <div>
+                        <div class="pr-weight">65 lb</div>
+                        <div class="pr-reps">× 10 reps</div>
+                    </div>
+                </div>
+                <div class="pr-item">
+                    <div>
+                        <div class="pr-exercise">Incline Machine</div>
+                        <div class="pr-reps">Chest press</div>
+                    </div>
+                    <div>
+                        <div class="pr-weight">70 lb</div>
+                        <div class="pr-reps">× 12 reps</div>
+                    </div>
+                </div>
+                <div class="pr-item">
+                    <div>
+                        <div class="pr-exercise">Lat Pulldown</div>
+                        <div class="pr-reps">Wide grip</div>
+                    </div>
+                    <div>
+                        <div class="pr-weight">115 lb</div>
+                        <div class="pr-reps">× 8 reps</div>
+                    </div>
+                </div>
+                <div class="pr-item">
+                    <div>
+                        <div class="pr-exercise">Shoulder Press</div>
+                        <div class="pr-reps">DB seated</div>
+                    </div>
+                    <div>
+                        <div class="pr-weight">50 lb</div>
+                        <div class="pr-reps">× 10 reps</div>
+                    </div>
+                </div>
+                <div class="pr-item">
+                    <div>
+                        <div class="pr-exercise">Leg Press</div>
+                        <div class="pr-reps">Machine</div>
+                    </div>
+                    <div>
+                        <div class="pr-weight">215 lb</div>
+                        <div class="pr-reps">× 10 reps</div>
+                    </div>
+                </div>
+                <div class="pr-item">
+                    <div>
+                        <div class="pr-exercise">Assisted Pull-ups</div>
+                        <div class="pr-reps">35lb assist</div>
+                    </div>
+                    <div>
+                        <div class="pr-weight">30</div>
+                        <div class="pr-reps">Total reps</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Progress Charts -->
+        <div class="two-col">
+            <div class="chart-container">
+                <div class="chart-title">📈 Bench Press Progression</div>
+                <div class="chart-wrapper">
+                    <canvas id="benchChart"></canvas>
+                </div>
+            </div>
+            <div class="chart-container">
+                <div class="chart-title">📈 Back Strength Progression</div>
+                <div class="chart-wrapper">
+                    <canvas id="backChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Workout Frequency -->
+        <div class="chart-container">
+            <div class="chart-title">📊 Workout Distribution</div>
+            <div class="chart-wrapper" style="height: 250px;">
+                <canvas id="distributionChart"></canvas>
+            </div>
+        </div>
+        
+        <!-- Progression Table -->
+        <div class="workout-log">
+            <div class="log-title">📋 KEY PROGRESSION MILESTONES</div>
+            <table class="progression-table">
+                <thead>
+                    <tr>
+                        <th>Exercise</th>
+                        <th>Week 1</th>
+                        <th>Week 3</th>
+                        <th>Week 6 (Current)</th>
+                        <th>Gain</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>DB Bench Press</td>
+                        <td>40 lb × 12</td>
+                        <td>50 lb × 12</td>
+                        <td class="weight-increase">65 lb × 10</td>
+                        <td class="weight-increase">+25 lb</td>
+                    </tr>
+                    <tr>
+                        <td>Incline Press</td>
+                        <td>40 lb</td>
+                        <td>45 lb × 8</td>
+                        <td class="weight-increase">70 lb × 12 (machine)</td>
+                        <td class="weight-increase">+30 lb</td>
+                    </tr>
+                    <tr>
+                        <td>Lat Pulldown</td>
+                        <td>80 lb</td>
+                        <td>100 lb × 10</td>
+                        <td class="weight-increase">115 lb × 8</td>
+                        <td class="weight-increase">+35 lb</td>
+                    </tr>
+                    <tr>
+                        <td>Shoulder Press</td>
+                        <td>35 lb × 8</td>
+                        <td>35 lb × 8</td>
+                        <td class="weight-increase">50 lb × 10</td>
+                        <td class="weight-increase">+15 lb</td>
+                    </tr>
+                    <tr>
+                        <td>Chest-Supported Row</td>
+                        <td>35 lb</td>
+                        <td>40 lb × 10</td>
+                        <td class="weight-increase">45 lb × 10</td>
+                        <td class="weight-increase">+10 lb</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Recent Highlights -->
+        <div class="workout-log">
+            <div class="log-title">🔥 RECENT HIGHLIGHTS</div>
+            <div class="log-entry">
+                <div class="log-date">BEST PUSH DAY</div>
+                <div class="log-details">
+                    Flat DB Bench: 65 lb × 10 reps (PR)<br>
+                    Incline Machine: 80 lb × 12, 95 lb × 10, 110 lb × 6<br>
+                    Tricep Supersets: 3 rounds of 20 lb curls + 35 lb pushdowns
+                </div>
+            </div>
+            <div class="log-entry">
+                <div class="log-date">BEST PULL DAY</div>
+                <div class="log-details">
+                    Lat Pulldown: 115 lb × 8 reps × 2 sets (PR)<br>
+                    Chest-Supported Rows: 45 lb × 8 × 3 sets<br>
+                    Seated Cable Rows: 95 lb × 10, ×8
+                </div>
+            </div>
+            <div class="log-entry">
+                <div class="log-date">MOST INTENSE ARM DAY</div>
+                <div class="log-details">
+                    Superset: Barbell Curl 60 lb × 10 + Tricep Pushdown 35 lb × 12<br>
+                    4 rounds total with minimal rest<br>
+                    Finished with 50 cable crunches
+                </div>
+            </div>
+        </div>
+        
+        <!-- Notes -->
+        <div class="workout-log">
+            <div class="log-title">📝 NOTES & PATTERNS</div>
+            <div class="log-entry">
+                <div class="log-date">INJURIES / PAIN POINTS</div>
+                <div class="log-details">
+                    • Hamstring pain during RDLs (stopped at 30 lb single-leg)<br>
+                    • Wrist pain → switched from barbell to dumbbell curls<br>
+                    • Shoulder pain during lateral raises (manageable, reduced weight)
+                </div>
+            </div>
+            <div class="log-entry">
+                <div class="log-date">CONSISTENCY PATTERNS</div>
+                <div class="log-details">
+                    • Missed multiple Wed/Thu sessions<br>
+                    • Most consistent on Mon/Tue/Fri<br>
+                    • Breakup cited as motivation for increased intensity
+                </div>
+            </div>
+            <div class="log-entry">
+                <div class="log-date">PREFERENCES NOTED</div>
+                <div class="log-details">
+                    • Avoids barbell bench (pain concern)<br>
+                    • Prefers dumbbells for pressing<br>
+                    • Loves supersets for arms<br>
+                    • Wants more intense UL/PPL split going forward
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Bench Press Progression
+        const benchCtx = document.getElementById('benchChart').getContext('2d');
+        new Chart(benchCtx, {
+            type: 'line',
+            data: {
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6'],
+                datasets: [{
+                    label: 'DB Bench Press (lbs)',
+                    data: [40, 45, 50, 55, 60, 65],
+                    borderColor: '#4ade80',
+                    backgroundColor: 'rgba(74, 222, 128, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 6,
+                    pointBackgroundColor: '#4ade80',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: 30,
+                        grid: { color: 'rgba(255,255,255,0.05)' },
+                        ticks: { color: '#71717a' }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#71717a' }
+                    }
+                }
+            }
+        });
+        
+        // Back Progression
+        const backCtx = document.getElementById('backChart').getContext('2d');
+        new Chart(backCtx, {
+            type: 'line',
+            data: {
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6'],
+                datasets: [{
+                    label: 'Lat Pulldown (lbs)',
+                    data: [80, 95, 100, 105, 110, 115],
+                    borderColor: '#60a5fa',
+                    backgroundColor: 'rgba(96, 165, 250, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 6,
+                    pointBackgroundColor: '#60a5fa',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: 70,
+                        grid: { color: 'rgba(255,255,255,0.05)' },
+                        ticks: { color: '#71717a' }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#71717a' }
+                    }
+                }
+            }
+        });
+        
+        // Distribution
+        const distCtx = document.getElementById('distributionChart').getContext('2d');
+        new Chart(distCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Push (Chest/Shoulders/Tri)', 'Pull (Back/Bi)', 'Legs', 'Arms/Abs'],
+                datasets: [{
+                    data: [18, 12, 5, 8],
+                    backgroundColor: [
+                        '#f87171',
+                        '#60a5fa',
+                        '#c084fc',
+                        '#4ade80'
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: { color: '#e4e4e7', padding: 20 }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

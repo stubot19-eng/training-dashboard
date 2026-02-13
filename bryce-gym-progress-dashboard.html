@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bryce's Gym Progress Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0a12 0%, #1a1a2e 50%, #0f0f1a 100%);
+            color: #e4e4e7;
+            padding: 30px 20px;
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #4ade80, #22c55e, #16a34a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+        .subtitle { color: #71717a; font-size: 1.1rem; }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .stat-card {
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 20px;
+            padding: 24px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-4px);
+            background: rgba(255,255,255,0.05);
+        }
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff, #a1a1aa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .stat-label {
+            color: #71717a;
+            font-size: 0.9rem;
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .stat-card.pr .stat-number {
+            background: linear-gradient(135deg, #4ade80, #22c55e);
+            -webkit-background-clip: text;
+        }
+        
+        .section {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 24px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .progress-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .exercise-row {
+            display: grid;
+            grid-template-columns: 200px 1fr 80px;
+            align-items: center;
+            gap: 20px;
+        }
+        .exercise-name {
+            font-weight: 600;
+            color: #d4d4d8;
+        }
+        .progress-bar-container {
+            background: rgba(255,255,255,0.05);
+            height: 32px;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+        .progress-fill {
+            height: 100%;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: width 1s ease;
+        }
+        .fill-green { background: linear-gradient(90deg, #22c55e, #4ade80); color: #064e3b; }
+        .fill-blue { background: linear-gradient(90deg, #3b82f6, #60a5fa); color: #1e3a8a; }
+        .fill-purple { background: linear-gradient(90deg, #8b5cf6, #a78bfa); color: #4c1d95; }
+        .fill-orange { background: linear-gradient(90deg, #f97316, #fb923c); color: #7c2d12; }
+        .fill-red { background: linear-gradient(90deg, #ef4444, #f87171); color: #7f1d1d; }
+        
+        .current-weight {
+            text-align: right;
+            font-weight: 700;
+            color: #4ade80;
+        }
+        
+        .workout-log {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            gap: 16px;
+            padding: 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .workout-log:last-child { border-bottom: none; }
+        .log-type {
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .type-push { color: #f87171; }
+        .type-pull { color: #60a5fa; }
+        .type-legs { color: #c084fc; }
+        .type-arms { color: #fbbf24; }
+        .log-details {
+            color: #a1a1aa;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        
+        .pr-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+        }
+        .pr-card {
+            background: linear-gradient(135deg, rgba(74, 222, 128, 0.1), rgba(34, 197, 94, 0.05));
+            border: 1px solid rgba(74, 222, 128, 0.2);
+            border-radius: 16px;
+            padding: 20px;
+        }
+        .pr-exercise {
+            font-size: 0.85rem;
+            color: #4ade80;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        .pr-weight {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #fff;
+        }
+        .pr-reps {
+            color: #71717a;
+            font-size: 0.9rem;
+        }
+        
+        .next-workout {
+            background: linear-gradient(135deg, rgba(74, 222, 128, 0.15), rgba(34, 197, 94, 0.08));
+            border: 2px solid #4ade80;
+            border-radius: 24px;
+            padding: 30px;
+        }
+        .next-workout h2 {
+            color: #4ade80;
+            margin-bottom: 20px;
+        }
+        .exercise-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .exercise-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+        }
+        .exercise-item-name {
+            font-weight: 600;
+        }
+        .exercise-item-sets {
+            color: #4ade80;
+            font-weight: 600;
+        }
+        
+        .note {
+            background: rgba(251, 191, 36, 0.1);
+            border-left: 4px solid #fbbf24;
+            padding: 16px 20px;
+            border-radius: 0 12px 12px 0;
+            margin-top: 30px;
+            color: #d4d4d8;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        @media (max-width: 768px) {
+            .exercise-row {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+            h1 { font-size: 1.75rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💪 Bryce's Gym Progress</h1>
+            <p class="subtitle">6+ weeks of data | 40+ workouts logged | Built from the chaos</p>
+        </header>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">40+</div>
+                <div class="stat-label">Total Workouts</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">65</div>
+                <div class="stat-label">DB Bench PR (lb)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">115</div>
+                <div class="stat-label">Lat Pulldown PR (lb)</div>
+            </div>
+            <div class="stat-card pr">
+                <div class="stat-number">+62%</div>
+                <div class="stat-label">Bench Strength Gain</div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">📈 Strength Progress</h2>
+            <div class="progress-chart">
+                <div class="exercise-row">
+                    <div class="exercise-name">DB Bench Press</div>
+                    <div class="progress-bar-container">
+                        <div class="progress-fill fill-green" style="width: 100%">65 lb</div>
+                    </div>
+                    <div class="current-weight">+25 lb</div>
+                </div>
+                <div class="exercise-row">
+                    <div class="exercise-name">Incline Machine</div>
+                    <div class="progress-bar-container">
+                        <div class="progress-fill fill-blue" style="width: 95%">70 lb</div>
+                    </div>
+                    <div class="current-weight">+30 lb</div>
+                </div>
+                <div class="exercise-row">
+                    <div class="exercise-name">Lat Pulldown</div>
+                    <div class="progress-bar-container">
+                        <div class="progress-fill fill-purple" style="width: 92%">115 lb</div>
+                    </div>
+                    <div class="current-weight">+35 lb</div>
+                </div>
+                <div class="exercise-row">
+                    <div class="exercise-name">Shoulder Press</div>
+                    <div class="progress-bar-container">
+                        <div class="progress-fill fill-orange" style="width: 85%">50 lb</div>
+                    </div>
+                    <div class="current-weight">+15 lb</div>
+                </div>
+                <div class="exercise-row">
+                    <div class="exercise-name">Leg Press</div>
+                    <div class="progress-bar-container">
+                        <div class="progress-fill fill-red" style="width: 70%">215 lb</div>
+                    </div>
+                    <div class="current-weight">+20 lb</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">🏆 Personal Records</h2>
+            <div class="pr-section">
+                <div class="pr-card">
+                    <div class="pr-exercise">DB Bench Press</div>
+                    <div class="pr-weight">65 lb</div>
+                    <div class="pr-reps">× 10 reps</div>
+                </div>
+                <div class="pr-card">
+                    <div class="pr-exercise">Incline Machine</div>
+                    <div class="pr-weight">70 lb</div>
+                    <div class="pr-reps">× 12 reps</div>
+                </div>
+                <div class="pr-card">
+                    <div class="pr-exercise">Lat Pulldown</div>
+                    <div class="pr-weight">115 lb</div>
+                    <div class="pr-reps">× 8 reps</div>
+                </div>
+                <div class="pr-card">
+                    <div class="pr-exercise">Shoulder Press</div>
+                    <div class="pr-weight">50 lb</div>
+                    <div class="pr-reps">× 10 reps</div>
+                </div>
+                <div class="pr-card">
+                    <div class="pr-exercise">Leg Press</div>
+                    <div class="pr-weight">215 lb</div>
+                    <div class="pr-reps">× 10 reps</div>
+                </div>
+                <div class="pr-card">
+                    <div class="pr-exercise">Pull-ups</div>
+                    <div class="pr-weight">30</div>
+                    <div class="pr-reps">total reps (assisted)</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">📝 Recent Workout History</h2>
+            <div class="workout-log">
+                <div class="log-type type-push">PUSH</div>
+                <div class="log-details">
+                    <strong>Flat DB Bench:</strong> 65lb×10, ×8, ×6 → 50lb×12 | 
+                    <strong>Incline:</strong> 80lb×12, 85lb×10, 95lb×8 |
+                    <strong>Superset:</strong> Curls 60lb×10 + Tricep 35lb×12 ×3
+                </div>
+            </div>
+            <div class="workout-log">
+                <div class="log-type type-pull">PULL</div>
+                <div class="log-details">
+                    <strong>Lat Pulldown:</strong> 100lb×10, 110lb×10, 110lb×8 |
+                    <strong>Seated Row:</strong> 85lb×10, 95lb×8, 100lb×8, 95lb×8 |
+                    <strong>Chest Row:</strong> 40lb×10, ×10, ×8 |
+                    <strong>Superset:</strong> Curls + Face Pulls
+                </div>
+            </div>
+            <div class="workout-log">
+                <div class="log-type type-push">PUSH</div>
+                <div class="log-details">
+                    <strong>Chest Press Machine:</strong> 80lb×12, 95lb×10, 110lb×6 |
+                    <strong>DB Bench:</strong> 50lb×8, ×8 |
+                    <strong>Superset:</strong> DB Curl 22.5lb×10 + Tricep 17lb×10 ×3 |
+                    <strong>Abs:</strong> Cable crunches 50lb×40
+                </div>
+            </div>
+            <div class="workout-log">
+                <div class="log-type type-pull">PULL</div>
+                <div class="log-details">
+                    <strong>Chest-Supported Row:</strong> 45lb×10×4 |
+                    <strong>Lat Pulldown:</strong> 95lb×10, 110lb×10, 115lb×8, ×8 |
+                    <strong>Seated Rows:</strong> 80lb×10, 95lb×10, ×8, 70lb×10
+                </div>
+            </div>
+            <div class="workout-log">
+                <div class="log-type type-push">PUSH</div>
+                <div class="log-details">
+                    <strong>Flat DB Bench:</strong> 60lb×12, ×10, ×8 |
+                    <strong>Incline Machine:</strong> 65lb×12, 70lb×10, ×10, ×12 |
+                    <strong>Superset:</strong> Barbell Curl 60lb×10 + Tricep 35lb×15 ×3
+                </div>
+            </div>
+        </div>
+        
+        <div class="next-workout">
+            <h2>🔥 ARNOLD-LEVEL UL/PPL SPLIT</h2>
+            <p style="color: #71717a; margin-bottom: 20px;">You wanted intense. Here it is.</p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                <div>
+                    <h3 style="color: #f87171; margin-bottom: 12px;">MONDAY - PUSH</h3>
+                    <div class="exercise-list">
+                        <div class="exercise-item">
+                            <span class="exercise-item-name">DB Bench Press</span>
+                            <span class="exercise-item-sets">4×8-10</span>
+                        </div>
+                        <div class="exercise-item">
+                            <span class="exercise-item-name">Incline Press</span>
+                            <span class="exercise-item-sets">3×10</span>
+                        </div>
+                        <div class="exercise-item">
+                            <span class="exercise-item-name">Shoulder Press</span>
+                            <span class="exercise-item-sets">4×8-10</span>
+                        </div>
+                        <div class="exercise-item">
+                            <span class="exercise-item-name">Lateral Raises</span>
+                            <span class="exercise-item-sets">4×12-15</span>
+                        </div>
+                        <div class="exercise-item">
+                            <span class="exercise-item-name">Tricep Pushdown</span>
+                            <span class="exercise-item-sets">4×12</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 style="color: #60a5fa; margin-bottom: 12px;">TUESDAY - PULL</h3>
+                    <div class="exercise-list">
+                        <div class="exercise-item">
+                            <span class="exercise-item-name">Lat Pulldown</span>
+                            <span class="exercise-item-sets">4×8-10</span>
+                        </div>
+                        <div class="exercise-item">
+                            <span class="exercise-item-name">Chest-Supported Row</span>
+                            <span class="exercise-item-sets">4×10</span>
+                        </div>
+                        <div class="exercise-item">
+                            <span class="exercise-item-name">Seated Cable Row</span>
+                            <span class="exercise-item-sets">3×10</span>
+                        </div>
+                        <div class="exercise-item">
+                            <span class="exercise-item-name">Face Pulls</span>
+                            <span class="exercise-item-sets">4×15</span>
+                        </div>
+                        <div class="exercise-item">
+                            <span class="exercise-item-name">Barbell Curl</span>
+                            <span class="exercise-item-sets">4×10</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 style="color: #c084fc; margin-bottom: 12px;">WEDNESDAY - LEGS</h3>
+                    <div class="exercise-list">
+                        <div class="exercise-item">
+                            <span class="exercise-item-name">Leg Press</span>
+                            <span class="exercise-item-sets">4×10-12</span>
+                        </div>
+                        <div class="exercise-item">
+                            <span class="exercise-item-name">Romanian Deadlift</span>
+                            <span class="exercise-item-sets">4×10</span>
+                        </div>
+                        <div class="exercise-item">
+                            <span class="exercise-item-name">Walking Lunges</span>
+                            <span class="exercise-item-sets">3×20</span>
+                        </div>
+                        <div class="exercise-item">
+                            <span class="exercise-item-name">Leg Extensions</span>
+                            <span class="exercise-item-sets">3×15</span>
+                        </div>
+                        <div class="exercise-item">
+                            <span class="exercise-item-name">Calf Raises</span>
+                            <span class="exercise-item-sets">4×15-20</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 style="color: #fbbf24; margin-bottom: 12px;">THURSDAY - UPPER</h3>
+                    <div class="exercise-list">
+                        <div class="exercise-item">
+                            <span class="exercise-item-name">DB Bench</span>
+                            <span class="exercise-item-sets">3×10</span>
+                        </div>
+                        <div class="exercise-item">
+                            <span class="exercise-item-name">Lat Pulldown</span>
+                            <span class="exercise-item-sets">3×10</span>
+                        </div>
+                        <div class="exercise-item">
+                            <span class="exercise-item-name">Overhead Press</span>
+                            <span class="exercise-item-sets">3×10</span>
+                        </div>
+                        <div class="exercise-item">
+                            <span class="exercise-item-name">Cable Row</span>
+                            <span class="exercise-item-sets">3×12</span>
+                        </div>
+                        <div class="exercise-item">
+                            <span class="exercise-item-name">Arm Superset</span>
+                            <span class="exercise-item-sets">3×12</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 style="color: #a78bfa; margin-bottom: 12px;">FRIDAY - LOWER + ABS</h3>
+                    <div class="exercise-list">
+                        <div class="exercise-item">
+                            <span class="exercise-item-name">Goblet Squats</span>
+                            <span class="exercise-item-sets">4×12</span>
+                        </div>
+                        <div class="exercise-item">
+                            <span class="exercise-item-name">Leg Curls</span>
+                            <span class="exercise-item-sets">4×12</span>
+                        </div>
+                        <div class="exercise-item">
+                            <span class="exercise-item-name">Bulgarian Split Squat</span>
+                            <span class="exercise-item-sets">3×10</span>
+                        </div>
+                        <div class="exercise-item">
+                            <span class="exercise-item-name">Hanging Leg Raises</span>
+                            <span class="exercise-item-sets">4×15</span>
+                        </div>
+                        <div class="exercise-item">
+                            <span class="exercise-item-name">Cable Crunches</span>
+                            <span class="exercise-item-sets">4×20</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 style="color: #4ade80; margin-bottom: 12px;">WEEKEND</h3>
+                    <div class="exercise-list">
+                        <div class="exercise-item">
+                            <span class="exercise-item-name">Saturday</span>
+                            <span class="exercise-item-sets">Active Recovery</span>
+                        </div>
+                        <div class="exercise-item">
+                            <span class="exercise-item-name">Sunday</span>
+                            <span class="exercise-item-sets">Full Rest</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="note">
+            <strong>⚠️ Notes from your training log:</strong><br><br>
+            • You had hamstring pain during RDLs (stopped at 30lb) — ease back into these<br>
+            • Wrist pain during curls — consider wrist wraps or switching to hammer curls<br>
+            • Shoulder pain during lateral raises — drop weight, focus on form<br>
+            • "Going through a breakup - need this" — Channel that energy into the gym<br><br>
+            Your bench press went from 40lb to 65lb in 6 weeks. That's a 62% increase. Keep going.
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bryce's Workout Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
+            color: #e4e4e7;
+            padding: 30px 20px;
+            min-height: 100vh;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #4ade80, #22c55e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .subtitle { color: #71717a; margin-top: 8px; }
+        
+        .today-card {
+            background: rgba(74, 222, 128, 0.1);
+            border: 2px solid #4ade80;
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 30px;
+        }
+        .today-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .today-badge {
+            background: #4ade80;
+            color: #0f0f1a;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        .today-title { font-size: 1.3rem; font-weight: 600; }
+        
+        .exercise {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+        .exercise-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .exercise-name { font-weight: 600; font-size: 1rem; }
+        .exercise-sets { color: #4ade80; font-weight: 600; }
+        .exercise-note { color: #71717a; font-size: 0.85rem; }
+        
+        .progress-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #4ade80;
+        }
+        .stat-label {
+            color: #71717a;
+            font-size: 0.9rem;
+            margin-top: 4px;
+        }
+        
+        .history-section {
+            background: rgba(255,255,255,0.03);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 30px;
+        }
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .workout-log {
+            border-left: 3px solid #4ade80;
+            padding-left: 16px;
+            margin-bottom: 16px;
+        }
+        .log-date {
+            color: #4ade80;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .log-exercises {
+            color: #a1a1aa;
+            font-size: 0.85rem;
+            margin-top: 4px;
+            line-height: 1.5;
+        }
+        
+        .missed-day {
+            border-left-color: #ef4444;
+            opacity: 0.7;
+        }
+        .missed-day .log-date { color: #ef4444; }
+        
+        .routine-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+        }
+        .routine-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+            padding: 20px;
+        }
+        .routine-card.push { border-color: #f87171; }
+        .routine-card.pull { border-color: #60a5fa; }
+        .routine-card.legs { border-color: #c084fc; }
+        .routine-card.active { border-color: #4ade80; background: rgba(74, 222, 128, 0.05); }
+        
+        .routine-title {
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .routine-exercise {
+            font-size: 0.9rem;
+            color: #a1a1aa;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .routine-exercise:last-child { border-bottom: none; }
+        
+        .checkbox {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #4ade80;
+            border-radius: 4px;
+            margin-right: 8px;
+            cursor: pointer;
+        }
+        
+        .condolence-section {
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+        .condolence-text {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 12px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #d4d4d8;
+        }
+        
+        .macro-box {
+            display: inline-block;
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-top: 16px;
+        }
+        .macro-value { color: #fbbf24; font-weight: 700; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💪 Bryce's Workout Tracker</h1>
+            <p class="subtitle">Built from your chaos. Let's get organized.</p>
+        </header>
+        
+        <!-- Today's Workout -->
+        <div class="today-card">
+            <div class="today-header">
+                <span class="today-badge">TODAY</span>
+                <span class="today-title">Legs + Abs</span>
+            </div>
+            
+            <div class="exercise">
+                <div class="exercise-header">
+                    <span class="exercise-name"><span class="checkbox"></span> Goblet Squats</span>
+                    <span class="exercise-sets">4 × 10-12</span>
+                </div>
+                <div class="exercise-note">Start with 40-50lb dumbbell, focus on depth</div>
+            </div>
+            
+            <div class="exercise">
+                <div class="exercise-header">
+                    <span class="exercise-name"><span class="checkbox"></span> Romanian Deadlifts</span>
+                    <span class="exercise-sets">3 × 10</span>
+                </div>
+                <div class="exercise-note">40-50lb dumbbells, feel the hamstring stretch</div>
+            </div>
+            
+            <div class="exercise">
+                <div class="exercise-header">
+                    <span class="exercise-name"><span class="checkbox"></span> Walking Lunges</span>
+                    <span class="exercise-sets">3 × 20 steps</span>
+                </div>
+                <div class="exercise-note">Bodyweight or hold 20-25lb dumbbells</div>
+            </div>
+            
+            <div class="exercise">
+                <div class="exercise-header">
+                    <span class="exercise-name"><span class="checkbox"></span> Leg Press (if available)</span>
+                    <span class="exercise-sets">3 × 12-15</span>
+                </div>
+                <div class="exercise-note">Start light, work up to 1.5-2× bodyweight</div>
+            </div>
+            
+            <div class="exercise">
+                <div class="exercise-header">
+                    <span class="exercise-name"><span class="checkbox"></span> Calf Raises</span>
+                    <span class="exercise-sets">4 × 15-20</span>
+                </div>
+                <div class="exercise-note">Slow and controlled, full range of motion</div>
+            </div>
+            
+            <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(74, 222, 128, 0.3);">
+                <div class="exercise-header">
+                    <span class="exercise-name">🔥 AB FINISHER</span>
+                    <span class="exercise-sets">3 Rounds</span>
+                </div>
+                <div class="exercise-note" style="margin-top: 8px;">
+                    20 Crunches → 30s Plank → 15 Leg Raises → 20 Russian Twists<br>
+                    Rest 60s between rounds
+                </div>
+            </div>
+        </div>
+        
+        <!-- Stats -->
+        <div class="progress-section">
+            <div class="stat-card">
+                <div class="stat-value">2</div>
+                <div class="stat-label">Workouts This Week</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">2</div>
+                <div class="stat-label">Missed Days</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">30</div>
+                <div class="stat-label">Pull-ups (PR)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">40</div>
+                <div class="stat-label">DB Press (lb)</div>
+            </div>
+        </div>
+        
+        <!-- Workout History -->
+        <div class="history-section">
+            <div class="section-title">📅 Recent History</div>
+            
+            <div class="workout-log">
+                <div class="log-date">PULL DAY — Recent</div>
+                <div class="log-exercises">
+                    Assisted Pull-ups: 30 reps (35lb assist)<br>
+                    Cable Rows: 80lb × 2 × 10<br>
+                    Chest-Supported DB Rows: 45lb → 35lb<br>
+                    Curls: 20lb × 22 reps
+                </div>
+            </div>
+            
+            <div class="workout-log">
+                <div class="log-date">PUSH DAY — Recent</div>
+                <div class="log-exercises">
+                    DB Bench Press: 40lb × 12 × 4<br>
+                    Incline DB Press: 40lb<br>
+                    Seated DB Press: 35lb × 3 × 8<br>
+                    Lateral Raises: 15lb × 3 sets
+                </div>
+            </div>
+            
+            <div class="workout-log missed-day">
+                <div class="log-date">WEDNESDAY — MISSED</div>
+                <div class="log-exercises">Rest day (unplanned)</div>
+            </div>
+            
+            <div class="workout-log missed-day">
+                <div class="log-date">THURSDAY — MISSED</div>
+                <div class="log-exercises">Rest day (unplanned)</div>
+            </div>
+        </div>
+        
+        <!-- Weekly Routine -->
+        <div class="history-section">
+            <div class="section-title">🗓️ Your 4-Day Split</div>
+            
+            <div class="routine-grid">
+                <div class="routine-card push">
+                    <div class="routine-title">🔴 PUSH DAY</div>
+                    <div class="routine-exercise">DB Bench Press 4×12</div>
+                    <div class="routine-exercise">Incline DB Press 3×10</div>
+                    <div class="routine-exercise">Seated DB Press 3×8</div>
+                    <div class="routine-exercise">Lateral Raises 3×15</div>
+                    <div class="routine-exercise">Tricep Pushdowns 3×12</div>
+                </div>
+                
+                <div class="routine-card pull">
+                    <div class="routine-title">🔵 PULL DAY</div>
+                    <div class="routine-exercise">Assisted Pull-ups 4×8-10</div>
+                    <div class="routine-exercise">Cable Rows 3×10-12</div>
+                    <div class="routine-exercise">DB Rows 3×10 each</div>
+                    <div class="routine-exercise">Face Pulls 3×15</div>
+                    <div class="routine-exercise">DB Curls 3×12</div>
+                </div>
+                
+                <div class="routine-card legs active">
+                    <div class="routine-title">🟢 LEGS + ABS</div>
+                    <div class="routine-exercise">Goblet Squats 4×12</div>
+                    <div class="routine-exercise">Romanian Deadlifts 3×10</div>
+                    <div class="routine-exercise">Walking Lunges 3×20</div>
+                    <div class="routine-exercise">Calf Raises 4×15</div>
+                    <div class="routine-exercise">Ab Circuit 3 rounds</div>
+                </div>
+                
+                <div class="routine-card">
+                    <div class="routine-title">🟡 ACTIVE RECOVERY</div>
+                    <div class="routine-exercise">Light cardio 20-30 min</div>
+                    <div class="routine-exercise">Stretching / Yoga</div>
+                    <div class="routine-exercise">Or full rest if needed</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Condolence Messages -->
+        <div class="condolence-section">
+            <div class="section-title">💐 Draft Messages for Sharon</div>
+            
+            <p style="color: #71717a; font-size: 0.9rem;">You mentioned needing to send condolences. Here are drafts:</p>
+            
+            <div class="condolence-text">
+                <strong>Text Message:</strong><br><br>
+                "Hey Sharon, I just heard the news and I'm so sorry for your loss. Sending all my love and prayers to you and the girls today. I'm here if you need anything."
+            </div>
+            
+            <div class="condolence-text">
+                <strong>Card Message:</strong><br><br>
+                "Thinking of you and the girls and sending our deepest condolences. You are in our prayers.<br><br>
+                With love,<br>
+                Bryce"
+            </div>
+        </div>
+        
+        <!-- Macros -->
+        <div class="condolence-section">
+            <div class="section-title">🍗 Chick-fil-A 12 Grilled Nuggets</div>
+            <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 12px;">
+                <div class="macro-box">
+                    <span class="macro-value">200</span> cal
+                </div>
+                <div class="macro-box">
+                    <span class="macro-value">38g</span> protein
+                </div>
+                <div class="macro-box">
+                    <span class="macro-value">4g</span> fat
+                </div>
+                <div class="macro-box">
+                    <span class="macro-value">4g</span> carbs
+                </div>
+            </div>
+            <p style="color: #71717a; font-size: 0.85rem; margin-top: 12px;">
+                16 nuggets ≈ 265 cal, 50g protein, 6g fat, 6g carbs
+            </p>
+        </div>
+        
+        <div style="text-align: center; margin-top: 40px; color: #52525b; font-size: 0.85rem;">
+            Save this HTML file and open it in your browser. Check off exercises as you complete them.
+        </div>
+    </div>
+</body>
+</html>

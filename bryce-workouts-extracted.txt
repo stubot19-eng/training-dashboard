@@ -1,0 +1,228 @@
+# Bryce's Complete Workout Log - Extracted Data
+
+## PUSH WORKOUTS (17 sessions)
+
+### Workout 1 (Push #1)
+- DB Bench Press: 40lb × 12 reps × 4 sets
+- Incline DB Press: 40lb (reps/sets unclear)
+- Seated DB Press: 35lb × 8 reps × 3 sets
+- Lateral Raises: 15lb × 3 sets (reps unclear)
+
+### Workout 2 (Push #2)
+- Flat DB Bench: 50lb × 11 reps, 50lb × 10 reps, 50lb × 8 reps, 50lb × 8 reps
+- Incline DB Press: 45lb × 8 reps, 30lb × 10 reps
+- Shoulder Press: 30lb × 8 reps, 30lb × 8 reps
+- Lateral Raises: 15lb × 12 reps, 15lb × 12 reps, 15lb × 10 reps
+- Tricep Pushdown: 20lb × 10 reps (sets unclear)
+
+### Workout 3 (Push #3)
+- Flat DB Bench: 50lb × 12 reps, 50lb × 12 reps, 50lb × 10 reps
+- Incline DB Press: 35lb × 9 reps, 35lb × 9 reps
+- Lateral Raises: 15lb × 12 reps, 15lb × 12 reps, 15lb × 10 reps
+
+### Workout 4 (Push #4)
+- DB Bench: 45lb × 12 reps, 50lb × 10 reps, 50lb × 10 reps, 45lb × 8 reps, 45lb × 8 reps
+- Incline Press: 35lb × 8 reps, 35lb × 9 reps
+
+### Workout 5 (Push #5 - Monday Fresh Start)
+- Flat DB Bench: 50lb × 12 reps, 50lb × 12 reps, 50lb × 10 reps (PR)
+- Incline DB Press: 45lb × 8 reps, 30lb × 10 reps
+- Shoulder Press: 30lb × 8 reps (sets unclear)
+- Lateral Raises: 15lb × 12 reps, 15lb × 12 reps, 15lb × 10 reps
+- Tricep Pushdown: 20lb × 10 reps, 15lb × 15 reps, 15lb × 12 reps
+
+### Workout 6 (Push #6)
+- Flat DB Bench: 50lb × 12 reps, 50lb × 10 reps, 50lb × 8 reps, 45lb × 10 reps
+- Incline DB Press: 35lb × 8 reps, 35lb × 9 reps
+- Lateral Raises: 15lb × 12 reps, 15lb × 12 reps, 15lb × 10 reps
+
+### Workout 7 (Push #7 - Chest & Arms Focus)
+- Flat DB Bench: 60lb × 12 reps, 60lb × 10 reps, 60lb × 8 reps
+- Flat DB Bench: 50lb × 10 reps (additional set)
+- Incline Machine Press: 65lb × 12 reps, 70lb × 10 reps, 70lb × 10 reps, 70lb × 12 reps
+- Chest Fly Machine: 50lb × 10 reps (sets unclear)
+- Cable Fly: 25lb × 16 reps, 25lb × 15 reps, 25lb × 15 reps
+
+### Workout 8 (Push #8 - Chest & Arms Pump)
+- Flat DB Bench: 60lb × 12 reps, 60lb × 10 reps, 60lb × 8 reps
+- Flat DB Bench: 50lb × 10 reps (additional set)
+- Incline Machine Press: 65lb × 12 reps, 70lb × 10 reps, 70lb × 10 reps
+- Cable Fly: 25lb × 12 reps, 20lb × 12 reps
+- Barbell Curl: 60lb × 10 reps (superset)
+- Tricep Pushdown: 35lb × 15 reps (superset)
+- DB Curl: 25lb × 10 reps, 30lb × 11 reps
+
+### Workout 9 (Push #9)
+- Flat DB Bench: 60lb × 12 reps, 60lb × 10 reps, 60lb × 8 reps
+- Flat DB Bench: 50lb × 10 reps (additional set)
+- Incline DB Press: 50lb × 10 reps, 50lb × 8 reps
+- Shoulder Press: 35lb × 8 reps, 35lb × 8 reps
+- Cable Fly: 25lb × 12 reps, 20lb × 12 reps
+
+### Workout 10 (Push #10)
+- Chest Press Machine: 80lb × 12 reps, 95lb × 10 reps, 110lb × 6 reps
+- DB Bench: 50lb × 8 reps, 50lb × 8 reps
+- Machine Shoulder Press: 90lb × 8 reps
+- Single Arm Tricep Pushdown: 22.5lb × 10 reps, 17lb × 10 reps
+- Super set × 3 rounds
+
+### Workout 11 (Push #11 - PR Session)
+- Flat DB Bench: 60lb × 12 reps, 60lb × 10 reps, 60lb × 8 reps
+- Flat DB Bench: 50lb × 10 reps (additional set)
+- Incline Machine Press: 70lb × 10 reps, 70lb × 10 reps, 70lb × 12 reps
+- Shoulder Press: 50lb × 10 reps (sets unclear)
+- Lateral Raises: 20lb × 12 reps, 20lb × 12 reps, 20lb × 10 reps
+- Tricep Pushdown: 35lb × 12 reps (sets unclear)
+
+### Workout 12 (Push #12)
+- Flat DB Bench: 65lb × 10 reps, 65lb × 8 reps, 65lb × 6 reps
+- Flat DB Bench: 50lb × 12 reps (additional set)
+- Incline Machine Press: 80lb × 12 reps, 85lb × 10 reps, 95lb × 8 reps
+- Cable Fly: 25lb × 10 reps, 20lb × 12 reps
+- Barbell Curl: 60lb × 10 reps (superset)
+- Tricep Pushdown: 35lb × 12 reps (superset)
+
+### Workout 13 (Push #13)
+- Flat DB Bench: 55lb × 12 reps, 60lb × 10 reps, 65lb × 7 reps, 50lb × 12 reps
+- Incline DB Press: 45lb × 10 reps, 50lb × 10 reps, 50lb × 8 reps
+- Cable Fly: 25lb × 12 reps, 20lb × 12 reps
+
+### Workout 14 (Push #14)
+- Flat DB Bench: 65lb × 10 reps, 65lb × 8 reps, 65lb × 6 reps
+- Flat DB Bench: 50lb × 12 reps (additional set)
+- Incline Machine Press: 80lb × 12 reps, 85lb × 10 reps, 95lb × 8 reps
+- Lateral Raises: 20lb × 10 reps, 15lb × 13 reps
+- Tricep Superset: 20lb × 10 reps + 35lb × 12 reps × 3 rounds
+
+### Workout 15 (Push #15)
+- Chest Press Machine: 80lb × 12 reps, 95lb × 10 reps, 110lb × 6 reps
+- DB Bench: 50lb × 8 reps, 50lb × 8 reps
+- Machine Shoulder Press: 90lb × 8 reps
+- Single Arm Tricep: 22.5lb × 10 reps, 17lb × 10 reps
+- Super set × 3 rounds
+
+### Workout 16 (Push #16 - Powerhouse Pump)
+- Chest Press Machine: 80lb × 12 reps, 95lb × 10 reps, 110lb × 6 reps
+- Shoulder Press Machine: 90lb × 8 reps (sets unclear)
+- DB Bench: 50lb × 8 reps, 50lb × 8 reps
+- Superset: DB Curl 22.5lb × 10 reps + Single Arm Tricep 17lb × 10 reps × 3 rounds
+- Cable Crunches: 50lb × 40 reps (sets unclear)
+
+### Workout 17 (Push #17)
+- Flat DB Bench: 55lb × 12 reps, 60lb × 10 reps, 65lb × 7 reps, 50lb × 12 reps
+- Incline DB Press: 45lb × 10 reps, 50lb × 10 reps, 50lb × 8 reps
+- Lateral Raises: 12.5lb × 12 reps, 12.5lb × 10 reps, 12.5lb × 10 reps, 12.5lb × 9 reps
+- Tricep Pushdown: 35lb × 14 reps, 35lb × 10 reps, 30lb × 8 reps + 25lb × 4 reps
+
+---
+
+## PULL WORKOUTS (6 sessions)
+
+### Workout 18 (Pull #1)
+- Assisted Pull-ups: 30 reps total, 35lb assist
+- Cable Rows: 80lb × 10 reps × 2 sets
+- Chest-Supported DB Rows: 45lb → 35lb (reps/sets unclear)
+- Curls: 20lb × 22 reps (sets unclear)
+
+### Workout 19 (Pull #2 - More Intense)
+- Lat Pulldown: 100lb × 10 reps, 110lb × 10 reps, 110lb × 8 reps
+- Single-Arm Pulldown: 25lb × 12 reps, 30lb × 12 reps, 30lb × 12 reps (each side)
+- Chest-Supported Rows: 50lb × 8 reps, 50lb × 8 reps, 45lb × 8 reps, 45lb × 7 reps
+- Seated Cable Row: 80lb × 10 reps, 95lb × 10 reps, 95lb × 8 reps, 70lb × 10 reps
+- Face Pulls: 30lb × 12 reps, 30lb × 11 reps, 25lb × 15 reps
+- Barbell Curl: 50lb × 8 reps, 40lb × 8 reps
+- Cable Curls: 20lb × 10 reps + 30lb × 12 reps
+
+### Workout 20 (Pull #3)
+- Chest-Supported Row: 45lb × 10 reps × 4 sets
+- Lat Pulldown: 95lb × 10 reps (warmup), 110lb × 10 reps, 115lb × 8 reps (PR), 115lb × 8 reps
+- Seated Rows: 80lb × 10 reps, 95lb × 10 reps, 95lb × 8 reps, 70lb × 10 reps
+- Face Pulls: 30lb × 12 reps, 30lb × 11 reps, 25lb × 15 reps
+- Superset Curls: 25lb × 10 reps + 30lb × 12 reps × 2 rounds
+
+### Workout 21 (Pull #4)
+- Lat Pulldown: 100lb × 10 reps, 110lb × 10 reps, 110lb × 8 reps
+- Chest-Supported Row: 45lb × 8 reps, 45lb × 7 reps
+- Seated Cable Row: 40lb × 10 reps, 40lb × 10 reps, 40lb × 8 reps
+- Rear Delt Fly: 10lb × 15 reps, 10lb × 15 reps, 10lb × 12 reps
+- Barbell Curl: 50lb × 8 reps, 40lb × 8 reps
+- Tricep Pushdown: 35lb × 12 reps (sets unclear)
+
+### Workout 22 (Pull #5)
+- Chest-Supported Row: 45lb × 10 reps × 4 sets
+- Lat Pulldown: 95lb × 10 reps (warmup), 110lb × 10 reps, 115lb × 8 reps, 115lb × 8 reps
+- Seated Rows: 80lb × 10 reps, 95lb × 10 reps, 95lb × 8 reps, 70lb × 10 reps
+- Face Pulls: 30lb × 12 reps, 30lb × 11 reps, 25lb × 15 reps
+- Cable Curl Superset: 20lb × 10 reps + 30lb × 12 reps
+
+### Workout 23 (Pull #6)
+- Lat Pulldown: 100lb × 10 reps, 110lb × 10 reps, 110lb × 3 reps (typo for 8?)
+- Seated Cable Row: 85lb × 10 reps, 95lb × 8 reps, 100lb × 8 reps, 95lb × 8 reps
+- Chest-Supported Row: 40lb × 10 reps, 40lb × 10 reps, 40lb × 8 reps
+- Face Pulls: 30lb × 12 reps, 30lb × 15 reps, 25lb × 15 reps
+- Superset Curls: 25lb × 10 reps + 30lb × 12 reps, 25lb × 8 reps + 35lb × 8 reps, 25lb × 4 reps + 30lb × 9 reps
+
+---
+
+## LEG WORKOUTS (2 sessions)
+
+### Workout 24 (Leg #1)
+- Goblet Squats: 40-50lb × 10-12 reps × 4 sets
+- Romanian Deadlifts: 40-50lb × 10 reps × 3 sets
+- Walking Lunges: BW or 20-25lb × 20 steps × 3 sets
+- Leg Press: light to 1.5-2× bodyweight (reps/sets unclear)
+- Calf Raises: 15-20 reps × 4 sets
+- Ab Circuit: 3 rounds (exercises unclear)
+
+### Workout 25 (Leg #2)
+- Leg Press: 195lb × 12 reps, 195lb × 10 reps, 215lb × 10 reps
+- Romanian Deadlifts: 45lb × 10 reps, 45lb × 8 reps, 45lb × 8 reps
+- Single-Leg RDL: 30lb × 8 reps each side
+- Cable Crunches: 30lb × 18 reps, 40lb × 15 reps, 45lb × 15 reps
+
+---
+
+## ARM/AB FOCUS DAYS (2 sessions)
+
+### Workout 26 (Arms & Abs Day)
+- Barbell Curl: 50lb × 8 reps, 40lb × 8 reps
+- Tricep Pushdown: 35lb × 12 reps (sets unclear)
+- Superset: 50lb × 10 reps + 35lb × 15 reps × 3 rounds
+- DB Curl: 25lb × 10 reps + 30lb × 11 reps
+- Cable Crunches: 45lb × 15 reps × 3 sets
+- Plank: 1 minute
+- Cable Crunches: 50lb × 40 reps (sets unclear)
+
+### Workout 27 (Arms & Abs - Cialis Mention Day)
+- DB Bench: 45lb × 12 reps, 50lb × 10 reps, 50lb × 10 reps, 45lb × 8 reps, 45lb × 8 reps
+- Incline DB Press: 35lb × 8 reps, 35lb × 9 reps
+- Shoulder Press: 35lb × 8 reps, 35lb × 8 reps
+- Lateral Raises: 15lb × 12 reps, 15lb × 12 reps, 15lb × 10 reps
+- Superset: Barbell Curl 60lb × 10 reps + Tricep Pushdown 35lb × 12 reps × 3 rounds
+- Cable Crunches: 50lb × 40 reps (sets unclear)
+
+---
+
+## DATA SUMMARY
+
+**Total Workouts Extracted:** 27 distinct workout sessions
+
+**Breakdown by Type:**
+- Push Workouts: 17 sessions
+- Pull Workouts: 6 sessions  
+- Leg Workouts: 2 sessions
+- Arm/Ab Focus: 2 sessions
+
+**Notable Personal Records:**
+- DB Bench Press: 65lb × 10 reps
+- Incline Machine Press: 95lb × 8 reps
+- Lat Pulldown: 115lb × 8 reps
+- Shoulder Press: 50lb × 10 reps
+- Leg Press: 215lb × 10 reps
+
+**Notes:**
+- Some entries had incomplete data (missing sets/reps noted as "unclear")
+- Workouts appear to span 4-6 weeks of training
+- Primary split: Push/Pull/Legs (PPL) with variations
+- Exercises labeled "superset" were performed back-to-back with minimal rest
+- Several workouts included drop sets and intensity techniques

@@ -1,0 +1,447 @@
+{
+  "stats": {
+    "height": "6'4\"",
+    "age": 31,
+    "weight": 193,
+    "calories": 3300,
+    "protein": 195,
+    "carbs": 480,
+    "fats": 70
+  },
+  "workouts": [
+    {
+      "date": "Block 1",
+      "type": "Push",
+      "exercises": [
+        {
+          "name": "DB Bench Press",
+          "weight": 40,
+          "reps": 12,
+          "sets": 4
+        },
+        {
+          "name": "Incline DB Press",
+          "weight": null,
+          "reps": null,
+          "sets": 1
+        },
+        {
+          "name": "Seated DB Shoulder Press",
+          "weight": 35,
+          "reps": 8,
+          "sets": 3
+        },
+        {
+          "name": "Lateral Raises",
+          "weight": 15,
+          "reps": 12,
+          "sets": 4
+        }
+      ],
+      "id": 1,
+      "created_at": "2026-02-13T01:38:11.522Z"
+    },
+    {
+      "date": "Block 2",
+      "type": "Pull",
+      "exercises": [
+        {
+          "name": "Assisted Pullups",
+          "weight": null,
+          "reps": 8,
+          "sets": 4
+        },
+        {
+          "name": "Cable Row",
+          "weight": 45,
+          "reps": 8,
+          "sets": 3
+        },
+        {
+          "name": "Machine Row",
+          "weight": 80,
+          "reps": 10,
+          "sets": 3
+        },
+        {
+          "name": "DB Curl",
+          "weight": 20,
+          "reps": 11,
+          "sets": 2
+        }
+      ],
+      "id": 2,
+      "created_at": "2026-02-13T01:38:11.522Z"
+    },
+    {
+      "date": "Block 3",
+      "type": "Legs + Abs",
+      "exercises": [
+        {
+          "name": "Leg Press",
+          "weight": 215,
+          "reps": 10,
+          "sets": 3
+        },
+        {
+          "name": "DB Romanian Deadlift",
+          "weight": 45,
+          "reps": 9,
+          "sets": 2
+        },
+        {
+          "name": "Cable Crunch",
+          "weight": 45,
+          "reps": 16,
+          "sets": 3
+        }
+      ],
+      "id": 3,
+      "created_at": "2026-02-13T01:38:11.522Z"
+    },
+    {
+      "date": "Block 4",
+      "type": "Push Progression",
+      "exercises": [
+        {
+          "name": "Flat DB Bench",
+          "weight": 50,
+          "reps": 10,
+          "sets": 5
+        },
+        {
+          "name": "Incline DB",
+          "weight": 45,
+          "reps": 8,
+          "sets": 1
+        },
+        {
+          "name": "Shoulder Press",
+          "weight": 30,
+          "reps": 9,
+          "sets": 2
+        },
+        {
+          "name": "Lateral Raises",
+          "weight": 15,
+          "reps": 11,
+          "sets": 3
+        }
+      ],
+      "id": 4,
+      "created_at": "2026-02-13T01:38:11.522Z"
+    },
+    {
+      "date": "Block 5",
+      "type": "Heavy Pull",
+      "exercises": [
+        {
+          "name": "Lat Pulldown",
+          "weight": 110,
+          "reps": 9,
+          "sets": 3
+        },
+        {
+          "name": "Chest Supported Row",
+          "weight": 50,
+          "reps": 8,
+          "sets": 4
+        },
+        {
+          "name": "Seated Row",
+          "weight": 90,
+          "reps": 8,
+          "sets": 4
+        },
+        {
+          "name": "Rear Delt Raise",
+          "weight": 25,
+          "reps": 11,
+          "sets": 3
+        },
+        {
+          "name": "Barbell Curl",
+          "weight": 50,
+          "reps": 8,
+          "sets": 2
+        }
+      ],
+      "id": 5,
+      "created_at": "2026-02-13T01:38:11.522Z"
+    },
+    {
+      "date": "Block 6",
+      "type": "Arms + Abs",
+      "exercises": [
+        {
+          "name": "Barbell Curl",
+          "weight": 50,
+          "reps": 10,
+          "sets": 3
+        },
+        {
+          "name": "Rope Pushdown",
+          "weight": 35,
+          "reps": 13,
+          "sets": 4
+        },
+        {
+          "name": "Overhead Extension",
+          "weight": 28,
+          "reps": 10,
+          "sets": 2
+        },
+        {
+          "name": "Cable Crunch",
+          "weight": 45,
+          "reps": 15,
+          "sets": 3
+        }
+      ],
+      "id": 6,
+      "created_at": "2026-02-13T01:38:11.522Z"
+    },
+    {
+      "date": "Block 7",
+      "type": "Chest & Arms",
+      "exercises": [
+        {
+          "name": "DB Bench",
+          "weight": 50,
+          "reps": 10,
+          "sets": 4
+        },
+        {
+          "name": "Incline",
+          "weight": 35,
+          "reps": 9,
+          "sets": 2
+        },
+        {
+          "name": "Cable Fly",
+          "weight": 25,
+          "reps": 15,
+          "sets": 3
+        },
+        {
+          "name": "Barbell Curl",
+          "weight": 60,
+          "reps": 9,
+          "sets": 2
+        },
+        {
+          "name": "Pushdown",
+          "weight": 35,
+          "reps": 13,
+          "sets": 2
+        }
+      ],
+      "id": 7,
+      "created_at": "2026-02-13T01:38:11.522Z"
+    },
+    {
+      "date": "Block 8",
+      "type": "Pull Volume",
+      "exercises": [
+        {
+          "name": "Lat Pulldown",
+          "weight": 110,
+          "reps": 10,
+          "sets": 4
+        },
+        {
+          "name": "Chest Supported Row",
+          "weight": 43,
+          "reps": 9,
+          "sets": 3
+        },
+        {
+          "name": "Rear Delt / Face Pull",
+          "weight": 28,
+          "reps": 13,
+          "sets": 3
+        },
+        {
+          "name": "Cable Curl",
+          "weight": 25,
+          "reps": 11,
+          "sets": 2
+        }
+      ],
+      "id": 8,
+      "created_at": "2026-02-13T01:38:11.522Z"
+    },
+    {
+      "date": "Block 9",
+      "type": "Heavy Push",
+      "exercises": [
+        {
+          "name": "DB Bench",
+          "weight": 60,
+          "reps": 10,
+          "sets": 4
+        },
+        {
+          "name": "Incline Machine",
+          "weight": 70,
+          "reps": 11,
+          "sets": 4
+        },
+        {
+          "name": "Shoulder Raise",
+          "weight": 20,
+          "reps": 11,
+          "sets": 3
+        },
+        {
+          "name": "Triceps Pushdown",
+          "weight": 35,
+          "reps": 12,
+          "sets": 2
+        }
+      ],
+      "id": 9,
+      "created_at": "2026-02-13T01:38:11.522Z"
+    },
+    {
+      "date": "Block 10",
+      "type": "Machine Chest + Arms",
+      "exercises": [
+        {
+          "name": "Chest Press Machine",
+          "weight": 110,
+          "reps": 6,
+          "sets": 3
+        },
+        {
+          "name": "DB Bench",
+          "weight": 50,
+          "reps": 8,
+          "sets": 2
+        },
+        {
+          "name": "Tricep Single Arm Pushdown",
+          "weight": 17,
+          "reps": 10,
+          "sets": 2
+        },
+        {
+          "name": "Cable Crunch",
+          "weight": 50,
+          "reps": 40,
+          "sets": 1
+        }
+      ],
+      "id": 10,
+      "created_at": "2026-02-13T01:38:11.522Z"
+    },
+    {
+      "date": "Block 11",
+      "type": "Heavy Back",
+      "exercises": [
+        {
+          "name": "Chest Supported Row",
+          "weight": 45,
+          "reps": 10,
+          "sets": 4
+        },
+        {
+          "name": "Lat Pulldown",
+          "weight": 115,
+          "reps": 8,
+          "sets": 5
+        },
+        {
+          "name": "Seated Row",
+          "weight": 85,
+          "reps": 10,
+          "sets": 4
+        },
+        {
+          "name": "Face Pull",
+          "weight": 28,
+          "reps": 12,
+          "sets": 3
+        },
+        {
+          "name": "Cable Curl",
+          "weight": 25,
+          "reps": 11,
+          "sets": 2
+        }
+      ],
+      "id": 11,
+      "created_at": "2026-02-13T01:38:11.522Z"
+    },
+    {
+      "date": "Block 12",
+      "type": "Push",
+      "exercises": [
+        {
+          "name": "DB Bench",
+          "weight": 65,
+          "reps": 7,
+          "sets": 4
+        },
+        {
+          "name": "Incline",
+          "weight": 48,
+          "reps": 9,
+          "sets": 3
+        },
+        {
+          "name": "DB Shoulder Press",
+          "weight": 35,
+          "reps": 9,
+          "sets": 3
+        },
+        {
+          "name": "Lateral Raise",
+          "weight": 12.5,
+          "reps": 10,
+          "sets": 4
+        },
+        {
+          "name": "Rope Pushdown",
+          "weight": 32,
+          "reps": 11,
+          "sets": 3
+        }
+      ],
+      "id": 12,
+      "created_at": "2026-02-13T01:38:11.522Z"
+    },
+    {
+      "date": "Block 13",
+      "type": "Pull",
+      "exercises": [
+        {
+          "name": "Lat Pulldown",
+          "weight": 100,
+          "reps": 9,
+          "sets": 7
+        },
+        {
+          "name": "Chest Supported Row",
+          "weight": 40,
+          "reps": 9,
+          "sets": 3
+        },
+        {
+          "name": "Face Pull",
+          "weight": 30,
+          "reps": 12,
+          "sets": 5
+        },
+        {
+          "name": "Curl",
+          "weight": 22,
+          "reps": 10,
+          "sets": 2
+        }
+      ],
+      "id": 13,
+      "created_at": "2026-02-13T01:38:11.522Z"
+    }
+  ]
+}
