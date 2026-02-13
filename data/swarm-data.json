@@ -1,0 +1,59 @@
+{
+  "llmSpend": {
+    "today": 8.87,
+    "month": 8.87,
+    "budget": {
+      "daily": 1.67,
+      "monthly": 50,
+      "remaining": 41.13,
+      "setupPhase": true,
+      "notes": "Feb setup: $50 | After: $20/month"
+    },
+    "lastUpdate": "2026-02-13T18:51:12.856Z",
+    "history": []
+  },
+  "bots": {
+    "stu": {
+      "online": false,
+      "lastSeen": null,
+      "discord": false,
+      "telegram": false
+    },
+    "fabio": {
+      "online": false,
+      "lastSeen": null,
+      "discord": false,
+      "telegram": false
+    },
+    "sally": {
+      "online": false,
+      "lastSeen": null,
+      "discord": false,
+      "telegram": false
+    },
+    "adrian": {
+      "online": false,
+      "lastSeen": null,
+      "discord": false,
+      "telegram": false
+    }
+  },
+  "fitness": {
+    "weight": 192,
+    "goal": 185,
+    "caloriesToday": 2150,
+    "targetCalories": 2600,
+    "proteinToday": 180,
+    "targetProtein": 230,
+    "workoutsThisWeek": 4,
+    "lastWorkout": null,
+    "history": []
+  },
+  "missions": [],
+  "logs": [],
+  "system": {
+    "version": "2.0.0",
+    "lastBoot": 1771008672856,
+    "uptime": 20055
+  }
+}
