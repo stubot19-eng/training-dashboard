@@ -1455,7 +1455,7 @@
                 </div>
                 <div class="metric-box">
                     <div class="metric-icon">🤖</div>
-                    <div class="metric-value" style="color: var(--green);">5</div>
+                    <div class="metric-value" style="color: var(--green);">6</div>
                     <div class="metric-label">Active Agents</div>
                     <div class="metric-change positive">All operational</div>
                 </div>
@@ -1734,6 +1734,34 @@
                         </div>
                     </div>
                     <h2>Discord Integration</h2>
+                    <!-- Madden Bot -->
+                    <div class="agent-card" onclick="openAgentModal('madden')">
+                        <div class="agent-avatar bot">🏈</div>
+                        <div class="agent-header">
+                            <span class="agent-name">MADDEN BOT</span>
+                            <span class="agent-status online">Active</span>
+                        </div>
+                        <div class="agent-role">NY Sports Analyst</div>
+                        <div class="agent-function">Scores, injuries, trades, betting lines</div>
+                        <div class="agent-channels">
+                            <span class="channel-badge telegram">📱 @MaddenBot</span>
+                            <span class="channel-badge discord">💬 #sports-zone</span>
+                        </div>
+                        <div class="agent-stats">
+                            <div class="stat">
+                                <div class="stat-value">5</div>
+                                <div class="stat-label">Teams</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">12</div>
+                                <div class="stat-label">Alerts</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">8-2</div>
+                                <div class="stat-label">Picks</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="discord-channels">
                     <div class="discord-channel" onclick="testWebhook('general')">
@@ -3255,6 +3283,28 @@
                     { value: '1', label: 'Audits' },
                     { value: '4', label: 'Issues' },
                     { value: '3', label: 'Alerts Today' }
+                ]
+            },
+            madden: {
+                icon: '🏈',
+                name: 'Madden Bot',
+                role: 'NY Sports Analyst',
+                status: 'Active',
+                statusClass: 'online',
+                telegram: '@MaddenBot',
+                discord: '#sports-zone',
+                description: 'Your NY sports insider. Tracks scores, injuries, trades, and betting lines for Knicks, Nets, Yankees, Mets, and Giants.',
+                responsibilities: [
+                    'Monitor NY teams scores and highlights',
+                    'Track injuries and roster moves',
+                    'Alert on trade rumors and news',
+                    'Provide betting insights and lines',
+                    'Generate daily sports briefs'
+                ],
+                metrics: [
+                    { value: '5', label: 'Teams' },
+                    { value: '12', label: 'Alerts' },
+                    { value: '8-2', label: 'Picks Record' }
                 ]
             }
         };
