@@ -2958,6 +2958,14 @@
                 <!-- Today's Scores -->
                 <h3 style="color: var(--text-secondary); font-family: 'Orbitron', sans-serif; margin-bottom: 1rem; font-size: 0.9rem;">📊 TODAY'S SCORES</h3>
                 
+                <div style="background: rgba(255, 214, 10, 0.1); padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem; border: 1px solid var(--yellow);">
+                    <div style="font-size: 0.85rem; color: var(--text-secondary);">
+                        <strong style="color: var(--yellow);">⚠️ LIVE DATA PENDING:</strong> Scores and stats require connection to ESPN API or similar data source. Current display shows team info and upcoming schedules only.
+                    </div>
+                </div>
+
+                <h3 style="color: var(--text-secondary); font-family: 'Orbitron', sans-serif; margin-bottom: 1rem; font-size: 0.9rem;">📊 TEAM STATUS</h3>
+                
                 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
                     <!-- Knicks -->
                     <div style="background: var(--bg-secondary); padding: 1.25rem; border-radius: 12px; border: 2px solid var(--orange);">
@@ -2966,15 +2974,13 @@
                             <span style="background: var(--orange); color: black; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700;">NBA</span>
                         </div>
                         <div style="text-align: center; padding: 1rem 0; border-bottom: 1px solid var(--border); margin-bottom: 0.75rem;">
-                            <div style="font-size: 2rem; font-weight: 700; color: var(--text-primary);">112 - 108</div>
-                            <div style="font-size: 0.8rem; color: var(--green);">✅ WIN vs Celtics</div>
-                            <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.5rem;">Final • Feb 13</div>
+                            <div style="font-size: 1.2rem; font-weight: 700; color: var(--text-muted);">NO GAME TODAY</div>
+                            <div style="font-size: 0.8rem; color: var(--text-secondary);">Next: Feb 14 vs Rockets</div>
+                            <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.5rem;">7:30 PM ET • MSG</div>
                         </div>
                         <div style="font-size: 0.8rem; color: var(--text-secondary);">
-                            <strong style="color: var(--orange);">Top Performers:</strong><br>
-                            🔥 Brunson: 32 pts, 8 ast<br>
-                            💪 Randle: 24 pts, 12 reb<br>
-                            🎯 Barrett: 18 pts, 5 reb
+                            <strong style="color: var(--orange);">Season Record:</strong> 36-18<br>
+                            <strong style="color: var(--orange);">Standing:</strong> 4th East
                         </div>
                     </div>
                     
@@ -2985,15 +2991,13 @@
                             <span style="background: var(--cyan); color: black; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700;">NBA</span>
                         </div>
                         <div style="text-align: center; padding: 1rem 0; border-bottom: 1px solid var(--border); margin-bottom: 0.75rem;">
-                            <div style="font-size: 2rem; font-weight: 700; color: var(--text-primary);">98 - 104</div>
-                            <div style="font-size: 0.8rem; color: var(--red);">❌ LOSS vs Heat</div>
-                            <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.5rem;">Final • Feb 13</div>
+                            <div style="font-size: 1.2rem; font-weight: 700; color: var(--text-muted);">NO GAME TODAY</div>
+                            <div style="font-size: 0.8rem; color: var(--text-secondary);">Next: Feb 15 @ Cavaliers</div>
+                            <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.5rem;">7:00 PM ET</div>
                         </div>
                         <div style="font-size: 0.8rem; color: var(--text-secondary);">
-                            <strong style="color: var(--cyan);">Top Performers:</strong><br>
-                            🔥 Thomas: 28 pts, 4 ast<br>
-                            💪 Bridges: 22 pts, 6 reb<br>
-                            🎯 Johnson: 15 pts, 3 ast
+                            <strong style="color: var(--cyan);">Season Record:</strong> 21-33<br>
+                            <strong style="color: var(--cyan);">Standing:</strong> 11th East
                         </div>
                     </div>
                     
@@ -3092,37 +3096,15 @@
                 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
                     <div style="background: rgba(255, 69, 58, 0.1); padding: 1.25rem; border-radius: 12px; border: 1px solid var(--red);">
                         <h4 style="color: var(--red); font-family: 'Orbitron', sans-serif; margin-bottom: 0.75rem;">🏥 INJURY REPORT</h4>
-                        <div style="font-size: 0.8rem; color: var(--text-secondary);">
-                            <div style="padding: 0.4rem 0; border-bottom: 1px solid var(--border);">
-                                <strong style="color: var(--orange);">Knicks:</strong> OG Anunoby (elbow) — Out 2-3 weeks
-                            </div>
-                            <div style="padding: 0.4rem 0; border-bottom: 1px solid var(--border);">
-                                <strong style="color: var(--cyan);">Nets:</strong> Simmons (back) — Day to day
-                            </div>
-                            <div style="padding: 0.4rem 0; border-bottom: 1px solid var(--border);">
-                                <strong style="color: var(--green);">Yankees:</strong> Judge (toe) — Cleared for ST
-                            </div>
-                            <div style="padding: 0.4rem 0;">
-                                <strong style="color: var(--purple);">Mets:</strong> Alonso (shoulder) — 100%
-                            </div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">
+                            <p>Connect to ESPN API or official team sources for real-time injury updates.</p>
                         </div>
                     </div>
                     
                     <div style="background: rgba(0, 229, 255, 0.1); padding: 1.25rem; border-radius: 12px; border: 1px solid var(--cyan);">
                         <h4 style="color: var(--cyan); font-family: 'Orbitron', sans-serif; margin-bottom: 0.75rem;">🔄 TRADE RUMORS</h4>
-                        <div style="font-size: 0.8rem; color: var(--text-secondary);">
-                            <div style="padding: 0.4rem 0; border-bottom: 1px solid var(--border);">
-                                <span style="color: var(--yellow);">🔥</span> <strong>Knicks:</strong> Shopping for bench scorer
-                            </div>
-                            <div style="padding: 0.4rem 0; border-bottom: 1px solid var(--border);">
-                                <span style="color: var(--cyan);">→</span> <strong>Nets:</strong> Listening on Bridges offers
-                            </div>
-                            <div style="padding: 0.4rem 0; border-bottom: 1px solid var(--border);">
-                                <span style="color: var(--green);">✓</span> <strong>Yankees:</strong> Blake Snell talks stalled
-                            </div>
-                            <div style="padding: 0.4rem 0;">
-                                <span style="color: var(--purple);">✓</span> <strong>Mets:</strong> J.D. Martinez deal close
-                            </div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">
+                            <p>Connect to news feeds (ESPN, The Athletic, Woj, Shams) for breaking trade news.</p>
                         </div>
                     </div>
                 </div>
