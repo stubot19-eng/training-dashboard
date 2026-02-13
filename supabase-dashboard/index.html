@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bryce Training Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 1000px; margin: 0 auto; }
+        header {
+            text-align: center;
+            padding: 30px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        h1 {
+            font-size: 2rem;
+            background: linear-gradient(90deg, #00d4ff, #7b2cbf);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+        .subtitle { color: #888; font-size: 1rem; }
+        .live-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0,212,255,0.1);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-top: 12px;
+        }
+        .live-dot {
+            width: 8px; height: 8px;
+            background: #00ff88;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px; }
+        .card {
+            background: rgba(255,255,255,0.05);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+        }
+        .card-label { color: #00d4ff; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+        .card-value { font-size: 1.8rem; font-weight: 700; color: #fff; }
+        .section {
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .section h2 {
+            color: #00d4ff;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .macro-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+        .macro {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .macro.calories { border-left: 3px solid #a855f7; }
+        .macro.protein { border-left: 3px solid #ef4444; }
+        .macro.carbs { border-left: 3px solid #22c55e; }
+        .macro.fats { border-left: 3px solid #eab308; }
+        .macro-label { color: #888; font-size: 0.75rem; text-transform: uppercase; }
+        .macro-value { font-size: 1.4rem; font-weight: 700; margin: 6px 0; }
+        .workout-item {
+            background: rgba(0,0,0,0.3);
+            padding: 18px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            border-left: 3px solid #00d4ff;
+        }
+        .workout-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .workout-type { font-weight: 600; color: #fff; font-size: 1.1rem; }
+        .workout-date { color: #666; font-size: 0.85rem; }
+        .workout-exercises { color: #aaa; font-size: 0.9rem; line-height: 1.8; }
+        .program-day {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border-left: 3px solid #00d4ff;
+        }
+        .program-day.rest { border-left-color: #666; opacity: 0.7; }
+        .program-day h4 { color: #fff; margin-bottom: 10px; }
+        .program-day p { color: #888; font-size: 0.9rem; line-height: 1.8; }
+        .loading { text-align: center; padding: 40px; color: #666; }
+        @media (max-width: 600px) {
+            .macro-grid { grid-template-columns: repeat(2, 1fr); }
+            .grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏋️ Bryce's Training Dashboard</h1>
+            <p class="subtitle">6'4" | 31 years old | 193 lbs | Lean Bulk</p>
+            <div class="live-indicator">
+                <span class="live-dot"></span>
+                <span>Live • Auto-updates</span>
+            </div>
+        </header>
+
+        <div class="grid">
+            <div class="card">
+                <div class="card-label">Current Weight</div>
+                <div class="card-value">193 lb</div>
+            </div>
+            <div class="card">
+                <div class="card-label">Total Workouts</div>
+                <div class="card-value" id="workout-count">--</div>
+            </div>
+            <div class="card">
+                <div class="card-label">DB Bench PR</div>
+                <div class="card-value" id="pr-bench">--</div>
+            </div>
+            <div class="card">
+                <div class="card-label">Lat Pulldown PR</div>
+                <div class="card-value" id="pr-pulldown">--</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🎯 Daily Macros (Lean Bulk)</h2>
+            <div class="macro-grid">
+                <div class="macro calories">
+                    <div class="macro-label">Calories</div>
+                    <div class="macro-value">3,300</div>
+                </div>
+                <div class="macro protein">
+                    <div class="macro-label">Protein</div>
+                    <div class="macro-value">195g</div>
+                </div>
+                <div class="macro carbs">
+                    <div class="macro-label">Carbs</div>
+                    <div class="macro-value">480g</div>
+                </div>
+                <div class="macro fats">
+                    <div class="macro-label">Fats</div>
+                    <div class="macro-value">70g</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📅 6-Week Program</h2>
+            <div class="program-day">
+                <h4>Day 1: Push Heavy</h4>
+                <p>DB Bench 4×6-8 • Incline Press 3×8-10 • Shoulder Press 3×8-10 • Lateral Raises 3×12-15 • Tricep Pushdowns 3×12</p>
+            </div>
+            <div class="program-day">
+                <h4>Day 2: Pull Heavy</h4>
+                <p>Lat Pulldown 4×6-8 • Chest-Supported Row 3×8-10 • Seated Row 3×10-12 • Face Pulls 3×15 • Barbell Curls 3×10</p>
+            </div>
+            <div class="program-day">
+                <h4>Day 3: Legs</h4>
+                <p>Leg Press 4×10-12 • Romanian Deadlift 3×8-10 • Leg Curl 3×12-15 • Calf Raises 4×15 • Plank 3×60s</p>
+            </div>
+            <div class="program-day rest">
+                <h4>Day 4: Rest</h4>
+                <p>Active recovery, stretching, meal prep</p>
+            </div>
+            <div class="program-day">
+                <h4>Day 5: Upper Volume</h4>
+                <p>DB Bench 3×10-12 • Cable Row 3×12-15 • Lat Pulldown 3×12 • Lateral Raises 3×15 • Curls + Pushdowns 3×15</p>
+            </div>
+            <div class="program-day rest">
+                <h4>Days 6-7: Rest</h4>
+                <p>Full recovery, sleep focus</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📊 Workout History</h2>
+            <div id="workout-list">
+                <div class="loading">Loading workouts...</div>
+            </div>
+        </div>
+
+        <footer style="text-align: center; padding: 30px; color: #666;">
+            <p>Built by Stu | Powered by Supabase</p>
+        </footer>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://wqwpisvykpcmlobphgba.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indxd3Bpc3Z5a3BjbWxvYnBoZ2JhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA5NDU4OTgsImV4cCI6MjA4NjUyMTg5OH0.6tSC1HeqZOYPrvazeDXWl9lf-UMpEWdwAy22rSsggac';
+        
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        async function loadWorkouts() {
+            try {
+                const { data: workouts, error } = await supabase
+                    .from('workout dash')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                document.getElementById('workout-count').textContent = workouts.length;
+
+                // Calculate PRs
+                let benchPR = 0, pulldownPR = 0;
+                workouts.forEach(w => {
+                    if (w.exercises) {
+                        w.exercises.forEach(e => {
+                            const name = (e.name || '').toLowerCase();
+                            if (name.includes('bench') && e.weight > benchPR) benchPR = e.weight;
+                            if (name.includes('pulldown') && e.weight > pulldownPR) pulldownPR = e.weight;
+                        });
+                    }
+                });
+                document.getElementById('pr-bench').textContent = benchPR ? benchPR + ' lb' : '65 lb';
+                document.getElementById('pr-pulldown').textContent = pulldownPR ? pulldownPR + ' lb' : '115 lb';
+
+                // Render workouts
+                const container = document.getElementById('workout-list');
+                if (workouts.length === 0) {
+                    container.innerHTML = '<div class="loading">No workouts yet. Text Stu to add your first one!</div>';
+                    return;
+                }
+
+                container.innerHTML = workouts.map(w => `
+                    <div class="workout-item">
+                        <div class="workout-header">
+                            <span class="workout-type">${w.type || 'Workout'}</span>
+                            <span class="workout-date">${w.date || ''}</span>
+                        </div>
+                        <div class="workout-exercises">
+                            ${(w.exercises || []).map(e => 
+                                `<strong>${e.name}</strong>: ${e.weight || '--'}lb × ${e.reps || '--'} × ${e.sets || 1} sets<br>`
+                            ).join('')}
+                        </div>
+                        ${w.notes ? `<div style="color:#666;margin-top:10px;font-size:0.85rem">📝 ${w.notes}</div>` : ''}
+                    </div>
+                `).join('');
+
+            } catch (err) {
+                console.error('Error loading workouts:', err);
+                document.getElementById('workout-list').innerHTML = 
+                    '<div class="loading">Error loading workouts. Refresh to try again.</div>';
+            }
+        }
+
+        // Initial load
+        loadWorkouts();
+
+        // Auto-refresh every 30 seconds
+        setInterval(loadWorkouts, 30000);
+
+        // Real-time subscription
+        supabase
+            .channel('workout-dash')
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'workout dash' }, () => {
+                loadWorkouts();
+            })
+            .subscribe();
+    </script>
+</body>
+</html>

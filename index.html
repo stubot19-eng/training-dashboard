@@ -1,0 +1,2316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SWARM OS — Mission Control</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg-void: #030308;
+            --bg-primary: #0a0a12;
+            --bg-secondary: #0f1019;
+            --bg-tertiary: #141620;
+            --bg-card: #191c28;
+            --bg-elevated: #1e2233;
+            --cyan: #00e5ff;
+            --cyan-dim: #00a8bd;
+            --cyan-glow: rgba(0, 229, 255, 0.5);
+            --purple: #bf5af2;
+            --purple-dim: #9945c9;
+            --purple-glow: rgba(191, 90, 242, 0.5);
+            --magenta: #ff2d92;
+            --green: #30d158;
+            --green-glow: rgba(48, 209, 88, 0.5);
+            --red: #ff453a;
+            --red-glow: rgba(255, 69, 58, 0.4);
+            --yellow: #ffd60a;
+            --yellow-glow: rgba(255, 214, 10, 0.4);
+            --orange: #ff9f0a;
+            --text-primary: #f5f5f7;
+            --text-secondary: #a1a1a6;
+            --text-muted: #636366;
+            --border: rgba(255,255,255,0.08);
+            --border-glow: rgba(0, 229, 255, 0.3);
+        }
+        
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            92% { opacity: 1; }
+            93% { opacity: 0.8; }
+            94% { opacity: 1; }
+            96% { opacity: 0.9; }
+            97% { opacity: 1; }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 10px var(--green-glow); }
+            50% { opacity: 0.7; box-shadow: 0 0 20px var(--green-glow); }
+        }
+        
+        @keyframes glow-pulse {
+            0%, 100% { filter: drop-shadow(0 0 5px var(--cyan-glow)); }
+            50% { filter: drop-shadow(0 0 15px var(--cyan-glow)) drop-shadow(0 0 30px var(--cyan-glow)); }
+        }
+        
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100vh); }
+        }
+        
+        @keyframes data-stream {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 0% 100%; }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        
+        @keyframes blink-caret {
+            0%, 50% { border-color: var(--cyan); }
+            51%, 100% { border-color: transparent; }
+        }
+        
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        body {
+            font-family: 'JetBrains Mono', 'SF Mono', monospace;
+            background: var(--bg-void);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Animated Background */
+        .bg-effects {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .bg-grid {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            mask-image: radial-gradient(ellipse 80% 50% at 50% 50%, black 40%, transparent 100%);
+        }
+        
+        .bg-gradient {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                radial-gradient(ellipse 60% 40% at 10% 20%, rgba(0,229,255,0.08) 0%, transparent 50%),
+                radial-gradient(ellipse 50% 30% at 90% 80%, rgba(191,90,242,0.08) 0%, transparent 50%),
+                radial-gradient(ellipse 40% 40% at 50% 100%, rgba(255,45,146,0.05) 0%, transparent 50%);
+        }
+        
+        .scanlines {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent 0px,
+                transparent 2px,
+                rgba(0,0,0,0.1) 2px,
+                rgba(0,0,0,0.1) 4px
+            );
+            pointer-events: none;
+            z-index: 9998;
+            opacity: 0.4;
+        }
+        
+        .scanline-sweep {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 8px;
+            background: linear-gradient(180deg, transparent, rgba(0,229,255,0.1), transparent);
+            animation: scanline 8s linear infinite;
+            pointer-events: none;
+            z-index: 9997;
+        }
+        
+        /* CRT Vignette */
+        .vignette {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.5) 100%);
+            pointer-events: none;
+            z-index: 9996;
+        }
+        
+        /* Header */
+        .header {
+            position: sticky;
+            top: 0;
+            background: linear-gradient(180deg, var(--bg-primary) 0%, rgba(10,10,18,0.95) 100%);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo-icon {
+            width: 50px; height: 50px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .logo-ring {
+            position: absolute;
+            width: 100%; height: 100%;
+            border: 2px solid var(--cyan);
+            border-radius: 50%;
+            animation: rotate 20s linear infinite;
+        }
+        
+        .logo-ring::before {
+            content: '';
+            position: absolute;
+            top: -4px; left: 50%;
+            transform: translateX(-50%);
+            width: 8px; height: 8px;
+            background: var(--cyan);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--cyan-glow);
+        }
+        
+        .logo-ring-inner {
+            position: absolute;
+            width: 70%; height: 70%;
+            border: 1px solid var(--purple);
+            border-radius: 50%;
+            animation: rotate 15s linear infinite reverse;
+        }
+        
+        .logo-core {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 800;
+            font-size: 1.2rem;
+            background: linear-gradient(135deg, var(--cyan), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow-pulse 3s ease-in-out infinite;
+        }
+        
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .logo-text h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            background: linear-gradient(90deg, var(--cyan), var(--purple), var(--magenta));
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient-shift 5s ease infinite;
+        }
+        
+        .logo-text p {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.55rem;
+            color: var(--text-muted);
+            letter-spacing: 6px;
+            text-transform: uppercase;
+        }
+        
+        .header-center {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+        
+        .system-status {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            background: rgba(48, 209, 88, 0.1);
+            border: 1px solid rgba(48, 209, 88, 0.3);
+            border-radius: 20px;
+        }
+        
+        .status-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: var(--green);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        .status-text {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--green);
+            letter-spacing: 1px;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        .clock-container {
+            text-align: right;
+        }
+        
+        .clock {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--cyan);
+            letter-spacing: 2px;
+            text-shadow: 0 0 20px var(--cyan-glow);
+        }
+        
+        .date {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+        }
+        
+        /* Tab Navigation */
+        .tab-nav {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            padding: 0 1.5rem;
+            display: flex;
+            gap: 0.25rem;
+            overflow-x: auto;
+        }
+        
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 2px;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            position: relative;
+        }
+        
+        .tab-btn::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--cyan), var(--purple));
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .tab-btn:hover {
+            color: var(--text-primary);
+            background: rgba(0,229,255,0.05);
+        }
+        
+        .tab-btn:hover::before {
+            width: 50%;
+        }
+        
+        .tab-btn.active {
+            color: var(--cyan);
+            background: linear-gradient(180deg, rgba(0,229,255,0.1) 0%, transparent 100%);
+        }
+        
+        .tab-btn.active::before {
+            width: 100%;
+            box-shadow: 0 0 20px var(--cyan-glow);
+        }
+        
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            padding: 1.5rem;
+            animation: fadeIn 0.4s ease;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Cards */
+        .card {
+            background: linear-gradient(135deg, var(--bg-tertiary) 0%, var(--bg-card) 100%);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--cyan), var(--purple), transparent);
+            opacity: 0.5;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+        }
+        
+        .card h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--cyan);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .card h2::before {
+            content: '◆';
+            font-size: 0.6rem;
+            color: var(--purple);
+        }
+        
+        /* Metrics Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .metric-box {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .metric-box:hover {
+            border-color: var(--border-glow);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        
+        .metric-box::after {
+            content: '';
+            position: absolute;
+            top: 0; right: 0;
+            width: 60px; height: 60px;
+            background: radial-gradient(circle at top right, var(--cyan-glow), transparent 70%);
+            opacity: 0.1;
+        }
+        
+        .metric-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .metric-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 0.25rem;
+        }
+        
+        .metric-label {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .metric-change {
+            font-size: 0.7rem;
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .metric-change.positive { color: var(--green); }
+        .metric-change.negative { color: var(--red); }
+        
+        /* Agent Hierarchy Visualization */
+        .hierarchy-container {
+            position: relative;
+            padding: 2rem 0;
+        }
+        
+        .hierarchy-level {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .hierarchy-level:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            bottom: -1.5rem;
+            left: 50%;
+            width: 2px;
+            height: 1.5rem;
+            background: linear-gradient(180deg, var(--cyan), var(--purple));
+        }
+        
+        .hierarchy-connector {
+            position: absolute;
+            top: -1.5rem;
+            left: 0;
+            right: 0;
+            height: 1.5rem;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .hierarchy-connector::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 60%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--purple), var(--cyan), var(--purple), transparent);
+        }
+        
+        /* Agent Cards */
+        .agent-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.25rem;
+        }
+        
+        .agent-card {
+            background: linear-gradient(145deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .agent-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 4px; height: 100%;
+            background: var(--border);
+            transition: all 0.3s ease;
+        }
+        
+        .agent-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, transparent 40%, rgba(0,229,255,0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .agent-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            border-color: var(--cyan);
+            box-shadow: 
+                0 20px 60px rgba(0,0,0,0.4),
+                0 0 40px rgba(0,229,255,0.1),
+                inset 0 1px 0 rgba(255,255,255,0.05);
+        }
+        
+        .agent-card:hover::before {
+            background: linear-gradient(180deg, var(--cyan), var(--purple));
+            box-shadow: 0 0 20px var(--cyan-glow);
+        }
+        
+        .agent-card:hover::after {
+            opacity: 1;
+        }
+        
+        .agent-card.leader::before {
+            background: linear-gradient(180deg, var(--yellow), var(--orange));
+        }
+        
+        .agent-card.leader {
+            border-color: rgba(255, 214, 10, 0.3);
+            background: linear-gradient(145deg, rgba(255,214,10,0.05), var(--bg-tertiary));
+        }
+        
+        .agent-card.orchestrator::before {
+            background: linear-gradient(180deg, var(--cyan), var(--purple));
+        }
+        
+        .agent-card.orchestrator {
+            border-color: rgba(0, 229, 255, 0.3);
+            background: linear-gradient(145deg, rgba(0,229,255,0.05), var(--bg-tertiary));
+        }
+        
+        .agent-avatar {
+            width: 48px; height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        
+        .agent-avatar.leader {
+            background: linear-gradient(135deg, rgba(255,214,10,0.2), rgba(255,159,10,0.2));
+            border: 1px solid rgba(255, 214, 10, 0.3);
+        }
+        
+        .agent-avatar.orchestrator {
+            background: linear-gradient(135deg, rgba(0,229,255,0.2), rgba(191,90,242,0.2));
+            border: 1px solid rgba(0, 229, 255, 0.3);
+        }
+        
+        .agent-avatar.bot {
+            background: linear-gradient(135deg, rgba(48,209,88,0.2), rgba(0,229,255,0.2));
+            border: 1px solid rgba(48, 209, 88, 0.3);
+        }
+        
+        .agent-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+        }
+        
+        .agent-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        
+        .agent-status {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.6rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .agent-status.online {
+            background: rgba(48, 209, 88, 0.15);
+            color: var(--green);
+            border: 1px solid rgba(48, 209, 88, 0.3);
+        }
+        
+        .agent-status.online::before {
+            content: '';
+            width: 6px; height: 6px;
+            background: var(--green);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        .agent-status.standby {
+            background: rgba(255, 214, 10, 0.15);
+            color: var(--yellow);
+            border: 1px solid rgba(255, 214, 10, 0.3);
+        }
+        
+        .agent-status.standby::before {
+            content: '';
+            width: 6px; height: 6px;
+            background: var(--yellow);
+            border-radius: 50%;
+        }
+        
+        .agent-role {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.5px;
+        }
+        
+        .agent-function {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            line-height: 1.5;
+        }
+        
+        .agent-channels {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .channel-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.3rem 0.6rem;
+            background: var(--bg-void);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+        }
+        
+        .channel-badge.telegram { border-color: rgba(0, 136, 204, 0.3); }
+        .channel-badge.discord { border-color: rgba(88, 101, 242, 0.3); }
+        
+        .agent-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--cyan);
+        }
+        
+        .stat-label {
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0.25rem;
+        }
+        
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(3, 3, 8, 0.9);
+            backdrop-filter: blur(10px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            padding: 1rem;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .modal {
+            background: linear-gradient(145deg, var(--bg-secondary) 0%, var(--bg-card) 100%);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 85vh;
+            overflow: hidden;
+            animation: modalIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+        
+        @keyframes modalIn {
+            from { 
+                opacity: 0; 
+                transform: scale(0.9) translateY(20px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: scale(1) translateY(0); 
+            }
+        }
+        
+        .modal::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--cyan), var(--purple), var(--magenta));
+        }
+        
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0,0,0,0.2);
+        }
+        
+        .modal-header h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--cyan);
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .modal-close {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            width: 36px; height: 36px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-close:hover {
+            background: rgba(255, 69, 58, 0.2);
+            border-color: var(--red);
+            color: var(--red);
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+            overflow-y: auto;
+            max-height: calc(85vh - 80px);
+        }
+        
+        .modal-section {
+            margin-bottom: 1.5rem;
+        }
+        
+        .modal-section h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .modal-section h3::before {
+            content: '';
+            width: 8px; height: 2px;
+            background: var(--cyan);
+        }
+        
+        .modal-section p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        .modal-channels {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+        
+        .modal-channel {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1rem;
+            background: var(--bg-void);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-channel:hover {
+            border-color: var(--cyan);
+            background: rgba(0,229,255,0.05);
+        }
+        
+        .modal-channel.telegram { color: #0088cc; }
+        .modal-channel.discord { color: #5865F2; }
+        
+        .modal-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+        
+        .modal-metric {
+            background: var(--bg-void);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        .modal-metric-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--cyan);
+        }
+        
+        .modal-metric-label {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0.25rem;
+        }
+        
+        .modal-responsibilities {
+            background: var(--bg-void);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem;
+        }
+        
+        .modal-responsibilities ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .modal-responsibilities li {
+            padding: 0.5rem 0;
+            padding-left: 1.25rem;
+            position: relative;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .modal-responsibilities li:last-child {
+            border-bottom: none;
+        }
+        
+        .modal-responsibilities li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--cyan);
+        }
+        
+        /* Toggle Switches */
+        .toggle-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem;
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 0.75rem;
+            transition: all 0.3s ease;
+        }
+        
+        .toggle-row:hover {
+            border-color: var(--border-glow);
+            background: linear-gradient(135deg, var(--bg-tertiary) 0%, var(--bg-card) 100%);
+        }
+        
+        .toggle-info {
+            flex: 1;
+        }
+        
+        .toggle-info h4 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 0.35rem;
+            letter-spacing: 0.5px;
+        }
+        
+        .toggle-info p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        
+        .toggle-switch {
+            width: 56px;
+            height: 28px;
+            background: var(--bg-void);
+            border-radius: 14px;
+            position: relative;
+            cursor: pointer;
+            border: 2px solid var(--border);
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+        
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--text-muted);
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        
+        .toggle-switch.active {
+            background: linear-gradient(135deg, var(--cyan), var(--purple));
+            border-color: var(--cyan);
+            box-shadow: 0 0 20px var(--cyan-glow);
+        }
+        
+        .toggle-switch.active::after {
+            transform: translateX(28px);
+            background: white;
+        }
+        
+        /* Activity Feed */
+        .activity-feed {
+            position: relative;
+        }
+        
+        .activity-feed::before {
+            content: '';
+            position: absolute;
+            left: 1.5rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--cyan), var(--purple), transparent);
+        }
+        
+        .activity-item {
+            display: flex;
+            gap: 1.25rem;
+            padding: 1.25rem;
+            padding-left: 3.5rem;
+            position: relative;
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .activity-item:hover {
+            background: rgba(0, 229, 255, 0.03);
+        }
+        
+        .activity-item::before {
+            content: '';
+            position: absolute;
+            left: 1rem;
+            top: 1.65rem;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--bg-primary);
+            border: 2px solid var(--cyan);
+            z-index: 1;
+        }
+        
+        .activity-item::after {
+            content: '';
+            position: absolute;
+            left: 1.25rem;
+            top: 1.9rem;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--cyan);
+            box-shadow: 0 0 10px var(--cyan-glow);
+        }
+        
+        .activity-time {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            min-width: 60px;
+            letter-spacing: 1px;
+        }
+        
+        .activity-content {
+            flex: 1;
+        }
+        
+        .activity-content h4 {
+            font-size: 0.9rem;
+            margin-bottom: 0.35rem;
+            color: var(--text-primary);
+        }
+        
+        .activity-content p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        .activity-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.2rem 0.5rem;
+            background: rgba(0, 229, 255, 0.1);
+            border: 1px solid rgba(0, 229, 255, 0.2);
+            border-radius: 4px;
+            font-size: 0.65rem;
+            color: var(--cyan);
+            margin-left: 0.5rem;
+        }
+        
+        /* Resource Bars */
+        .resource-bar {
+            margin-bottom: 1.25rem;
+        }
+        
+        .resource-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            margin-bottom: 0.6rem;
+        }
+        
+        .resource-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+        }
+        
+        .resource-value {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--cyan);
+            font-weight: 500;
+        }
+        
+        .resource-track {
+            height: 10px;
+            background: var(--bg-void);
+            border-radius: 5px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+        
+        .resource-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .resource-fill.gradient {
+            background: linear-gradient(90deg, var(--cyan), var(--purple));
+        }
+        
+        .resource-fill.green {
+            background: linear-gradient(90deg, var(--green), #34d399);
+        }
+        
+        .resource-fill.yellow {
+            background: linear-gradient(90deg, var(--yellow), var(--orange));
+        }
+        
+        .resource-fill::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        /* Fitness Card */
+        .fitness-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+        
+        .fitness-stat {
+            background: var(--bg-void);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .fitness-stat:hover {
+            border-color: var(--border-glow);
+            transform: translateY(-2px);
+        }
+        
+        .fitness-stat-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .fitness-stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--cyan);
+        }
+        
+        .fitness-stat-label {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0.25rem;
+        }
+        
+        /* Log Entry styles */
+        .log-entry {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            padding: 0.75rem 1rem;
+            border-left: 3px solid var(--border);
+            margin-bottom: 0.5rem;
+            background: rgba(0,0,0,0.2);
+            border-radius: 0 8px 8px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .log-entry:hover {
+            background: rgba(0,229,255,0.03);
+            border-left-color: var(--cyan);
+        }
+        
+        .log-entry.info { border-left-color: var(--cyan); }
+        .log-entry.success { border-left-color: var(--green); }
+        .log-entry.warning { border-left-color: var(--yellow); }
+        .log-entry.error { border-left-color: var(--red); }
+        
+        .log-timestamp {
+            color: var(--text-muted);
+            font-size: 0.7rem;
+        }
+        
+        .log-level {
+            font-size: 0.65rem;
+            padding: 0.15rem 0.4rem;
+            border-radius: 3px;
+            margin: 0 0.5rem;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        
+        .log-level.info { background: rgba(0,229,255,0.2); color: var(--cyan); }
+        .log-level.success { background: rgba(48,209,88,0.2); color: var(--green); }
+        .log-level.warning { background: rgba(255,214,10,0.2); color: var(--yellow); }
+        .log-level.error { background: rgba(255,69,58,0.2); color: var(--red); }
+        
+        .log-message {
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+        
+        /* Discord Section */
+        .discord-section {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+        
+        .discord-channels {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.75rem;
+        }
+        
+        .discord-channel {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            background: var(--bg-void);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .discord-channel:hover {
+            border-color: #5865F2;
+            background: rgba(88, 101, 242, 0.1);
+        }
+        
+        .discord-channel-icon {
+            color: #5865F2;
+            font-size: 1.2rem;
+        }
+        
+        .discord-channel-name {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+        
+        .discord-channel-status {
+            margin-left: auto;
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: var(--green);
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+            
+            .header-center {
+                order: 3;
+            }
+            
+            .header-right {
+                order: 2;
+            }
+            
+            .logo-text h1 {
+                font-size: 1.2rem;
+            }
+            
+            .tab-nav {
+                padding: 0 0.5rem;
+            }
+            
+            .tab-btn {
+                padding: 0.75rem 1rem;
+                font-size: 0.65rem;
+                letter-spacing: 1px;
+            }
+            
+            .tab-content {
+                padding: 1rem;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .agent-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .agent-stats {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .modal {
+                margin: 0.5rem;
+                max-height: 90vh;
+            }
+            
+            .modal-metrics {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .fitness-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-metrics {
+                grid-template-columns: 1fr;
+            }
+            
+            .clock {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-effects">
+        <div class="bg-grid"></div>
+        <div class="bg-gradient"></div>
+    </div>
+    <div class="scanlines"></div>
+    <div class="scanline-sweep"></div>
+    <div class="vignette"></div>
+    
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">
+                <div class="logo-ring"></div>
+                <div class="logo-ring-inner"></div>
+                <span class="logo-core">S</span>
+            </div>
+            <div class="logo-text">
+                <h1>SWARM OS</h1>
+                <p>Mission Control</p>
+            </div>
+        </div>
+        
+        <div class="header-center">
+            <div class="system-status">
+                <div class="status-dot"></div>
+                <span class="status-text">ALL SYSTEMS NOMINAL</span>
+            </div>
+        </div>
+        
+        <div class="header-right">
+            <div class="clock-container">
+                <div class="clock" id="clock">00:00:00</div>
+                <div class="date" id="date">FEB 13, 2026</div>
+            </div>
+        </div>
+    </header>
+    
+    <nav class="tab-nav">
+        <button class="tab-btn active" onclick="showTab('overview', this)">◈ OVERVIEW</button>
+        <button class="tab-btn" onclick="showTab('agents', this)">◈ AGENTS</button>
+        <button class="tab-btn" onclick="showTab('operations', this)">◈ OPERATIONS</button>
+        <button class="tab-btn" onclick="showTab('logs', this)">◈ LOGS</button>
+    </nav>
+    
+    <main>
+        <!-- OVERVIEW TAB -->
+        <div id="overview" class="tab-content active">
+            <div class="metrics-grid">
+                <div class="metric-box">
+                    <div class="metric-icon">💰</div>
+                    <div class="metric-value" style="color: var(--cyan);">$<span id="todaySpend">8.87</span></div>
+                    <div class="metric-label">Today's LLM Spend</div>
+                    <div class="metric-change positive">↓ 12% vs yesterday</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-icon">🤖</div>
+                    <div class="metric-value" style="color: var(--green);">5</div>
+                    <div class="metric-label">Active Agents</div>
+                    <div class="metric-change positive">All operational</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-icon">⚖️</div>
+                    <div class="metric-value" style="color: var(--yellow);">192</div>
+                    <div class="metric-label">Current Weight (lbs)</div>
+                    <div class="metric-change negative">7 lbs to goal</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-icon">⏱️</div>
+                    <div class="metric-value" id="uptime">16h 42m</div>
+                    <div class="metric-label">Session Uptime</div>
+                    <div class="metric-change positive">99.9% SLA</div>
+                </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Live Activity Feed</h2>
+                    </div>
+                    <div class="activity-feed">
+                        <div class="activity-item">
+                            <div class="activity-time">17:30</div>
+                            <div class="activity-content">
+                                <h4>Dashboard Update <span class="activity-badge">DEPLOY</span></h4>
+                                <p>SWARM OS v2.0 — Mission Control aesthetic deployed</p>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-time">15:00</div>
+                            <div class="activity-content">
+                                <h4>Workout Reminder Sent</h4>
+                                <p>FitBot dispatched Push B (Shoulders) protocol to Bryce</p>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-time">14:55</div>
+                            <div class="activity-content">
+                                <h4>System Audit Complete <span class="activity-badge" style="background: rgba(255,69,58,0.1); border-color: rgba(255,69,58,0.2); color: var(--red);">3 CRITICAL</span></h4>
+                                <p>AuditBot found 4 issues requiring attention</p>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-time">14:02</div>
+                            <div class="activity-content">
+                                <h4>Weight Logged</h4>
+                                <p>192 lbs — Cut protocol active (2600 cal / 230g protein)</p>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-time">08:30</div>
+                            <div class="activity-content">
+                                <h4>Morning Brief Delivered</h4>
+                                <p>Weather: 25°F Brooklyn | Calendar: 3 events | Focus: Dashboard</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Fitness Protocol</h2>
+                            <span style="color: var(--yellow); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;">🔥 CUT ACTIVE</span>
+                        </div>
+                        <div class="fitness-grid">
+                            <div class="fitness-stat">
+                                <div class="fitness-stat-icon">⚖️</div>
+                                <div class="fitness-stat-value">192</div>
+                                <div class="fitness-stat-label">Current</div>
+                            </div>
+                            <div class="fitness-stat">
+                                <div class="fitness-stat-icon">🎯</div>
+                                <div class="fitness-stat-value">185</div>
+                                <div class="fitness-stat-label">Goal</div>
+                            </div>
+                            <div class="fitness-stat">
+                                <div class="fitness-stat-icon">🔥</div>
+                                <div class="fitness-stat-value">2600</div>
+                                <div class="fitness-stat-label">Calories</div>
+                            </div>
+                            <div class="fitness-stat">
+                                <div class="fitness-stat-icon">💪</div>
+                                <div class="fitness-stat-value">230g</div>
+                                <div class="fitness-stat-label">Protein</div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 1.25rem;">
+                            <div class="resource-bar">
+                                <div class="resource-header">
+                                    <span class="resource-label">Progress to Goal (192 → 185)</span>
+                                    <span class="resource-value">~73%</span>
+                                </div>
+                                <div class="resource-track">
+                                    <div class="resource-fill green" style="width: 73%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Resource Monitor</h2>
+                        </div>
+                        <div class="resource-bar">
+                            <div class="resource-header">
+                                <span class="resource-label">💰 LLM Budget (Daily)</span>
+                                <span class="resource-value">$8.87 / $15.00</span>
+                            </div>
+                            <div class="resource-track">
+                                <div class="resource-fill gradient" style="width: 59%"></div>
+                            </div>
+                        </div>
+                        <div class="resource-bar">
+                            <div class="resource-header">
+                                <span class="resource-label">⚡ API Rate Limit</span>
+                                <span class="resource-value">12%</span>
+                            </div>
+                            <div class="resource-track">
+                                <div class="resource-fill green" style="width: 12%"></div>
+                            </div>
+                        </div>
+                        <div class="resource-bar">
+                            <div class="resource-header">
+                                <span class="resource-label">🧠 Memory Usage</span>
+                                <span class="resource-value">34%</span>
+                            </div>
+                            <div class="resource-track">
+                                <div class="resource-fill gradient" style="width: 34%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- AGENTS TAB -->
+        <div id="agents" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Agent Hierarchy</h2>
+                    <span style="font-size: 0.7rem; color: var(--text-muted);">Click any agent for details</span>
+                </div>
+                
+                <div class="agent-grid">
+                    <!-- CEO -->
+                    <div class="agent-card leader" onclick="openAgentModal('bryce')">
+                        <div class="agent-avatar leader">👨‍💼</div>
+                        <div class="agent-header">
+                            <span class="agent-name">BRYCE BENZA</span>
+                            <span class="agent-status online">Online</span>
+                        </div>
+                        <div class="agent-role">CEO / Mission Control</div>
+                        <div class="agent-function">Strategic direction, final authority on all swarm operations</div>
+                        <div class="agent-channels">
+                            <span class="channel-badge telegram">📱 @brycebenza</span>
+                            <span class="channel-badge discord">💬 #command-center</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Orchestrator -->
+                    <div class="agent-card orchestrator" onclick="openAgentModal('stu')">
+                        <div class="agent-avatar orchestrator">🧠</div>
+                        <div class="agent-header">
+                            <span class="agent-name">STU</span>
+                            <span class="agent-status online">Online</span>
+                        </div>
+                        <div class="agent-role">Lead Intelligence Orchestrator</div>
+                        <div class="agent-function">System orchestration, agent coordination, automation</div>
+                        <div class="agent-channels">
+                            <span class="channel-badge telegram">📱 @StuAI_bot</span>
+                            <span class="channel-badge discord">💬 #command-center</span>
+                        </div>
+                        <div class="agent-stats">
+                            <div class="stat">
+                                <div class="stat-value">247</div>
+                                <div class="stat-label">Tasks</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">99%</div>
+                                <div class="stat-label">Uptime</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">2.3s</div>
+                                <div class="stat-label">Response</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- FitBot -->
+                    <div class="agent-card" onclick="openAgentModal('fitness')">
+                        <div class="agent-avatar bot">💪</div>
+                        <div class="agent-header">
+                            <span class="agent-name">FITBOT</span>
+                            <span class="agent-status online">Active</span>
+                        </div>
+                        <div class="agent-role">Training & Nutrition Agent</div>
+                        <div class="agent-function">Workouts, macros, weight tracking, accountability</div>
+                        <div class="agent-channels">
+                            <span class="channel-badge telegram">📱 @FitBot</span>
+                            <span class="channel-badge discord">💬 #fitness-zone</span>
+                        </div>
+                        <div class="agent-stats">
+                            <div class="stat">
+                                <div class="stat-value">27</div>
+                                <div class="stat-label">Workouts</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">-19</div>
+                                <div class="stat-label">Lbs Lost</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">65</div>
+                                <div class="stat-label">Bench PR</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- SourceBot -->
+                    <div class="agent-card" onclick="openAgentModal('sourcing')">
+                        <div class="agent-avatar bot">🔍</div>
+                        <div class="agent-header">
+                            <span class="agent-name">SOURCEBOT</span>
+                            <span class="agent-status online">Active</span>
+                        </div>
+                        <div class="agent-role">Talent Acquisition Agent</div>
+                        <div class="agent-function">Compliance sourcing, candidate leads, outreach</div>
+                        <div class="agent-channels">
+                            <span class="channel-badge telegram">📱 @SourceBot</span>
+                            <span class="channel-badge discord">💬 #sourcing-zone</span>
+                        </div>
+                        <div class="agent-stats">
+                            <div class="stat">
+                                <div class="stat-value">12</div>
+                                <div class="stat-label">Briefs</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">48</div>
+                                <div class="stat-label">Leads</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">3</div>
+                                <div class="stat-label">Hires</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- AuditBot -->
+                    <div class="agent-card" onclick="openAgentModal('audit')">
+                        <div class="agent-avatar bot">🔒</div>
+                        <div class="agent-header">
+                            <span class="agent-name">AUDITBOT</span>
+                            <span class="agent-status standby">Standby</span>
+                        </div>
+                        <div class="agent-role">Quality Assurance Agent</div>
+                        <div class="agent-function">System audits, bug detection, security scans</div>
+                        <div class="agent-channels">
+                            <span class="channel-badge telegram">📱 @AuditBot</span>
+                            <span class="channel-badge discord">💬 #audit-zone</span>
+                        </div>
+                        <div class="agent-stats">
+                            <div class="stat">
+                                <div class="stat-value">1</div>
+                                <div class="stat-label">Audits</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">4</div>
+                                <div class="stat-label">Issues</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">3</div>
+                                <div class="stat-label">Critical</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2>Discord Integration</h2>
+                </div>
+                <div class="discord-channels">
+                    <div class="discord-channel" onclick="testWebhook('general')">
+                        <span class="discord-channel-icon">💬</span>
+                        <span class="discord-channel-name">#command-center</span>
+                        <span class="discord-channel-status"></span>
+                    </div>
+                    <div class="discord-channel" onclick="testWebhook('fitness')">
+                        <span class="discord-channel-icon">💪</span>
+                        <span class="discord-channel-name">#fitness-zone</span>
+                        <span class="discord-channel-status"></span>
+                    </div>
+                    <div class="discord-channel" onclick="testWebhook('sourcing')">
+                        <span class="discord-channel-icon">🔍</span>
+                        <span class="discord-channel-name">#sourcing-zone</span>
+                        <span class="discord-channel-status"></span>
+                    </div>
+                    <div class="discord-channel" onclick="testWebhook('audit')">
+                        <span class="discord-channel-icon">🔒</span>
+                        <span class="discord-channel-name">#audit-zone</span>
+                        <span class="discord-channel-status"></span>
+                    </div>
+                    <div class="discord-channel" onclick="testWebhook('logs')">
+                        <span class="discord-channel-icon">📋</span>
+                        <span class="discord-channel-name">#system-logs</span>
+                        <span class="discord-channel-status"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- OPERATIONS TAB -->
+        <div id="operations" class="tab-content">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Active Protocols</h2>
+                    </div>
+                    <div class="toggle-row">
+                        <div class="toggle-info">
+                            <h4>🌅 Morning Status Brief</h4>
+                            <p>7:30 AM daily — Weather, calendar, priorities</p>
+                        </div>
+                        <div class="toggle-switch active" onclick="toggleProtocol(this, 'morning_brief')"></div>
+                    </div>
+                    <div class="toggle-row">
+                        <div class="toggle-info">
+                            <h4>🔍 Compliance Sourcing</h4>
+                            <p>8:30 AM Mon-Fri — Boolean strings, target companies</p>
+                        </div>
+                        <div class="toggle-switch active" onclick="toggleProtocol(this, 'sourcing')"></div>
+                    </div>
+                    <div class="toggle-row">
+                        <div class="toggle-info">
+                            <h4>💪 Workout Reminder</h4>
+                            <p>11:00 AM daily — Push/Pull/Legs rotation</p>
+                        </div>
+                        <div class="toggle-switch active" onclick="toggleProtocol(this, 'workout')"></div>
+                    </div>
+                    <div class="toggle-row">
+                        <div class="toggle-info">
+                            <h4>📊 LLM Usage Monitor</h4>
+                            <p>Real-time — Cost tracking, budget alerts</p>
+                        </div>
+                        <div class="toggle-switch active" onclick="toggleProtocol(this, 'llm_monitor')"></div>
+                    </div>
+                    <div class="toggle-row">
+                        <div class="toggle-info">
+                            <h4>🔒 System Audit</h4>
+                            <p>Weekly — Security scans, performance checks</p>
+                        </div>
+                        <div class="toggle-switch" onclick="toggleProtocol(this, 'audit')"></div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h2>System Resources</h2>
+                    </div>
+                    <div class="resource-bar">
+                        <div class="resource-header">
+                            <span class="resource-label">💰 LLM Daily Budget</span>
+                            <span class="resource-value">$8.87 / $15.00</span>
+                        </div>
+                        <div class="resource-track">
+                            <div class="resource-fill gradient" style="width: 59%"></div>
+                        </div>
+                    </div>
+                    <div class="resource-bar">
+                        <div class="resource-header">
+                            <span class="resource-label">📅 Monthly Budget</span>
+                            <span class="resource-value">$187 / $450</span>
+                        </div>
+                        <div class="resource-track">
+                            <div class="resource-fill gradient" style="width: 42%"></div>
+                        </div>
+                    </div>
+                    <div class="resource-bar">
+                        <div class="resource-header">
+                            <span class="resource-label">⚡ API Rate Capacity</span>
+                            <span class="resource-value">12% used</span>
+                        </div>
+                        <div class="resource-track">
+                            <div class="resource-fill green" style="width: 12%"></div>
+                        </div>
+                    </div>
+                    <div class="resource-bar">
+                        <div class="resource-header">
+                            <span class="resource-label">🧠 Context Memory</span>
+                            <span class="resource-value">34% utilized</span>
+                        </div>
+                        <div class="resource-track">
+                            <div class="resource-fill gradient" style="width: 34%"></div>
+                        </div>
+                    </div>
+                    <div class="resource-bar">
+                        <div class="resource-header">
+                            <span class="resource-label">🎯 Cut Progress (192 → 185 lbs)</span>
+                            <span class="resource-value">~73%</span>
+                        </div>
+                        <div class="resource-track">
+                            <div class="resource-fill yellow" style="width: 73%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2>Quick Actions</h2>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem;">
+                    <button class="action-btn" onclick="sendDiscordMessage('general', '🚀 Manual ping from Mission Control')">
+                        📡 Ping Command Center
+                    </button>
+                    <button class="action-btn" onclick="sendDiscordMessage('fitness', '💪 Manual workout check requested')">
+                        💪 Trigger Workout Check
+                    </button>
+                    <button class="action-btn" onclick="sendDiscordMessage('logs', '📋 System status requested manually')">
+                        📋 Request Status Report
+                    </button>
+                    <button class="action-btn" onclick="sendDiscordMessage('audit', '🔒 Manual audit initiated')">
+                        🔒 Run Security Audit
+                    </button>
+                </div>
+                <style>
+                    .action-btn {
+                        background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+                        border: 1px solid var(--border);
+                        color: var(--text-primary);
+                        padding: 1rem 1.5rem;
+                        border-radius: 10px;
+                        font-family: 'JetBrains Mono', monospace;
+                        font-size: 0.85rem;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        text-align: left;
+                    }
+                    .action-btn:hover {
+                        border-color: var(--cyan);
+                        background: linear-gradient(135deg, rgba(0,229,255,0.1), var(--bg-tertiary));
+                        transform: translateY(-2px);
+                        box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+                    }
+                </style>
+            </div>
+        </div>
+        
+        <!-- LOGS TAB -->
+        <div id="logs" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2>System Logs</h2>
+                    <span style="font-size: 0.7rem; color: var(--text-muted);">Last 24 hours</span>
+                </div>
+                
+                <div class="log-entry info">
+                    <span class="log-timestamp">17:34:00</span>
+                    <span class="log-level info">INFO</span>
+                    <span style="color: var(--cyan);">[DEPLOY]</span>
+                    <div class="log-message">SWARM OS v2.0 Mission Control dashboard deployed to production</div>
+                </div>
+                
+                <div class="log-entry success">
+                    <span class="log-timestamp">15:38:22</span>
+                    <span class="log-level success">SUCCESS</span>
+                    <span style="color: var(--green);">[FITBOT]</span>
+                    <div class="log-message">Workout reminder dispatched — Push B (Shoulders) protocol sent to @brycebenza</div>
+                </div>
+                
+                <div class="log-entry warning">
+                    <span class="log-timestamp">14:55:18</span>
+                    <span class="log-level warning">WARN</span>
+                    <span style="color: var(--yellow);">[AUDITBOT]</span>
+                    <div class="log-message">System audit complete — 4 issues detected (3 critical, 1 minor)</div>
+                </div>
+                
+                <div class="log-entry info">
+                    <span class="log-timestamp">14:02:45</span>
+                    <span class="log-level info">INFO</span>
+                    <span style="color: var(--cyan);">[FITBOT]</span>
+                    <div class="log-message">Weight data logged: 192 lbs — Cut protocol active (2600 cal / 230g protein target)</div>
+                </div>
+                
+                <div class="log-entry success">
+                    <span class="log-timestamp">13:09:33</span>
+                    <span class="log-level success">SUCCESS</span>
+                    <span style="color: var(--green);">[STU]</span>
+                    <div class="log-message">Morning brief delivered — Weather: 25°F Brooklyn, 3 calendar events, priority: dashboard</div>
+                </div>
+                
+                <div class="log-entry info">
+                    <span class="log-timestamp">08:30:01</span>
+                    <span class="log-level info">INFO</span>
+                    <span style="color: var(--cyan);">[SOURCEBOT]</span>
+                    <div class="log-message">Compliance sourcing brief generated — 5 boolean strings, 8 target companies identified</div>
+                </div>
+                
+                <div class="log-entry success">
+                    <span class="log-timestamp">07:30:00</span>
+                    <span class="log-level success">SUCCESS</span>
+                    <span style="color: var(--green);">[SYSTEM]</span>
+                    <div class="log-message">Daily protocols initialized — All agents reporting nominal status</div>
+                </div>
+                
+                <div class="log-entry info">
+                    <span class="log-timestamp">00:00:01</span>
+                    <span class="log-level info">INFO</span>
+                    <span style="color: var(--cyan);">[SYSTEM]</span>
+                    <div class="log-message">Daily LLM budget reset — Previous day spend: $12.34 (82% of budget)</div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Agent Modal -->
+    <div class="modal-overlay" id="agentModal" onclick="closeAgentModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2 id="modalTitle">
+                    <span id="modalIcon">🤖</span>
+                    <span id="modalName">Agent Details</span>
+                </h2>
+                <button class="modal-close" onclick="closeAgentModal()">×</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Discord Webhooks
+        const WEBHOOKS = {
+            general: 'https://discordapp.com/api/webhooks/1471913803968024841/MXfEOeJcTzxU5ltMHntGb_mQ0hBE2urFaGvrj7GfMvyltyjIKUHua9H2mTNWy0TC--9Z',
+            fitness: 'https://discordapp.com/api/webhooks/1471913851065995294/c2glIe8MoUyQ-93FphYVbF5nvyleiHXZTbpCSC497FXdtcl-qadbQa6_B2mUemgzKDD_',
+            sourcing: 'https://discordapp.com/api/webhooks/1471913899329589420/bikMi7tgGGrVdgbTZ15_QC06N4viqFR20oqXgK1jTCiUKS_8ds-Sg4CNaRBMz1JRVogs',
+            audit: 'https://discordapp.com/api/webhooks/1471913903842656306/u6zO2zB8l7GhMbX-9RAntEIvywk528wA7ZuKABwmC3gSDVKTfVewArd_Cmhsphtr2Pi9',
+            logs: 'https://discordapp.com/api/webhooks/1471913904937373761/oIY5wXNXkCrJ94vNKTWcK1tNuASp4t07u_rG_4Jmv6hVHvXrpv5o4-pGs13HWuihSl9Q'
+        };
+        
+        // Clock and Date
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').textContent = now.toLocaleTimeString('en-US', { 
+                hour12: false, 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit' 
+            });
+            document.getElementById('date').textContent = now.toLocaleDateString('en-US', { 
+                month: 'short', 
+                day: 'numeric', 
+                year: 'numeric' 
+            }).toUpperCase();
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+        
+        // Tab switching
+        function showTab(tabName, btn) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            if (btn) btn.classList.add('active');
+        }
+        
+        // Toggle protocols
+        function toggleProtocol(el, protocolName) {
+            el.classList.toggle('active');
+            const status = el.classList.contains('active') ? 'enabled' : 'disabled';
+            console.log(`Protocol ${protocolName} ${status}`);
+        }
+        
+        // Agent Data
+        const agentData = {
+            bryce: {
+                icon: '👨‍💼',
+                name: 'Bryce Benza',
+                role: 'CEO / Mission Control',
+                status: 'Online',
+                statusClass: 'online',
+                telegram: '@brycebenza',
+                discord: '#command-center',
+                description: 'The human behind the swarm. Strategic direction, final authority on all operations. All agents report to Bryce through Stu.',
+                responsibilities: [
+                    'Set mission parameters and strategic priorities',
+                    'Approve major agent actions and deployments',
+                    'Define fitness goals and business objectives',
+                    'Final authority on resource allocation'
+                ],
+                metrics: [
+                    { value: '156', label: 'Commands' },
+                    { value: '89', label: 'Approvals' },
+                    { value: '100%', label: 'Authority' }
+                ]
+            },
+            stu: {
+                icon: '🧠',
+                name: 'Stu',
+                role: 'Lead Intelligence Orchestrator',
+                status: 'Online',
+                statusClass: 'online',
+                telegram: '@StuAI_bot',
+                discord: '#command-center',
+                description: 'Primary AI assistant and orchestrator. Coordinates all sub-agents, manages automation, maintains system dashboards, and serves as the main interface between Bryce and the swarm.',
+                responsibilities: [
+                    'Route tasks to appropriate sub-agents',
+                    'Monitor and optimize LLM usage across swarm',
+                    'Maintain dashboards and system documentation',
+                    'Coordinate multi-agent workflows',
+                    'Provide daily briefings and status reports'
+                ],
+                metrics: [
+                    { value: '247', label: 'Tasks' },
+                    { value: '99%', label: 'Uptime' },
+                    { value: '2.3s', label: 'Response' }
+                ]
+            },
+            fitness: {
+                icon: '💪',
+                name: 'FitBot',
+                role: 'Training & Nutrition Agent',
+                status: 'Active',
+                statusClass: 'online',
+                telegram: '@FitBot',
+                discord: '#fitness-zone',
+                description: 'Dedicated fitness accountability agent. Tracks workouts, monitors nutrition, manages cut/bulk protocols, and ensures Bryce stays on track with health goals.',
+                responsibilities: [
+                    'Send daily workout reminders (Push/Pull/Legs)',
+                    'Track weight and body composition',
+                    'Monitor macro intake (2600 cal / 230g protein)',
+                    'Log PRs and celebrate milestones',
+                    'Adjust protocols based on progress'
+                ],
+                metrics: [
+                    { value: '27', label: 'Workouts' },
+                    { value: '-19', label: 'Lbs Lost' },
+                    { value: '65', label: 'Bench PR' }
+                ]
+            },
+            sourcing: {
+                icon: '🔍',
+                name: 'SourceBot',
+                role: 'Talent Acquisition Agent',
+                status: 'Active',
+                statusClass: 'online',
+                telegram: '@SourceBot',
+                discord: '#sourcing-zone',
+                description: 'Compliance sourcing specialist. Generates Boolean search strings, identifies target companies, and provides daily sourcing briefs for recruitment activities.',
+                responsibilities: [
+                    'Generate daily compliance sourcing briefs',
+                    'Create Boolean search strings for LinkedIn X-Ray',
+                    'Identify target companies and candidates',
+                    'Draft personalized outreach templates',
+                    'Track sourcing metrics and conversion'
+                ],
+                metrics: [
+                    { value: '12', label: 'Briefs' },
+                    { value: '48', label: 'Leads' },
+                    { value: '3', label: 'Hires' }
+                ]
+            },
+            audit: {
+                icon: '🔒',
+                name: 'AuditBot',
+                role: 'Quality Assurance Agent',
+                status: 'Standby',
+                statusClass: 'standby',
+                telegram: '@AuditBot',
+                discord: '#audit-zone',
+                description: 'System security and quality assurance agent. Performs periodic audits, identifies bugs and security issues, and provides optimization recommendations.',
+                responsibilities: [
+                    'Run weekly system security audits',
+                    'Detect and report bugs and issues',
+                    'Monitor performance metrics',
+                    'Provide optimization recommendations',
+                    'Track issue resolution'
+                ],
+                metrics: [
+                    { value: '1', label: 'Audits' },
+                    { value: '4', label: 'Issues' },
+                    { value: '3', label: 'Critical' }
+                ]
+            }
+        };
+        
+        function openAgentModal(agentId) {
+            const agent = agentData[agentId];
+            document.getElementById('modalIcon').textContent = agent.icon;
+            document.getElementById('modalName').textContent = agent.name;
+            
+            const responsibilitiesHTML = agent.responsibilities.map(r => `<li>${r}</li>`).join('');
+            const metricsHTML = agent.metrics.map(m => `
+                <div class="modal-metric">
+                    <div class="modal-metric-value">${m.value}</div>
+                    <div class="modal-metric-label">${m.label}</div>
+                </div>
+            `).join('');
+            
+            document.getElementById('modalBody').innerHTML = `
+                <div class="modal-section">
+                    <h3>Role</h3>
+                    <p>${agent.role}</p>
+                </div>
+                
+                <div class="modal-section">
+                    <h3>Status</h3>
+                    <p><span class="agent-status ${agent.statusClass}">${agent.status}</span></p>
+                </div>
+                
+                <div class="modal-section">
+                    <h3>Channels</h3>
+                    <div class="modal-channels">
+                        <div class="modal-channel telegram">
+                            <span>📱</span> ${agent.telegram}
+                        </div>
+                        <div class="modal-channel discord">
+                            <span>💬</span> ${agent.discord}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-section">
+                    <h3>Description</h3>
+                    <p>${agent.description}</p>
+                </div>
+                
+                <div class="modal-section">
+                    <h3>Metrics</h3>
+                    <div class="modal-metrics">
+                        ${metricsHTML}
+                    </div>
+                </div>
+                
+                <div class="modal-section">
+                    <h3>Responsibilities</h3>
+                    <div class="modal-responsibilities">
+                        <ul>${responsibilitiesHTML}</ul>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('agentModal').classList.add('active');
+        }
+        
+        function closeAgentModal(e) {
+            if (!e || e.target.id === 'agentModal') {
+                document.getElementById('agentModal').classList.remove('active');
+            }
+        }
+        
+        // Discord webhook functions
+        async function sendDiscordMessage(channel, message) {
+            const webhook = WEBHOOKS[channel];
+            if (!webhook) {
+                console.error('Unknown channel:', channel);
+                return;
+            }
+            
+            try {
+                const response = await fetch(webhook, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        content: message,
+                        username: 'SWARM OS',
+                        avatar_url: 'https://i.imgur.com/AfFp7pu.png'
+                    })
+                });
+                
+                if (response.ok) {
+                    console.log(`Message sent to #${channel}`);
+                    showNotification(`Message sent to #${channel}`, 'success');
+                } else {
+                    throw new Error('Failed to send');
+                }
+            } catch (error) {
+                console.error('Discord error:', error);
+                showNotification(`Failed to send to #${channel}`, 'error');
+            }
+        }
+        
+        function testWebhook(channel) {
+            sendDiscordMessage(channel, `🔔 **Webhook Test** — Connection verified from SWARM OS Mission Control at ${new Date().toLocaleTimeString()}`);
+        }
+        
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                bottom: 2rem;
+                right: 2rem;
+                padding: 1rem 1.5rem;
+                background: ${type === 'success' ? 'rgba(48, 209, 88, 0.9)' : type === 'error' ? 'rgba(255, 69, 58, 0.9)' : 'rgba(0, 229, 255, 0.9)'};
+                color: white;
+                border-radius: 10px;
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 0.85rem;
+                z-index: 10001;
+                animation: slideIn 0.3s ease;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'fadeOut 0.3s ease forwards';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+        
+        // Add notification animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes fadeOut {
+                from { opacity: 1; }
+                to { opacity: 0; transform: translateY(10px); }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeAgentModal();
+            }
+            if (e.key === '1') showTab('overview', document.querySelector('.tab-btn:nth-child(1)'));
+            if (e.key === '2') showTab('agents', document.querySelector('.tab-btn:nth-child(2)'));
+            if (e.key === '3') showTab('operations', document.querySelector('.tab-btn:nth-child(3)'));
+            if (e.key === '4') showTab('logs', document.querySelector('.tab-btn:nth-child(4)'));
+        });
+        
+        // Simulate live data updates
+        function simulateLiveData() {
+            // Randomly fluctuate the spend slightly
+            const spendEl = document.getElementById('todaySpend');
+            if (spendEl) {
+                const currentSpend = parseFloat(spendEl.textContent);
+                const newSpend = (currentSpend + (Math.random() * 0.02 - 0.005)).toFixed(2);
+                spendEl.textContent = newSpend;
+            }
+        }
+        
+        // Update every 30 seconds
+        setInterval(simulateLiveData, 30000);
+        
+        console.log('🚀 SWARM OS Mission Control v2.0 initialized');
+        console.log('📡 Discord webhooks loaded');
+        console.log('⌨️ Keyboard shortcuts: 1-4 for tabs, ESC to close modal');
+    </script>
+</body>
+</html>

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bryce Training Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 1000px; margin: 0 auto; }
+        header {
+            text-align: center;
+            padding: 30px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        h1 {
+            font-size: 2rem;
+            background: linear-gradient(90deg, #00d4ff, #7b2cbf);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+        .subtitle { color: #888; font-size: 1rem; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 25px; }
+        .card {
+            background: rgba(255,255,255,0.05);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+        }
+        .card-label { color: #00d4ff; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+        .card-value { font-size: 1.6rem; font-weight: 700; color: #fff; }
+        .section {
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .section h2 {
+            color: #00d4ff;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .macro-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+        .macro {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .macro.calories { border-left: 3px solid #a855f7; }
+        .macro.protein { border-left: 3px solid #ef4444; }
+        .macro.carbs { border-left: 3px solid #22c55e; }
+        .macro.fats { border-left: 3px solid #eab308; }
+        .macro-label { color: #888; font-size: 0.7rem; text-transform: uppercase; }
+        .macro-value { font-size: 1.3rem; font-weight: 700; margin: 6px 0; }
+        .workout-item {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border-left: 3px solid #00d4ff;
+        }
+        .workout-item.pull { border-left-color: #22c55e; }
+        .workout-item.legs { border-left-color: #f59e0b; }
+        .workout-item.arms { border-left-color: #a855f7; }
+        .workout-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .workout-type { font-weight: 600; color: #fff; font-size: 1rem; }
+        .workout-date { color: #666; font-size: 0.8rem; }
+        .workout-exercises { color: #aaa; font-size: 0.85rem; line-height: 1.7; }
+        .program-day {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border-left: 3px solid #00d4ff;
+        }
+        .program-day.rest { border-left-color: #666; opacity: 0.7; }
+        .program-day h4 { color: #fff; margin-bottom: 8px; font-size: 0.95rem; }
+        .program-day p { color: #888; font-size: 0.85rem; line-height: 1.6; }
+        @media (max-width: 600px) {
+            .macro-grid { grid-template-columns: repeat(2, 1fr); }
+            .grid { grid-template-columns: repeat(2, 1fr); }
+            h1 { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏋️ Bryce's Dashboard</h1>
+            <p class="subtitle">6'4" | 31 y/o | 193 lbs | Lean Bulk</p>
+        </header>
+
+        <div class="grid">
+            <div class="card">
+                <div class="card-label">Weight</div>
+                <div class="card-value">193 lb</div>
+            </div>
+            <div class="card">
+                <div class="card-label">Workouts</div>
+                <div class="card-value">27</div>
+            </div>
+            <div class="card">
+                <div class="card-label">Bench PR</div>
+                <div class="card-value">65 lb</div>
+            </div>
+            <div class="card">
+                <div class="card-label">Pulldown PR</div>
+                <div class="card-value">115 lb</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🎯 Daily Macros</h2>
+            <div class="macro-grid">
+                <div class="macro calories">
+                    <div class="macro-label">Calories</div>
+                    <div class="macro-value">3,300</div>
+                </div>
+                <div class="macro protein">
+                    <div class="macro-label">Protein</div>
+                    <div class="macro-value">195g</div>
+                </div>
+                <div class="macro carbs">
+                    <div class="macro-label">Carbs</div>
+                    <div class="macro-value">480g</div>
+                </div>
+                <div class="macro fats">
+                    <div class="macro-label">Fats</div>
+                    <div class="macro-value">70g</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📅 6-Week Program</h2>
+            <div class="program-day"><h4>Day 1: Push Heavy</h4><p>DB Bench 4×6-8 • Incline 3×8-10 • Shoulder Press 3×8-10 • Lateral Raises 3×12-15 • Triceps 3×12</p></div>
+            <div class="program-day"><h4>Day 2: Pull Heavy</h4><p>Lat Pulldown 4×6-8 • Rows 3×8-10 • Seated Row 3×10-12 • Face Pulls 3×15 • Curls 3×10</p></div>
+            <div class="program-day"><h4>Day 3: Legs</h4><p>Leg Press 4×10-12 • RDL 3×8-10 • Leg Curl 3×12-15 • Calves 4×15 • Plank 3×60s</p></div>
+            <div class="program-day rest"><h4>Day 4: Rest</h4><p>Recovery, stretching</p></div>
+            <div class="program-day"><h4>Day 5: Upper Volume</h4><p>DB Bench 3×10-12 • Cable Row 3×12-15 • Pulldown 3×12 • Raises 3×15 • Arms 3×15</p></div>
+            <div class="program-day rest"><h4>Days 6-7: Rest</h4><p>Full recovery</p></div>
+        </div>
+
+        <div class="section">
+            <h2>📊 All 27 Workouts</h2>
+            
+            <div class="workout-item"><div class="workout-header"><span class="workout-type">Push #1</span></div><div class="workout-exercises">DB Bench: 40lb×12×4 • Incline DB: 40lb×8×2 • Seated DB Press: 35lb×8×3 • Lateral Raises: 15lb×12×3</div></div>
+            
+            <div class="workout-item"><div class="workout-header"><span class="workout-type">Push #2</span></div><div class="workout-exercises">Flat DB Bench: 50lb×10×4 • Incline DB: 45lb×8×2 • Shoulder Press: 30lb×8×2 • Lateral Raises: 15lb×12×3 • Tricep Pushdown: 20lb×10×2</div></div>
+            
+            <div class="workout-item"><div class="workout-header"><span class="workout-type">Push #3</span></div><div class="workout-exercises">Flat DB Bench: 50lb×11×3 • Incline DB: 35lb×9×2 • Lateral Raises: 15lb×12×3</div></div>
+            
+            <div class="workout-item"><div class="workout-header"><span class="workout-type">Push #4</span></div><div class="workout-exercises">DB Bench: 50lb×10×5 • Incline Press: 35lb×9×2</div></div>
+            
+            <div class="workout-item"><div class="workout-header"><span class="workout-type">Push #5</span></div><div class="workout-exercises">Flat DB Bench: 50lb×12×3 • Incline DB: 45lb×8×2 • Shoulder Press: 30lb×8×2 • Lateral Raises: 15lb×12×3 • Tricep Pushdown: 20lb×12×3</div></div>
+            
+            <div class="workout-item"><div class="workout-header"><span class="workout-type">Push #6</span></div><div class="workout-exercises">Flat DB Bench: 50lb×10×4 • Incline DB: 35lb×9×2 • Lateral Raises: 15lb×12×3</div></div>
+            
+            <div class="workout-item"><div class="workout-header"><span class="workout-type">Push #7</span></div><div class="workout-exercises">Flat DB Bench: 60lb×10×4 • Incline Machine: 70lb×11×4 • Chest Fly Machine: 50lb×10×2 • Cable Fly: 25lb×15×3</div></div>
+            
+            <div class="workout-item"><div class="workout-header"><span class="workout-type">Push #8</span></div><div class="workout-exercises">Flat DB Bench: 60lb×10×4 • Incline Machine: 70lb×10×3 • Cable Fly: 25lb×12×2 • Barbell Curl: 60lb×10×2 • Tricep Pushdown: 35lb×15×2</div></div>
+            
+            <div class="workout-item"><div class="workout-header"><span class="workout-type">Push #9</span></div><div class="workout-exercises">Flat DB Bench: 60lb×10×4 • Incline DB: 50lb×9×2 • Shoulder Press: 35lb×8×2 • Cable Fly: 25lb×12×2</div></div>
+            
+            <div class="workout-item"><div class="workout-header"><span class="workout-type">Push #10</span></div><div class="workout-exercises">Chest Press Machine: 110lb×6×3 • DB Bench: 50lb×8×2 • Machine Shoulder Press: 90lb×8×2 • Single Arm Tricep: 17lb×10×3</div></div>
+            
+            <div class="workout-item"><div class="workout-header"><span class="workout-type">Push #11 (PR)</span></div><div class="workout-exercises">Flat DB Bench: 60lb×10×4 • Incline Machine: 70lb×11×3 • Shoulder Press: 50lb×10×2 • Lateral Raises: 20lb×11×3 • Tricep Pushdown: 35lb×12×2</div></div>
+            
+            <div class="workout-item"><div class="workout-header"><span class="workout-type">Push #12</span></div><div class="workout-exercises">Flat DB Bench: 65lb×8×4 • Incline Machine: 95lb×8×3 • Cable Fly: 25lb×10×2 • Barbell Curl: 60lb×10×2 • Tricep Pushdown: 35lb×12×2</div></div>
+            
+            <div class="workout-item"><div class="workout-header"><span class="workout-type">Push #13</span></div><div class="workout-exercises">Flat DB Bench: 65lb×7×4 • Incline DB: 50lb×9×3 • Cable Fly: 25lb×12×2</div></div>
+            
+            <div class="workout-item"><div class="workout-header"><span class="workout-type">Push #14</span></div><div class="workout-exercises">Flat DB Bench: 65lb×8×4 • Incline Machine: 95lb×8×3 • Lateral Raises: 20lb×10×2 • Tricep Superset: 35lb×12×3</div></div>
+            
+            <div class="workout-item"><div class="workout-header"><span class="workout-type">Push #15</span></div><div class="workout-exercises">Chest Press Machine: 110lb×6×3 • DB Bench: 50lb×8×2 • Machine Shoulder Press: 90lb×8×2 • Single Arm Tricep: 17lb×10×3</div></div>
+            
+            <div class="workout-item"><div class="workout-header"><span class="workout-type">Push #16</span></div><div class="workout-exercises">Chest Press Machine: 110lb×6×3 • Shoulder Press Machine: 90lb×8×2 • DB Bench: 50lb×8×2 • DB Curl: 22.5lb×10×3 • Cable Crunches: 50lb×40×1</div></div>
+            
+            <div class="workout-item"><div class="workout-header"><span class="workout-type">Push #17</span></div><div class="workout-exercises">Flat DB Bench: 65lb×7×4 • Incline DB: 50lb×9×3 • Lateral Raises: 12.5lb×10×4 • Tricep Pushdown: 35lb×11×3</div></div>
+            
+            <div class="workout-item pull"><div class="workout-header"><span class="workout-type">Pull #1</span></div><div class="workout-exercises">Assisted Pull-ups: 35lb assist×8×4 • Cable Rows: 80lb×10×2 • Chest-Supported DB Rows: 45lb×8×3 • Curls: 20lb×11×2</div></div>
+            
+            <div class="workout-item pull"><div class="workout-header"><span class="workout-type">Pull #2</span></div><div class="workout-exercises">Lat Pulldown: 110lb×9×3 • Single-Arm Pulldown: 30lb×12×3 • Chest-Supported Rows: 50lb×8×4 • Seated Cable Row: 95lb×9×4 • Face Pulls: 30lb×12×3 • Barbell Curl: 50lb×8×2</div></div>
+            
+            <div class="workout-item pull"><div class="workout-header"><span class="workout-type">Pull #3 (PR)</span></div><div class="workout-exercises">Chest-Supported Row: 45lb×10×4 • Lat Pulldown: 115lb×8×4 • Seated Rows: 95lb×9×4 • Face Pulls: 30lb×12×3 • Superset Curls: 30lb×11×2</div></div>
+            
+            <div class="workout-item pull"><div class="workout-header"><span class="workout-type">Pull #4</span></div><div class="workout-exercises">Lat Pulldown: 110lb×9×3 • Chest-Supported Row: 45lb×8×2 • Seated Cable Row: 40lb×10×3 • Rear Delt Fly: 10lb×14×3 • Barbell Curl: 50lb×8×2</div></div>
+            
+            <div class="workout-item pull"><div class="workout-header"><span class="workout-type">Pull #5</span></div><div class="workout-exercises">Chest-Supported Row: 45lb×10×4 • Lat Pulldown: 115lb×8×4 • Seated Rows: 95lb×9×4 • Face Pulls: 30lb×12×3 • Cable Curl Superset: 30lb×11×2</div></div>
+            
+            <div class="workout-item pull"><div class="workout-header"><span class="workout-type">Pull #6</span></div><div class="workout-exercises">Lat Pulldown: 110lb×7×3 • Seated Cable Row: 95lb×9×4 • Chest-Supported Row: 40lb×9×3 • Face Pulls: 30lb×13×3 • Superset Curls: 30lb×10×3</div></div>
+            
+            <div class="workout-item legs"><div class="workout-header"><span class="workout-type">Legs #1</span></div><div class="workout-exercises">Goblet Squats: 50lb×11×4 • Romanian Deadlifts: 50lb×10×3 • Walking Lunges: 25lb×20×3 • Leg Press: 180lb×10×3 • Calf Raises: BW×18×4</div></div>
+            
+            <div class="workout-item legs"><div class="workout-header"><span class="workout-type">Legs #2</span></div><div class="workout-exercises">Leg Press: 215lb×10×3 • Romanian Deadlifts: 45lb×9×3 • Single-Leg RDL: 30lb×8×2 • Cable Crunches: 45lb×16×3</div></div>
+            
+            <div class="workout-item arms"><div class="workout-header"><span class="workout-type">Arms & Abs #1</span></div><div class="workout-exercises">Barbell Curl: 50lb×8×2 • Tricep Pushdown: 35lb×12×2 • Superset Curls: 50lb×10×3 • DB Curl: 30lb×11×2 • Cable Crunches: 45lb×15×3 • Plank: 60s×1</div></div>
+            
+            <div class="workout-item arms"><div class="workout-header"><span class="workout-type">Arms & Abs #2</span></div><div class="workout-exercises">DB Bench: 50lb×10×5 • Incline DB: 35lb×9×2 • Shoulder Press: 35lb×8×2 • Lateral Raises: 15lb×12×3</div></div>
+        </div>
+
+        <footer style="text-align: center; padding: 20px; color: #666; font-size: 0.8rem;">
+            <p>Built by Stu | Updated: Feb 13, 2026</p>
+        </footer>
+    </div>
+</body>
+</html>

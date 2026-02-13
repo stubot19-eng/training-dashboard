@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bryce Training Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 15px;
+        }
+        .container { max-width: 1000px; margin: 0 auto; }
+        header {
+            text-align: center;
+            padding: 25px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        h1 {
+            font-size: 1.8rem;
+            background: linear-gradient(90deg, #00d4ff, #7b2cbf);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+        .subtitle { color: #888; font-size: 0.9rem; }
+        
+        .lyric-box {
+            background: linear-gradient(135deg, rgba(245,158,11,0.15), rgba(245,158,11,0.05));
+            border-left: 4px solid #f59e0b;
+            padding: 18px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-style: italic;
+            text-align: center;
+        }
+        .lyric-box p { font-size: 1.05rem; color: #fff; margin-bottom: 6px; }
+        .lyric-box span { color: #888; font-size: 0.85rem; }
+
+        .today-box {
+            background: linear-gradient(135deg, rgba(0,212,255,0.15), rgba(0,212,255,0.05));
+            border: 1px solid rgba(0,212,255,0.3);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 15px 0;
+            text-align: center;
+        }
+        .today-box h3 { color: #00d4ff; margin-bottom: 10px; font-size: 1rem; }
+        .today-box .workout-name { font-size: 1.3rem; font-weight: 700; color: #fff; margin-bottom: 8px; }
+        .today-box .workout-time { color: #888; font-size: 0.85rem; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 12px; margin-bottom: 20px; }
+        .card {
+            background: rgba(255,255,255,0.05);
+            padding: 15px 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+        }
+        .card-label { color: #00d4ff; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+        .card-value { font-size: 1.3rem; font-weight: 700; color: #fff; }
+
+        .section {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .section h2 {
+            color: #00d4ff;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .schedule-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin: 15px 0; }
+        .day-card {
+            background: rgba(0,0,0,0.3);
+            padding: 12px 8px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 0.75rem;
+        }
+        .day-card.active { border: 1px solid #00d4ff; background: rgba(0,212,255,0.1); }
+        .day-card.rest { opacity: 0.6; }
+        .day-card .day-name { color: #888; font-size: 0.65rem; margin-bottom: 4px; }
+        .day-card .day-workout { color: #fff; font-weight: 600; }
+
+        .pr-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin: 15px 0; }
+        .pr-card {
+            background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(245,158,11,0.05));
+            border: 1px solid rgba(245,158,11,0.3);
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .pr-card h4 { color: #f59e0b; font-size: 0.7rem; margin-bottom: 4px; }
+        .pr-card .pr-weight { font-size: 1.4rem; font-weight: 700; color: #fff; }
+        .pr-card .pr-date { color: #888; font-size: 0.7rem; }
+
+        .chart-container { background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 12px 0; }
+        .chart-container h3 { color: #888; font-size: 0.8rem; margin-bottom: 8px; text-align: center; }
+
+        .workout-item {
+            background: rgba(0,0,0,0.3);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border-left: 3px solid #00d4ff;
+        }
+        .workout-item.pull { border-left-color: #22c55e; }
+        .workout-item.legs { border-left-color: #f59e0b; }
+        .workout-item.arms { border-left-color: #a855f7; }
+        .workout-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+        .workout-type { font-weight: 600; color: #fff; font-size: 0.9rem; }
+        .workout-exercises { color: #aaa; font-size: 0.8rem; line-height: 1.5; }
+
+        .program-day {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border-left: 3px solid #00d4ff;
+        }
+        .program-day h4 { color: #fff; margin-bottom: 8px; font-size: 0.95rem; }
+        .program-day p { color: #888; font-size: 0.8rem; line-height: 1.6; }
+
+        @media (max-width: 600px) {
+            .schedule-grid { grid-template-columns: repeat(4, 1fr); }
+            .grid { grid-template-columns: repeat(2, 1fr); }
+            h1 { font-size: 1.4rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏋️ Bryce's Dashboard</h1>
+            <p class="subtitle">6'4" | 193 lbs | Heavy Program</p>
+        </header>
+
+        <div class="lyric-box">
+            <p id="daily-lyric-text">"Pick your next move, you can leave or live with it"</p>
+            <span id="daily-lyric-artist">— Kanye West, Runaway</span>
+        </div>
+
+        <div class="today-box">
+            <h3>📅 Today's Workout</h3>
+            <div class="workout-name" id="today-workout">Loading...</div>
+            <div class="workout-time">Daily text at 10am EST</div>
+        </div>
+
+        <div class="grid">
+            <div class="card"><div class="card-label">Weight</div><div class="card-value">193</div></div>
+            <div class="card"><div class="card-label">Workouts</div><div class="card-value">27</div></div>
+            <div class="card"><div class="card-label">Bench PR</div><div class="card-value">65</div></div>
+            <div class="card"><div class="card-label">Pulldown</div><div class="card-value">115</div></div>
+        </div>
+
+        <div class="section">
+            <h2>📆 Weekly Schedule</h2>
+            <div class="schedule-grid">
+                <div class="day-card" id="day-mon"><div class="day-name">MON</div><div class="day-workout">Push A</div></div>
+                <div class="day-card" id="day-tue"><div class="day-name">TUE</div><div class="day-workout">Pull A</div></div>
+                <div class="day-card" id="day-wed"><div class="day-name">WED</div><div class="day-workout">Legs A</div></div>
+                <div class="day-card rest" id="day-thu"><div class="day-name">THU</div><div class="day-workout">Rest</div></div>
+                <div class="day-card" id="day-fri"><div class="day-name">FRI</div><div class="day-workout">Push B</div></div>
+                <div class="day-card" id="day-sat"><div class="day-name">SAT</div><div class="day-workout">Pull B</div></div>
+                <div class="day-card rest" id="day-sun"><div class="day-name">SUN</div><div class="day-workout">Rest</div></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🏆 Personal Records</h2>
+            <div class="pr-grid">
+                <div class="pr-card"><h4>DB Bench</h4><div class="pr-weight">65 lb</div><div class="pr-date">Goal: 70+</div></div>
+                <div class="pr-card"><h4>Lat Pulldown</h4><div class="pr-weight">115 lb</div><div class="pr-date">Goal: 120+</div></div>
+                <div class="pr-card"><h4>Leg Press</h4><div class="pr-weight">215 lb</div><div class="pr-date">Goal: 250+</div></div>
+                <div class="pr-card"><h4>Barbell Curl</h4><div class="pr-weight">60 lb</div><div class="pr-date">Goal: 65+</div></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📈 Progression</h2>
+            <div class="chart-container">
+                <h3>DB Bench Progress</h3>
+                <canvas id="benchChart" height="100"></canvas>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>💪 Heavy Program Details</h2>
+            
+            <div class="program-day">
+                <h4>Monday — Push A (Chest)</h4>
+                <p>DB Bench 4×6-8 • Incline DB 3×8-10 • Machine Press 3×8-12 • Tricep Pushdowns 3×10-12<br><strong>Rest:</strong> 2-3 min between sets</p>
+            </div>
+            
+            <div class="program-day">
+                <h4>Tuesday — Pull A (Width)</h4>
+                <p>Lat Pulldown 4×6-8 • Single-Arm Pulldown 3×10-12 • Cable Rows 3×8-10 • Barbell Curl 3×8-10</p>
+            </div>
+            
+            <div class="program-day">
+                <h4>Wednesday — Legs A (Quads)</h4>
+                <p>Leg Press 4×8-10 • Goblet Squat 3×10-12 • Leg Extension 3×12-15 • Calf Raises 4×12-15</p>
+            </div>
+            
+            <div class="program-day">
+                <h4>Friday — Push B (Shoulders)</h4>
+                <p>Seated DB Press 4×6-8 • Incline Machine 3×10-12 • Lateral Raises 4×12-15 • Cable Fly 3×12-15</p>
+            </div>
+            
+            <div class="program-day">
+                <h4>Saturday — Pull B (Thickness)</h4>
+                <p>Chest-Supported Row 4×8-10 • Barbell Row 3×8-10 • Face Pulls 4×15-20 • Hammer Curls 3×10-12</p>
+            </div>
+            
+            <div class="program-day">
+                <h4>Sunday — Legs B (Posterior)</h4>
+                <p>Romanian Deadlift 4×8-10 • Leg Curl 3×12-15 • Bulgarian Split Squat 3×10-12 • Plank 3×60s</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📊 All 27 Workouts</h2>
+            <div class="workout-item"><div class="workout-header"><span class="workout-type">Push #1</span></div><div class="workout-exercises">DB Bench: 40lb×12×4 • Incline DB: 40lb×8×2 • Seated DB Press: 35lb×8×3</div></div>
+            <div class="workout-item"><div class="workout-header"><span class="workout-type">Push #2</span></div><div class="workout-exercises">Flat DB Bench: 50lb×10×4 • Incline DB: 45lb×8×2 • Shoulder Press: 30lb×8×2 • Lateral Raises: 15lb×12×3</div></div>
+            <div class="workout-item"><div class="workout-header"><span class="workout-type">Push #3</span></div><div class="workout-exercises">Flat DB Bench: 50lb×11×3 • Incline DB: 35lb×9×2 • Lateral Raises: 15lb×12×3</div></div>
+            <div class="workout-item"><div class="workout-header"><span class="workout-type">Push #4</span></div><div class="workout-exercises">DB Bench: 50lb×10×5 • Incline Press: 35lb×9×2</div></div>
+            <div class="workout-item"><div class="workout-header"><span class="workout-type">Push #5</span></div><div class="workout-exercises">Flat DB Bench: 50lb×12×3 • Incline DB: 45lb×8×2 • Shoulder Press: 30lb×8×2 • Lateral Raises: 15lb×12×3</div></div>
+            <div class="workout-item"><div class="workout-header"><span class="workout-type">Push #6</span></div><div class="workout-exercises">Flat DB Bench: 50lb×10×4 • Incline DB: 35lb×9×2 • Lateral Raises: 15lb×12×3</div></div>
+            <div class="workout-item"><div class="workout-header"><span class="workout-type">Push #7</span></div><div class="workout-exercises">Flat DB Bench: 60lb×10×4 • Incline Machine: 70lb×11×4 • Chest Fly: 50lb×10×2 • Cable Fly: 25lb×15×3</div></div>
+            <div class="workout-item"><div class="workout-header"><span class="workout-type">Push #8</span></div><div class="workout-exercises">Flat DB Bench: 60lb×10×4 • Incline Machine: 70lb×10×3 • Cable Fly: 25lb×12×2 • Barbell Curl: 60lb×10×2</div></div>
+            <div class="workout-item"><div class="workout-header"><span class="workout-type">Push #9</span></div><div class="workout-exercises">Flat DB Bench: 60lb×10×4 • Incline DB: 50lb×9×2 • Shoulder Press: 35lb×8×2 • Cable Fly: 25lb×12×2</div></div>
+            <div class="workout-item"><div class="workout-header"><span class="workout-type">Push #10</span></div><div class="workout-exercises">Chest Press Machine: 110lb×6×3 • DB Bench: 50lb×8×2 • Machine Shoulder Press: 90lb×8×2 • Single Arm Tricep: 17lb×10×3</div></div>
+            <div class="workout-item"><div class="workout-header"><span class="workout-type">Push #11 (PR)</span></div><div class="workout-exercises">Flat DB Bench: 60lb×10×4 • Incline Machine: 70lb×11×3 • Shoulder Press: 50lb×10×2 • Lateral Raises: 20lb×11×3</div></div>
+            <div class="workout-item"><div class="workout-header"><span class="workout-type">Push #12</span></div><div class="workout-exercises">Flat DB Bench: 65lb×8×4 • Incline Machine: 95lb×8×3 • Cable Fly: 25lb×10×2 • Barbell Curl: 60lb×10×2</div></div>
+            <div class="workout-item"><div class="workout-header"><span class="workout-type">Push #13</span></div><div class="workout-exercises">Flat DB Bench: 65lb×7×4 • Incline DB: 50lb×9×3 • Cable Fly: 25lb×12×2</div></div>
+            <div class="workout-item"><div class="workout-header"><span class="workout-type">Push #14</span></div><div class="workout-exercises">Flat DB Bench: 65lb×8×4 • Incline Machine: 95lb×8×3 • Lateral Raises: 20lb×10×2</div></div>
+            <div class="workout-item"><div class="workout-header"><span class="workout-type">Push #15</span></div><div class="workout-exercises">Chest Press Machine: 110lb×6×3 • DB Bench: 50lb×8×2 • Machine Shoulder Press: 90lb×8×2 • Single Arm Tricep: 17lb×10×3</div></div>
+            <div class="workout-item"><div class="workout-header"><span class="workout-type">Push #16</span></div><div class="workout-exercises">Chest Press Machine: 110lb×6×3 • Shoulder Press Machine: 90lb×8×2 • DB Bench: 50lb×8×2 • DB Curl: 22.5lb×10×3</div></div>
+            <div class="workout-item"><div class="workout-header"><span class="workout-type">Push #17 (PR)</span></div><div class="workout-exercises">Flat DB Bench: 65lb×7×4 • Incline DB: 50lb×9×3 • Lateral Raises: 12.5lb×10×4 • Tricep Pushdown: 35lb×11×3</div></div>
+            <div class="workout-item pull"><div class="workout-header"><span class="workout-type">Pull #1</span></div><div class="workout-exercises">Assisted Pull-ups: 35lb assist×8×4 • Cable Rows: 80lb×10×2 • Chest-Supported Rows: 45lb×8×3 • Curls: 20lb×11×2</div></div>
+            <div class="workout-item pull"><div class="workout-header"><span class="workout-type">Pull #2</span></div><div class="workout-exercises">Lat Pulldown: 110lb×9×3 • Single-Arm Pulldown: 30lb×12×3 • Chest-Supported Rows: 50lb×8×4 • Seated Cable Row: 95lb×9×4 • Face Pulls: 30lb×12×3 • Barbell Curl: 50lb×8×2</div></div>
+            <div class="workout-item pull"><div class="workout-header"><span class="workout-type">Pull #3 (PR)</span></div><div class="workout-exercises">Chest-Supported Row: 45lb×10×4 • Lat Pulldown: 115lb×8×4 • Seated Rows: 95lb×9×4 • Face Pulls: 30lb×12×3 • Superset Curls: 30lb×11×2</div></div>
+            <div class="workout-item pull"><div class="workout-header"><span class="workout-type">Pull #4</span></div><div class="workout-exercises">Lat Pulldown: 110lb×9×3 • Chest-Supported Row: 45lb×8×2 • Seated Cable Row: 40lb×10×3 • Rear Delt Fly: 10lb×14×3 • Barbell Curl: 50lb×8×2</div></div>
+            <div class="workout-item pull"><div class="workout-header"><span class="workout-type">Pull #5 (PR)</span></div><div class="workout-exercises">Chest-Supported Row: 45lb×10×4 • Lat Pulldown: 115lb×8×4 • Seated Rows: 95lb×9×4 • Face Pulls: 30lb×12×3 • Cable Curl Superset: 30lb×11×2</div></div>
+            <div class="workout-item pull"><div class="workout-header"><span class="workout-type">Pull #6</span></div><div class="workout-exercises">Lat Pulldown: 110lb×7×3 • Seated Cable Row: 95lb×9×4 • Chest-Supported Row: 40lb×9×3 • Face Pulls: 30lb×13×3 • Superset Curls: 30lb×10×3</div></div>
+            <div class="workout-item legs"><div class="workout-header"><span class="workout-type">Legs #1</span></div><div class="workout-exercises">Goblet Squats: 50lb×11×4 • Romanian Deadlifts: 50lb×10×3 • Walking Lunges: 25lb×20×3 • Leg Press: 180lb×10×3 • Calf Raises: BW×18×4</div></div>
+            <div class="workout-item legs"><div class="workout-header"><span class="workout-type">Legs #2</span></div><div class="workout-exercises">Leg Press: 215lb×10×3 • Romanian Deadlifts: 45lb×9×3 • Single-Leg RDL: 30lb×8×2 • Cable Crunches: 45lb×16×3</div></div>
+            <div class="workout-item arms"><div class="workout-header"><span class="workout-type">Arms & Abs #1</span></div><div class="workout-exercises">Barbell Curl: 50lb×8×2 • Tricep Pushdown: 35lb×12×2 • Superset Curls: 50lb×10×3 • DB Curl: 30lb×11×2 • Cable Crunches: 45lb×15×3 • Plank: 60s×1</div></div>
+            <div class="workout-item arms"><div class="workout-header"><span class="workout-type">Arms & Abs #2</span></div><div class="workout-exercises">DB Bench: 50lb×10×5 • Incline DB: 35lb×9×2 • Shoulder Press: 35lb×8×2 • Lateral Raises: 15lb×12×3</div></div>
+        </div>
+
+        <footer style="text-align: center; padding: 20px; color: #666; font-size: 0.75rem;">
+            <p>Built by Stu | Heavy Program | Updated: Feb 13, 2026</p>
+        </footer>
+    </div>
+
+    <script>
+        // Show today's workout
+        const days = ['sun','mon','tue','wed','thu','fri','sat'];
+        const workouts = {
+            'mon': { name: 'Push A — Chest', focus: 'Heavy DB Bench' },
+            'tue': { name: 'Pull A — Width', focus: 'Lat Pulldown PR' },
+            'wed': { name: 'Legs A — Quads', focus: 'Leg Press 250+' },
+            'thu': { name: 'Rest Day', focus: 'Recovery & Stretching' },
+            'fri': { name: 'Push B — Shoulders', focus: 'DB Press 40+' },
+            'sat': { name: 'Pull B — Thickness', focus: 'Heavy Rows' },
+            'sun': { name: 'Rest Day', focus: 'Recovery & Meal Prep' }
+        };
+        const today = days[new Date().getDay()];
+        const todayWorkout = workouts[today];
+        document.getElementById('today-workout').textContent = todayWorkout.name;
+        document.getElementById('day-' + today).classList.add('active');
+
+        // DB Bench Chart
+        new Chart(document.getElementById('benchChart'), {
+            type: 'line',
+            data: {
+                labels: ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17'],
+                datasets: [{
+                    label: 'Weight (lb)',
+                    data: [40,50,50,50,50,50,60,60,60,50,60,65,65,65,50,50,65],
+                    borderColor: '#00d4ff',
+                    backgroundColor: 'rgba(0,212,255,0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: false, grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: '#888', font: {size: 10} } },
+                    x: { grid: { display: false }, ticks: { color: '#888', font: {size: 9} } }
+                }
+            }
+        });
+
+        // Daily rotating lyrics
+        const lyrics = [
+            { text: "Pick your next move, you can leave or live with it", artist: "Kanye West — Runaway" },
+            { text: "Started from the bottom now we're here", artist: "Drake" },
+            { text: "The moment you give up is the moment you let someone else win", artist: "Kobe Bryant" },
+            { text: "It ain't about how hard you hit. It's about how hard you can get hit and keep moving forward", artist: "Rocky Balboa" },
+            { text: "Discipline is doing what needs to be done, even if you don't want to do it", artist: "" },
+            { text: "Success is not final, failure is not fatal: it is the courage to continue that counts", artist: "Winston Churchill" },
+            { text: "The only bad workout is the one that didn't happen", artist: "" },
+            { text: "Your body can stand almost anything. It's your mind that you have to convince", artist: "" },
+            { text: "Don't stop when you're tired. Stop when you're done", artist: "" },
+            { text: "Sweat is just fat crying", artist: "" },
+            { text: "The pain you feel today will be the strength you feel tomorrow", artist: "" },
+            { text: "Train insane or remain the same", artist: "" },
+            { text: "Strive for progress, not perfection", artist: "" },
+            { text: "You don't have to be extreme, just consistent", artist: "" },
+            { text: "Fitness is not about being better than someone else. It's about being better than you were yesterday", artist: "" },
+            { text: "The hardest lift of all is lifting your butt off the couch", artist: "" },
+            { text: "Strength does not come from what you can do. It comes from overcoming the things you once thought you couldn't", artist: "Rikki Rogers" },
+            { text: "We are what we repeatedly do. Excellence, then, is not an act, but a habit", artist: "Aristotle" },
+            { text: "Take care of your body. It's the only place you have to live", artist: "Jim Rohn" },
+            { text: "Action is the foundational key to all success", artist: "Pablo Picasso" },
+            { text: "The only way to do great work is to love what you do", artist: "Steve Jobs" },
+            { text: "Believe you can and you're halfway there", artist: "Theodore Roosevelt" },
+            { text: "Every expert was once a beginner", artist: "" },
+            { text: "What seems impossible today will one day become your warm-up", artist: "" },
+            { text: "Energy and persistence conquer all things", artist: "Benjamin Franklin" },
+            { text: "When you feel like quitting, think about why you started", artist: "" },
+            { text: "Do something today that your future self will thank you for", artist: "" },
+            { text: "A one hour workout is 4% of your day. No excuses", artist: "" }
+        ];
+
+        function getDailyLyric() {
+            const now = new Date();
+            const start = new Date(now.getFullYear(), 0, 0);
+            const diff = now - start;
+            const oneDay = 1000 * 60 * 60 * 24;
+            const dayOfYear = Math.floor(diff / oneDay);
+            return lyrics[dayOfYear % lyrics.length];
+        }
+
+        const todayLyric = getDailyLyric();
+        document.getElementById('daily-lyric-text').textContent = `"${todayLyric.text}"`;
+        document.getElementById('daily-lyric-artist').textContent = todayLyric.artist ? `— ${todayLyric.artist}` : '';
+    </script>
+</body>
+</html>

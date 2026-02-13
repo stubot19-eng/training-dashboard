@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SWARM OS — Mission Control</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #111118;
+            --bg-tertiary: #1a1a24;
+            --accent-cyan: #00d4ff;
+            --accent-purple: #7b2cbf;
+            --accent-green: #00ff88;
+            --accent-amber: #f59e0b;
+            --accent-red: #ef4444;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --text-muted: #606070;
+            --border: rgba(255,255,255,0.08);
+        }
+        
+        body {
+            font-family: 'SF Mono', 'Consolas', 'Monaco', monospace;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(0,212,255,0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(123,44,191,0.03) 0%, transparent 50%);
+        }
+        
+        /* Header */
+        .mission-header {
+            background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+            border-bottom: 1px solid var(--border);
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .mission-brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .swarm-logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        .mission-title h1 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        .mission-title p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+        .mission-status {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-green);
+            animation: pulse 2s infinite;
+            box-shadow: 0 0 10px var(--accent-green);
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        
+        /* Main Layout */
+        .mission-container {
+            display: grid;
+            grid-template-columns: 280px 1fr 320px;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        
+        /* Panels */
+        .panel {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .panel-header {
+            background: var(--bg-tertiary);
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .panel-header h2 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+        }
+        .panel-content {
+            padding: 20px;
+        }
+        
+        /* Agent Hierarchy */
+        .hierarchy-tree {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .agent-node {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            position: relative;
+        }
+        .agent-node.leader {
+            border-color: var(--accent-amber);
+            background: linear-gradient(135deg, rgba(245,158,11,0.1), var(--bg-tertiary));
+        }
+        .agent-node.orchestrator {
+            border-color: var(--accent-cyan);
+            background: linear-gradient(135deg, rgba(0,212,255,0.1), var(--bg-tertiary));
+        }
+        .agent-node::before {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 50%;
+            width: 15px;
+            height: 1px;
+            background: var(--border);
+        }
+        .agent-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .agent-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        .agent-status {
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+            background: rgba(0,255,136,0.1);
+            color: var(--accent-green);
+            border: 1px solid rgba(0,255,136,0.3);
+        }
+        .agent-status.offline {
+            background: rgba(239,68,68,0.1);
+            color: var(--accent-red);
+            border-color: rgba(239,68,68,0.3);
+        }
+        .agent-role {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        .agent-function {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+        
+        /* Live Activity Feed */
+        .activity-feed {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .activity-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .activity-time {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            min-width: 50px;
+        }
+        .activity-content {
+            flex: 1;
+        }
+        .activity-agent {
+            font-size: 0.8rem;
+            color: var(--accent-cyan);
+            margin-bottom: 2px;
+        }
+        .activity-action {
+            font-size: 0.85rem;
+            color: var(--text-primary);
+        }
+        .activity-meta {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 3px;
+        }
+        
+        /* Core Philosophy */
+        .philosophy-grid {
+            display: grid;
+            gap: 15px;
+        }
+        .philosophy-item {
+            background: var(--bg-tertiary);
+            border-left: 3px solid var(--accent-cyan);
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+        }
+        .philosophy-item h3 {
+            font-size: 0.85rem;
+            color: var(--accent-cyan);
+            margin-bottom: 5px;
+        }
+        .philosophy-item p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        /* Metrics Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .metric-box {
+            background: var(--bg-tertiary);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .metric-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        .metric-value {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        .metric-value.success { color: var(--accent-green); }
+        .metric-value.warning { color: var(--accent-amber); }
+        
+        /* Protocol List */
+        .protocol-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .protocol-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+        .protocol-icon {
+            width: 32px;
+            height: 32px;
+            background: rgba(0,212,255,0.1);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+        .protocol-info {
+            flex: 1;
+        }
+        .protocol-name {
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        .protocol-status {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        .protocol-toggle {
+            width: 40px;
+            height: 20px;
+            background: var(--accent-green);
+            border-radius: 10px;
+            position: relative;
+        }
+        .protocol-toggle::after {
+            content: '';
+            position: absolute;
+            right: 2px;
+            top: 2px;
+            width: 16px;
+            height: 16px;
+            background: white;
+            border-radius: 50%;
+        }
+        
+        /* Resource Monitor */
+        .resource-bar {
+            margin-bottom: 15px;
+        }
+        .resource-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+        }
+        .resource-track {
+            height: 6px;
+            background: var(--bg-tertiary);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .resource-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.3s;
+        }
+        .resource-fill.cyan { background: var(--accent-cyan); }
+        .resource-fill.purple { background: var(--accent-purple); }
+        .resource-fill.green { background: var(--accent-green); }
+        
+        /* Center Column */
+        .center-column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        /* Chart Container */
+        .chart-container {
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 15px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .mission-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="mission-header">
+        <div class="mission-brand">
+            <div class="swarm-logo">◈</div>
+            <div class="mission-title">
+                <h1>SWARM OS — MISSION CONTROL</h1>
+                <p>Building OpenClaw agents to run my business</p>
+            </div>
+        </div>
+        <div class="mission-status">
+            <div class="status-indicator">
+                <div class="status-dot"></div>
+                <span>SYSTEM ONLINE</span>
+            </div>
+            <div class="status-indicator">
+                <span>AGENTS: 4 ACTIVE</span>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main Container -->
+    <div class="mission-container">
+        <!-- Left Column: Agent Hierarchy -->
+        <div class="left-column">
+            <div class="panel">
+                <div class="panel-header">
+                    <span>◈</span>
+                    <h2>Agent Hierarchy</h2>
+                </div>
+                <div class="panel-content">
+                    <div class="hierarchy-tree">
+                        <div class="agent-node leader">
+                            <div class="agent-header">
+                                <span class="agent-name">Bryce Benza</span>
+                                <span class="agent-status">ONLINE</span>
+                            </div>
+                            <div class="agent-role">CEO / Leader</div>
+                            <div class="agent-function">Strategic Direction & Mission Control</div>
+                        </div>
+                        
+                        <div class="agent-node orchestrator">
+                            <div class="agent-header">
+                                <span class="agent-name">Stu</span>
+                                <span class="agent-status">ONLINE</span>
+                            </div>
+                            <div class="agent-role">Lead Intelligence Orchestrator</div>
+                            <div class="agent-function">System Orchestration & Automation</div>
+                        </div>
+                        
+                        <div class="agent-node">
+                            <div class="agent-header">
+                                <span class="agent-name">Sourcing-Agent</span>
+                                <span class="agent-status">STANDBY</span>
+                            </div>
+                            <div class="agent-role">Talent Acquisition</div>
+                            <div class="agent-function">Compliance Sourcing Briefs 8:30 AM</div>
+                        </div>
+                        
+                        <div class="agent-node">
+                            <div class="agent-header">
+                                <span class="agent-name">Fitness-Agent</span>
+                                <span class="agent-status">STANDBY</span>
+                            </div>
+                            <div class="agent-role">Training & Nutrition</div>
+                            <div class="agent-function">Workout Reminders 11:00 AM</div>
+                        </div>
+                        
+                        <div class="agent-node">
+                            <div class="agent-header">
+                                <span class="agent-name">Audit-Agent</span>
+                                <span class="agent-status">STANDBY</span>
+                            </div>
+                            <div class="agent-role">Quality Assurance</div>
+                            <div class="agent-function">System Audits & Bug Reports</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="panel">
+                <div class="panel-header">
+                    <span>▣</span>
+                    <h2>Core Philosophy</h2>
+                </div>
+                <div class="panel-content">
+                    <div class="philosophy-grid">
+                        <div class="philosophy-item">
+                            <h3>Real Agents, Real Function</h3>
+                            <p>Every agent performs actual business tasks. No theater, no placeholders.</p>
+                        </div>
+                        <div class="philosophy-item">
+                            <h3>Operational Efficiency</h3>
+                            <p>Maximum output, minimum redundancy. Agents specialize and collaborate.</p>
+                        </div>
+                        <div class="philosophy-item">
+                            <h3>Zero Redundancy</h3>
+                            <p>One agent per function. Clear boundaries, no overlapping responsibilities.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Center Column: Operations -->
+        <div class="center-column">
+            <div class="panel">
+                <div class="panel-header">
+                    <span>◉</span>
+                    <h2>Operational Metrics</h2>
+                </div>
+                <div class="panel-content">
+                    <div class="metrics-grid">
+                        <div class="metric-box">
+                            <div class="metric-label">Today's LLM Spend</div>
+                            <div class="metric-value" id="metric-today">$0.00</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-label">Active Tasks</div>
+                            <div class="metric-value success">3</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-label">System Uptime</div>
+                            <div class="metric-value" id="metric-uptime">14h 32m</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-label">Current Weight</div>
+                            <div class="metric-value warning">192 lbs</div>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <canvas id="operationsChart" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="panel">
+                <div class="panel-header">
+                    <span>⚡</span>
+                    <h2>Active Protocols</h2>
+                </div>
+                <div class="panel-content">
+                    <div class="protocol-list">
+                        <div class="protocol-item">
+                            <div class="protocol-icon">📊</div>
+                            <div class="protocol-info">
+                                <div class="protocol-name">Morning Status Brief</div>
+                                <div class="protocol-status">7:30 AM daily • Weather + Updates</div>
+                            </div>
+                            <div class="protocol-toggle"></div>
+                        </div>
+                        <div class="protocol-item">
+                            <div class="protocol-icon">💼</div>
+                            <div class="protocol-info">
+                                <div class="protocol-name">Compliance Sourcing</div>
+                                <div class="protocol-status">8:30 AM M-F • Candidate leads</div>
+                            </div>
+                            <div class="protocol-toggle"></div>
+                        </div>
+                        <div class="protocol-item">
+                            <div class="protocol-icon">💪</div>
+                            <div class="protocol-info">
+                                <div class="protocol-name">Workout Reminder</div>
+                                <div class="protocol-status">11:00 AM daily • Push/Pull/Legs</div>
+                            </div>
+                            <div class="protocol-toggle"></div>
+                        </div>
+                        <div class="protocol-item">
+                            <div class="protocol-icon">📈</div>
+                            <div class="protocol-info">
+                                <div class="protocol-name">LLM Usage Monitor</div>
+                                <div class="protocol-status">Real-time • 20s refresh</div>
+                            </div>
+                            <div class="protocol-toggle"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Column: Live Activity -->
+        <div class="right-column">
+            <div class="panel">
+                <div class="panel-header">
+                    <span>◐</span>
+                    <h2>Live Activity Feed</h2>
+                </div>
+                <div class="panel-content">
+                    <div class="activity-feed" id="activity-feed">
+                        <div class="activity-item">
+                            <div class="activity-time">14:55</div>
+                            <div class="activity-content">
+                                <div class="activity-agent">Audit-Agent</div>
+                                <div class="activity-action">Completed system audit</div>
+                                <div class="activity-meta">4 issues found, 3 critical</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-time">14:47</div>
+                            <div class="activity-content">
+                                <div class="activity-agent">Stu</div>
+                                <div class="activity-action">Deployed SWARM OS v1.0</div>
+                                <div class="activity-meta">Mission Control online</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-time">14:02</div>
+                            <div class="activity-content">
+                                <div class="activity-agent">Bryce</div>
+                                <div class="activity-action">Weight updated: 192 lbs</div>
+                                <div class="activity-meta">Cut protocol activated</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-time">13:09</div>
+                            <div class="activity-content">
+                                <div class="activity-agent">Stu</div>
+                                <div class="activity-action">Morning brief delivered</div>
+                                <div class="activity-meta">Weather: 25°F, High 40°</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-time">08:30</div>
+                            <div class="activity-content">
+                                <div class="activity-agent">Sourcing-Agent</div>
+                                <div class="activity-action">Compliance brief sent</div>
+                                <div class="activity-meta">Boolean strings + targets</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="panel">
+                <div class="panel-header">
+                    <span>◒</span>
+                    <h2>Resource Monitor</h2>
+                </div>
+                <div class="panel-content">
+                    <div class="resource-bar">
+                        <div class="resource-header">
+                            <span>LLM Budget (Daily)</span>
+                            <span id="budget-percent">45%</span>
+                        </div>
+                        <div class="resource-track">
+                            <div class="resource-fill cyan" style="width: 45%"></div>
+                        </div>
+                    </div>
+                    <div class="resource-bar">
+                        <div class="resource-header">
+                            <span>API Rate Limit</span>
+                            <span>12%</span>
+                        </div>
+                        <div class="resource-track">
+                            <div class="resource-fill purple" style="width: 12%"></div>
+                        </div>
+                    </div>
+                    <div class="resource-bar">
+                        <div class="resource-header">
+                            <span>Cut Progress</span>
+                            <span>73%</span>
+                        </div>
+                        <div class="resource-track">
+                            <div class="resource-fill green" style="width: 73%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="panel">
+                <div class="panel-header">
+                    <span>⚠</span>
+                    <h2>Anti-Patterns Monitor</h2>
+                </div>
+                <div class="panel-content">
+                    <div class="protocol-list">
+                        <div class="protocol-item" style="border-color: var(--accent-green);">
+                            <div class="protocol-icon">✓</div>
+                            <div class="protocol-info">
+                                <div class="protocol-name">No Theater Agents</div>
+                                <div class="protocol-status">All agents functional</div>
+                            </div>
+                        </div>
+                        <div class="protocol-item" style="border-color: var(--accent-green);">
+                            <div class="protocol-icon">✓</div>
+                            <div class="protocol-info">
+                                <div class="protocol-name">Clear Boundaries</div>
+                                <div class="protocol-status">No overlapping duties</div>
+                            </div>
+                        </div>
+                        <div class="protocol-item" style="border-color: var(--accent-green);">
+                            <div class="protocol-icon">✓</div>
+                            <div class="protocol-info">
+                                <div class="protocol-name">Precise Instructions</div>
+                                <div class="protocol-status">All agents have defined scope</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Operations Chart
+        Chart.defaults.color = '#606070';
+        Chart.defaults.borderColor = 'rgba(255,255,255,0.05)';
+        
+        new Chart(document.getElementById('operationsChart'), {
+            type: 'line',
+            data: {
+                labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
+                datasets: [{
+                    label: 'LLM Spend ($)',
+                    data: [0.5, 1.2, 3.8, 6.2, 8.7, 10.2],
+                    borderColor: '#00d4ff',
+                    backgroundColor: 'rgba(0,212,255,0.1)',
+                    fill: true,
+                    tension: 0.4
+                }, {
+                    label: 'API Calls',
+                    data: [10, 25, 80, 140, 195, 230],
+                    borderColor: '#7b2cbf',
+                    backgroundColor: 'rgba(123,44,191,0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    yAxisID: 'y1'
+                }]
+            },
+            options: {
+                responsive: true,
+                interaction: { mode: 'index', intersect: false },
+                scales: {
+                    y: { display: true, position: 'left' },
+                    y1: { display: true, position: 'right', grid: { drawOnChartArea: false } }
+                },
+                plugins: { legend: { display: true, labels: { color: '#a0a0b0' } } }
+            }
+        });
+        
+        // Live updates
+        async function updateMetrics() {
+            try {
+                const res = await fetch('http://localhost:5002/api/usage');
+                const data = await res.json();
+                document.getElementById('metric-today').textContent = '$' + data.today.toFixed(2);
+            } catch (e) {
+                console.log('Metrics fetch failed');
+            }
+        }
+        
+        updateMetrics();
+        setInterval(updateMetrics, 20000);
+        
+        // Uptime counter
+        let uptimeMinutes = 872;
+        setInterval(() => {
+            uptimeMinutes++;
+            const hours = Math.floor(uptimeMinutes / 60);
+            const mins = uptimeMinutes % 60;
+            document.getElementById('metric-uptime').textContent = `${hours}h ${mins}m`;
+        }, 60000);
+    </script>
+</body>
+</html>

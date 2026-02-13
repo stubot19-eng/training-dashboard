@@ -12,9 +12,10 @@
         }
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: #0a0a0f;
-            color: #e0e0e0;
+            background: linear-gradient(180deg, #1a2f1a 0%, #0d1f0d 50%, #0a1810 100%);
+            color: #e8f0e8;
             line-height: 1.6;
+            min-height: 100vh;
         }
         .container {
             max-width: 1200px;
@@ -24,20 +25,30 @@
         header {
             text-align: center;
             padding: 40px 20px;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            background: linear-gradient(135deg, #2d4a2d 0%, #1f3a1f 50%, #0f280f 100%);
             border-radius: 16px;
             margin-bottom: 30px;
+            border: 1px solid rgba(100, 150, 100, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 30, 0, 0.5);
         }
         header h1 {
             font-size: 2.5rem;
-            background: linear-gradient(90deg, #00d4ff, #7b2cbf);
+            background: linear-gradient(90deg, #7cb97c, #a8d5a8);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 10px;
         }
         header p {
-            color: #888;
+            color: #8fa88f;
             font-size: 1.1rem;
+        }
+        .weight-update {
+            background: linear-gradient(135deg, rgba(90, 138, 90, 0.2), rgba(70, 110, 70, 0.1));
+            border: 1px solid #5a8a5a;
+            padding: 10px 20px;
+            border-radius: 20px;
+            margin-top: 10px;
+            display: inline-block;
         }
         .stats-grid {
             display: grid;
@@ -46,14 +57,15 @@
             margin-bottom: 30px;
         }
         .stat-card {
-            background: #151520;
+            background: linear-gradient(135deg, #1e3a1e 0%, #142814 100%);
             padding: 25px;
             border-radius: 12px;
-            border: 1px solid #252535;
+            border: 1px solid rgba(100, 150, 100, 0.3);
             text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 20, 0, 0.4);
         }
         .stat-card h3 {
-            color: #00d4ff;
+            color: #7cb97c;
             font-size: 0.9rem;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -62,21 +74,22 @@
         .stat-card .value {
             font-size: 2rem;
             font-weight: 700;
-            color: #fff;
+            color: #e8f0e8;
         }
         .section {
-            background: #151520;
+            background: linear-gradient(135deg, #1e3a1e 0%, #142814 100%);
             border-radius: 16px;
             padding: 30px;
             margin-bottom: 30px;
-            border: 1px solid #252535;
+            border: 1px solid rgba(100, 150, 100, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 20, 0, 0.4);
         }
         .section h2 {
-            color: #00d4ff;
+            color: #7cb97c;
             font-size: 1.5rem;
             margin-bottom: 20px;
             padding-bottom: 15px;
-            border-bottom: 2px solid #252535;
+            border-bottom: 2px solid rgba(100, 150, 100, 0.3);
         }
         .macro-grid {
             display: grid;
@@ -85,13 +98,14 @@
             margin-top: 20px;
         }
         .macro-item {
-            background: #1a1a2e;
+            background: linear-gradient(135deg, #1f3a1f 0%, #142814 100%);
             padding: 20px;
             border-radius: 10px;
             text-align: center;
+            border: 1px solid rgba(100, 150, 100, 0.2);
         }
         .macro-item .label {
-            color: #888;
+            color: #8fa88f;
             font-size: 0.85rem;
             text-transform: uppercase;
         }
@@ -99,11 +113,12 @@
             font-size: 1.8rem;
             font-weight: 700;
             margin: 10px 0;
+            color: #e8f0e8;
         }
-        .macro-item.protein { border-left: 4px solid #ff6b6b; }
-        .macro-item.carbs { border-left: 4px solid #4ecdc4; }
-        .macro-item.fats { border-left: 4px solid #ffe66d; }
-        .macro-item.calories { border-left: 4px solid #a855f7; }
+        .macro-item.protein { border-left: 4px solid #8b4513; }
+        .macro-item.carbs { border-left: 4px solid #d4a574; }
+        .macro-item.fats { border-left: 4px solid #daa520; }
+        .macro-item.calories { border-left: 4px solid #5a8a5a; }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -112,28 +127,28 @@
         th, td {
             padding: 12px 15px;
             text-align: left;
-            border-bottom: 1px solid #252535;
+            border-bottom: 1px solid rgba(100, 150, 100, 0.2);
         }
         th {
-            color: #00d4ff;
+            color: #7cb97c;
             font-weight: 600;
             text-transform: uppercase;
             font-size: 0.85rem;
         }
         tr:hover {
-            background: #1a1a2e;
+            background: rgba(100, 150, 100, 0.1);
         }
         .exercise-name {
-            color: #fff;
+            color: #e8f0e8;
             font-weight: 500;
         }
         .sets-reps {
-            color: #888;
+            color: #8fa88f;
             font-family: monospace;
         }
         .pr-badge {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            color: #000;
+            background: linear-gradient(135deg, #8b4513, #a0522d);
+            color: #e8f0e8;
             padding: 3px 8px;
             border-radius: 4px;
             font-size: 0.7rem;
@@ -147,59 +162,62 @@
             margin-top: 20px;
         }
         .day-card {
-            background: #1a1a2e;
+            background: linear-gradient(135deg, #1f3a1f 0%, #142814 100%);
             padding: 20px;
             border-radius: 10px;
-            border-left: 4px solid #00d4ff;
+            border-left: 4px solid #5a8a5a;
         }
         .day-card.rest {
-            border-left-color: #666;
+            border-left-color: #4a4a4a;
         }
         .day-card h4 {
-            color: #fff;
+            color: #e8f0e8;
             margin-bottom: 8px;
         }
         .day-card p {
-            color: #888;
+            color: #8fa88f;
             font-size: 0.9rem;
         }
         .input-guide {
-            background: #1a1a2e;
+            background: linear-gradient(135deg, #1f3a1f 0%, #142814 100%);
             padding: 20px;
             border-radius: 10px;
             margin-top: 20px;
+            border: 1px solid rgba(100, 150, 100, 0.2);
         }
         .input-guide code {
             display: block;
-            background: #0a0a0f;
+            background: #0d1f0d;
             padding: 15px;
             border-radius: 8px;
             margin: 10px 0;
             font-family: monospace;
-            color: #4ecdc4;
+            color: #7cb97c;
             overflow-x: auto;
+            border: 1px solid rgba(100, 150, 100, 0.2);
         }
         .progress-bar {
-            background: #252535;
+            background: #1a2f1a;
             height: 8px;
             border-radius: 4px;
             overflow: hidden;
             margin-top: 10px;
+            border: 1px solid rgba(100, 150, 100, 0.2);
         }
         .progress-fill {
-            background: linear-gradient(90deg, #00d4ff, #7b2cbf);
+            background: linear-gradient(90deg, #5a8a5a, #7cb97c);
             height: 100%;
             border-radius: 4px;
         }
         .highlight-box {
-            background: linear-gradient(135deg, rgba(0,212,255,0.1), rgba(123,44,191,0.1));
-            border: 1px solid #00d4ff;
+            background: linear-gradient(135deg, rgba(100, 150, 100, 0.15), rgba(80, 120, 80, 0.1));
+            border: 1px solid #5a8a5a;
             padding: 20px;
             border-radius: 10px;
             margin: 20px 0;
         }
         .highlight-box h3 {
-            color: #00d4ff;
+            color: #7cb97c;
             margin-bottom: 10px;
         }
         .tabs {
@@ -209,16 +227,17 @@
             flex-wrap: wrap;
         }
         .tab {
-            background: #1a1a2e;
+            background: linear-gradient(135deg, #1f3a1f 0%, #142814 100%);
             padding: 10px 20px;
             border-radius: 8px;
             cursor: pointer;
-            border: 1px solid #252535;
+            border: 1px solid rgba(100, 150, 100, 0.3);
             transition: all 0.3s;
+            color: #e8f0e8;
         }
         .tab:hover, .tab.active {
-            background: #00d4ff;
-            color: #000;
+            background: linear-gradient(135deg, #5a8a5a 0%, #4a7a4a 100%);
+            color: #fff;
         }
     </style>
 </head>
@@ -226,13 +245,15 @@
     <div class="container">
         <header>
             <h1>🏋️ Bryce's Training Dashboard</h1>
-            <p>6'4" | 31 years old | High Protein Lean Bulk</p>
+            <p>6'4" | 31 years old | <strong>Cut for Abs</strong> | Target: 180-185 lbs</p>
+            <div class="weight-update">Current: 192 lbs</div>
         </header>
 
         <div class="stats-grid">
             <div class="stat-card">
                 <h3>Current Weight</h3>
-                <div class="value">___ lb</div>
+                <div class="value">192 lb</div>
+                <small>Goal: 180-185</small>
             </div>
             <div class="stat-card">
                 <h3>Total Workouts</h3>
@@ -249,33 +270,33 @@
         </div>
 
         <div class="section">
-            <h2>🎯 Daily Macros (Lean Bulk)</h2>
-            <p style="color: #888; margin-bottom: 20px;">Target: High protein, moderate surplus for lean muscle gain</p>
+            <h2>🎯 Daily Macros (Cut for Abs)</h2>
+            <p style="color: #8fa88f; margin-bottom: 20px;">Target: 2,600 cal deficit | Keep muscle, lose fat | Goal: 180-185 lbs</p>
             <div class="macro-grid">
                 <div class="macro-item calories">
                     <div class="label">Calories</div>
-                    <div class="amount">TBD</div>
-                    <small>maintenance + 300</small>
+                    <div class="amount">2,600</div>
+                    <small>-500 deficit</small>
                 </div>
                 <div class="macro-item protein">
                     <div class="label">Protein</div>
-                    <div class="amount">TBDg</div>
-                    <small>1g per lb target</small>
+                    <div class="amount">230g</div>
+                    <small>1.2g/lb preserve muscle</small>
                 </div>
                 <div class="macro-item carbs">
                     <div class="label">Carbs</div>
-                    <div class="amount">TBDg</div>
-                    <small>training fuel</small>
+                    <div class="amount">260g</div>
+                    <small>around workouts</small>
                 </div>
                 <div class="macro-item fats">
                     <div class="label">Fats</div>
-                    <div class="amount">TBDg</div>
-                    <small>hormone health</small>
+                    <div class="amount">65g</div>
+                    <small>moderate</small>
                 </div>
             </div>
             <div class="highlight-box">
-                <h3>⚠️ Need Your Current Weight</h3>
-                <p>Reply with your current bodyweight to calculate personalized macro targets. Format: "Weight: 205"</p>
+                <h3>✅ Cut Strategy</h3>
+                <p>Lose 7-12 lbs over 8-12 weeks. Keep training HEAVY to maintain PRs. Add 10-15 min cardio post-workout. Walk on rest days. One refeed meal per week.</p>
             </div>
         </div>
 
@@ -300,12 +321,12 @@ Lateral Raises:
 
 Notes: felt strong, slept 7hrs</code>
             </div>
-            <p style="color: #888; margin-top: 15px;"><strong>Pro tip:</strong> Bodyweight every session = track how food affects performance.</p>
+            <p style="color: #8fa88f; margin-top: 15px;"><strong>Pro tip:</strong> Bodyweight every session = track how food affects performance.</p>
         </div>
 
         <div class="section">
             <h2>📅 6-Week Lean Mass Program</h2>
-            <p style="color: #888; margin-bottom: 20px;">4 days/week | Push/Pull/Legs/Upper | Progressive overload focus</p>
+            <p style="color: #8fa88f; margin-bottom: 20px;">4 days/week | Push/Pull/Legs/Upper | Progressive overload focus</p>
             
             <h3 style="color: #fff; margin: 20px 0 15px;">Week 1</h3>
             <div class="week-plan">
@@ -395,7 +416,7 @@ Notes: felt strong, slept 7hrs</code>
 
         <div class="section">
             <h2>📚 Historical Data (27 Workouts)</h2>
-            <p style="color: #888;">Full workout history with all sets, reps, and weights:</p>
+            <p style="color: #8fa88f;">Full workout history with all sets, reps, and weights:</p>
             <div class="highlight-box">
                 <p>🔗 View detailed log: <strong>bryce-workouts-extracted.txt</strong><br>
                 📄 Summary view: <strong>bryce-training-log.md</strong></p>
@@ -404,7 +425,7 @@ Notes: felt strong, slept 7hrs</code>
 
         <div class="section">
             <h2>🎯 Next Steps</h2>
-            <ol style="color: #e0e0e0; padding-left: 20px; line-height: 2;">
+            <ol style="color: #e8f0e8; padding-left: 20px; line-height: 2;">
                 <li>Send me your current bodyweight to unlock macro targets</li>
                 <li>Pick your workout time (I'll text you daily)</li>
                 <li>Log every session using the format above</li>
@@ -413,10 +434,30 @@ Notes: felt strong, slept 7hrs</code>
             </ol>
         </div>
 
-        <div class="section" style="background: linear-gradient(135deg, rgba(0,212,255,0.1), rgba(123,44,191,0.1)); border: 1px solid #00d4ff;">
-            <h2>🎵 Daily Lyric</h2>
-            <p id="daily-lyric" style="font-size: 1.2rem; font-style: italic; color: #fff; text-align: center; padding: 20px;"></p>
-            <p id="daily-artist" style="text-align: center; color: #888; font-size: 0.9rem;"></p>
+        <div class="section">
+            <h2>📈 PR Progression Charts</h2>
+            <p style="color: #8fa88f; margin-bottom: 20px;">Track your strength gains over time. Keep lifting heavy during the cut.</p>
+            
+            <div style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                <h3 style="color: #7cb97c; font-size: 0.9rem; margin-bottom: 15px; text-align: center;">DB Bench Press (lbs)</h3>
+                <canvas id="benchChart" height="120"></canvas>
+            </div>
+            
+            <div style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                <h3 style="color: #7cb97c; font-size: 0.9rem; margin-bottom: 15px; text-align: center;">Lat Pulldown (lbs)</h3>
+                <canvas id="pulldownChart" height="120"></canvas>
+            </div>
+            
+            <div style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 10px;">
+                <h3 style="color: #7cb97c; font-size: 0.9rem; margin-bottom: 15px; text-align: center;">Body Weight (lbs)</h3>
+                <canvas id="weightChart" height="120"></canvas>
+            </div>
+        </div>
+
+        <div class="section" style="background: linear-gradient(135deg, rgba(139, 69, 19, 0.15), rgba(160, 82, 45, 0.1)); border: 1px solid #8b4513;">
+            <h2>💭 Daily Quote</h2>
+            <p id="daily-lyric" style="font-size: 1.2rem; font-style: italic; color: #e8f0e8; text-align: center; padding: 20px;"></p>
+            <p id="daily-artist" style="text-align: center; color: #a08060; font-size: 0.9rem;"></p>
         </div>
 
         <footer style="text-align: center; padding: 30px; color: #666;">
@@ -470,6 +511,100 @@ Notes: felt strong, slept 7hrs</code>
             const today = getDailyLyric();
             document.getElementById('daily-lyric').textContent = `"${today.text}"`;
             document.getElementById('daily-artist').textContent = `— ${today.artist}`;
+        </script>
+        
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            // Chart defaults for dark theme
+            Chart.defaults.color = '#8fa88f';
+            Chart.defaults.borderColor = 'rgba(100, 150, 100, 0.2)';
+            
+            // DB Bench Progression
+            new Chart(document.getElementById('benchChart'), {
+                type: 'line',
+                data: {
+                    labels: ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17'],
+                    datasets: [{
+                        label: 'Weight (lbs)',
+                        data: [40,50,50,50,50,50,60,60,60,50,60,65,65,65,50,50,65],
+                        borderColor: '#7cb97c',
+                        backgroundColor: 'rgba(124, 185, 124, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#7cb97c',
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: false, min: 30, grid: { color: 'rgba(100, 150, 100, 0.1)' } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+            
+            // Lat Pulldown Progression
+            new Chart(document.getElementById('pulldownChart'), {
+                type: 'line',
+                data: {
+                    labels: ['1','2','3','4','5','6'],
+                    datasets: [{
+                        label: 'Weight (lbs)',
+                        data: [110,110,115,100,115,100],
+                        borderColor: '#5a8a5a',
+                        backgroundColor: 'rgba(90, 138, 90, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#5a8a5a',
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: false, min: 90, grid: { color: 'rgba(100, 150, 100, 0.1)' } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+            
+            // Body Weight Progression
+            new Chart(document.getElementById('weightChart'), {
+                type: 'line',
+                data: {
+                    labels: ['Start','Week 2','Week 4','Week 6','Today'],
+                    datasets: [{
+                        label: 'Weight (lbs)',
+                        data: [211,null,null,null,192],
+                        borderColor: '#a08060',
+                        backgroundColor: 'rgba(160, 128, 96, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#a08060',
+                        pointRadius: 5
+                    }, {
+                        label: 'Goal',
+                        data: [185,185,185,185,185],
+                        borderColor: '#7cb97c',
+                        borderDash: [5, 5],
+                        fill: false,
+                        pointRadius: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { 
+                        legend: { display: true, labels: { color: '#8fa88f' } } 
+                    },
+                    scales: {
+                        y: { beginAtZero: false, min: 180, max: 220, grid: { color: 'rgba(100, 150, 100, 0.1)' } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
         </script>
     </div>
 </body>

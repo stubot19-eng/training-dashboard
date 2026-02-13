@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LLM Usage Dashboard</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
+      color: #e0e0e0;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container { max-width: 1200px; margin: 0 auto; }
+    header {
+      text-align: center;
+      padding: 30px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 16px;
+      margin-bottom: 25px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    h1 {
+      font-size: 2rem;
+      background: linear-gradient(90deg, #00d4ff, #7b2cbf);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+    .subtitle { color: #888; font-size: 1rem; }
+    .live-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0,212,255,0.1);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      margin-top: 12px;
+    }
+    .live-dot {
+      width: 8px; height: 8px;
+      background: #00ff88;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px; }
+    .card {
+      background: rgba(255,255,255,0.05);
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.1);
+      text-align: center;
+    }
+    .card.today { border-left: 3px solid #00ff88; }
+    .card.week { border-left: 3px solid #00d4ff; }
+    .card.month { border-left: 3px solid #a855f7; }
+    .card.total { border-left: 3px solid #f59e0b; }
+    .card-label { color: #888; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+    .card-value { font-size: 1.8rem; font-weight: 700; color: #fff; }
+    .section {
+      background: rgba(255,255,255,0.05);
+      border-radius: 16px;
+      padding: 25px;
+      margin-bottom: 25px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .section h2 {
+      color: #00d4ff;
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .provider-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
+    .provider-card {
+      background: rgba(0,0,0,0.3);
+      padding: 20px;
+      border-radius: 10px;
+    }
+    .provider-card.anthropic { border-left: 3px solid #d4a574; }
+    .provider-card.moonshot { border-left: 3px solid #00d4ff; }
+    .provider-name { font-weight: 600; font-size: 1.1rem; margin-bottom: 8px; }
+    .provider-cost { font-size: 1.5rem; color: #fff; }
+    .provider-pct { color: #666; font-size: 0.85rem; margin-top: 4px; }
+    .model-table { width: 100%; border-collapse: collapse; }
+    .model-table th, .model-table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .model-table th { color: #888; font-weight: 500; font-size: 0.85rem; text-transform: uppercase; }
+    .model-table td { color: #e0e0e0; }
+    .model-table tr:hover { background: rgba(255,255,255,0.03); }
+    .model-provider { font-size: 0.75rem; color: #666; }
+    .trend-chart {
+      display: flex;
+      align-items: flex-end;
+      gap: 4px;
+      height: 150px;
+      padding: 20px 0;
+    }
+    .trend-bar {
+      flex: 1;
+      background: linear-gradient(to top, #00d4ff, #7b2cbf);
+      border-radius: 2px 2px 0 0;
+      min-height: 2px;
+      position: relative;
+    }
+    .trend-bar:hover::after {
+      content: attr(data-date) '\A$' attr(data-cost);
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.9);
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      white-space: pre;
+      z-index: 10;
+    }
+    .recent-list { max-height: 400px; overflow-y: auto; }
+    .recent-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .recent-item:hover { background: rgba(255,255,255,0.03); }
+    .recent-info { flex: 1; }
+    .recent-model { font-weight: 500; color: #fff; }
+    .recent-provider { font-size: 0.75rem; color: #666; }
+    .recent-time { font-size: 0.75rem; color: #444; }
+    .recent-cost { text-align: right; }
+    .recent-cost-value { font-weight: 600; color: #00ff88; }
+    .recent-tokens { font-size: 0.75rem; color: #666; }
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #666;
+    }
+    .empty-state-icon { font-size: 3rem; margin-bottom: 16px; }
+    @media (max-width: 600px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+      .provider-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>💰 LLM Usage Dashboard</h1>
+      <p class="subtitle">Track your AI spending across providers</p>
+      <div class="live-indicator">
+        <span class="live-dot"></span>
+        <span>Live • Updates every 30s</span>
+      </div>
+    </header>
+
+    <div class="grid">
+      <div class="card today">
+        <div class="card-label">Today</div>
+        <div class="card-value">$<span id="today-cost">0.00</span></div>
+      </div>
+      <div class="card week">
+        <div class="card-label">This Week</div>
+        <div class="card-value">$<span id="week-cost">0.00</span></div>
+      </div>
+      <div class="card month">
+        <div class="card-label">This Month</div>
+        <div class="card-value">$<span id="month-cost">0.00</span></div>
+      </div>
+      <div class="card total">
+        <div class="card-label">All Time</div>
+        <div class="card-value">$<span id="total-cost">0.00</span></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>📊 Provider Breakdown</h2>
+      <div class="provider-grid" id="provider-grid">
+        <div class="provider-card anthropic">
+          <div class="provider-name">Anthropic (Claude)</div>
+          <div class="provider-cost">$<span id="anthropic-cost">0.00</span></div>
+          <div class="provider-pct"><span id="anthropic-pct">0</span>% of total</div>
+        </div>
+        <div class="provider-card moonshot">
+          <div class="provider-name">Moonshot (Kimi)</div>
+          <div class="provider-cost">$<span id="moonshot-cost">0.00</span></div>
+          <div class="provider-pct"><span id="moonshot-pct">0</span>% of total</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>🤖 Model Usage</h2>
+      <table class="model-table">
+        <thead>
+          <tr>
+            <th>Model</th>
+            <th>Calls</th>
+            <th>Tokens In</th>
+            <th>Tokens Out</th>
+            <th>Cost</th>
+          </tr>
+        </thead>
+        <tbody id="model-tbody">
+          <tr><td colspan="5" class="empty-state">No data yet</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <h2>📈 30-Day Trend</h2>
+      <div class="trend-chart" id="trend-chart">
+        <div class="empty-state" style="width:100%;">
+          <div class="empty-state-icon">📊</div>
+          <p>No trend data available</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>📝 Recent Calls</h2>
+      <div class="recent-list" id="recent-list">
+        <div class="empty-state">
+          <div class="empty-state-icon">📝</div>
+          <p>No API calls logged yet</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    async function loadData() {
+      try {
+        const res = await fetch('/api/usage');
+        const data = await res.json();
+        updateDashboard(data);
+      } catch (e) {
+        console.error('Failed to load data:', e);
+      }
+    }
+
+    function updateDashboard(data) {
+      // Update cost cards
+      document.getElementById('today-cost').textContent = data.today.toFixed(4);
+      document.getElementById('week-cost').textContent = data.week.toFixed(4);
+      document.getElementById('month-cost').textContent = data.month.toFixed(4);
+      document.getElementById('total-cost').textContent = data.total.toFixed(4);
+
+      // Update provider breakdown
+      const anthropicCost = data.providers.anthropic || 0;
+      const moonshotCost = data.providers.moonshot || 0;
+      const totalCost = data.total || 1;
+
+      document.getElementById('anthropic-cost').textContent = anthropicCost.toFixed(4);
+      document.getElementById('moonshot-cost').textContent = moonshotCost.toFixed(4);
+      document.getElementById('anthropic-pct').textContent = ((anthropicCost / totalCost) * 100).toFixed(1);
+      document.getElementById('moonshot-pct').textContent = ((moonshotCost / totalCost) * 100).toFixed(1);
+
+      // Update model table
+      const modelTbody = document.getElementById('model-tbody');
+      if (Object.keys(data.models).length > 0) {
+        modelTbody.innerHTML = Object.entries(data.models)
+          .sort((a, b) => b[1].cost - a[1].cost)
+          .map(([model, stats]) => `
+            <tr>
+              <td>
+                <div>${model}</div>
+                <div class="model-provider">${data.recentCalls.find(c => c.model === model)?.provider || 'unknown'}</div>
+              </td>
+              <td>${stats.calls}</td>
+              <td>${stats.tokensIn.toLocaleString()}</td>
+              <td>${stats.tokensOut.toLocaleString()}</td>
+              <td>$${stats.cost.toFixed(4)}</td>
+            </tr>
+          `).join('');
+      }
+
+      // Update trend chart
+      const trendChart = document.getElementById('trend-chart');
+      if (data.trends.length > 0) {
+        const maxCost = Math.max(...data.trends.map(t => t[1].cost), 0.01);
+        trendChart.innerHTML = data.trends.map(([date, stats]) => {
+          const height = (stats.cost / maxCost) * 100;
+          return `<div class="trend-bar" style="height: ${Math.max(height, 2)}%" data-date="${date}" data-cost="${stats.cost.toFixed(2)}"></div>`;
+        }).join('');
+      }
+
+      // Update recent calls
+      const recentList = document.getElementById('recent-list');
+      if (data.recentCalls.length > 0) {
+        recentList.innerHTML = data.recentCalls.map(call => `
+          <div class="recent-item">
+            <div class="recent-info">
+              <div class="recent-model">${call.model}</div>
+              <div class="recent-provider">${call.provider}</div>
+              <div class="recent-time">${new Date(call.timestamp).toLocaleString()}</div>
+            </div>
+            <div class="recent-cost">
+              <div class="recent-cost-value">$${(call.cost || 0).toFixed(4)}</div>
+              <div class="recent-tokens">${(call.tokensIn || 0) + (call.tokensOut || 0)} tokens</div>
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+
+    // Initial load
+    loadData();
+
+    // Auto-refresh every 20 seconds
+    setInterval(loadData, 20000);
+  </script>
+</body>
+</html>
