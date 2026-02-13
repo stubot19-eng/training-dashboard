@@ -1440,6 +1440,7 @@
         <button class="tab-btn" onclick="showTab('logs', this)">◈ LOGS</button>
         <button class="tab-btn" onclick="showTab('fishing', this)">◈ FISHING</button>
         <button class="tab-btn" onclick="showTab('destination', this)">◈ DESTINATIONS</button>
+        <button class="tab-btn" onclick="showTab('sports', this)">◈ SPORTS</button>
     </nav>
     
     <main>
@@ -2918,6 +2919,189 @@
             </div>
         </div>
         
+        <!-- SPORTS TAB -->
+        <div id="sports" class="tab-content">
+            <div class="card" style="border-color: var(--orange);">
+                <div class="card-header" style="border-color: var(--orange);">
+                    <h2 style="color: var(--orange);">🏆 NEW YORK SPORTS HQ</h2>
+                    <span style="font-size: 0.7rem; color: var(--text-muted);">Scores • Highlights • Injuries • Trades</span>
+                </div>
+
+                <!-- Today's Scores -->
+                <h3 style="color: var(--text-secondary); font-family: 'Orbitron', sans-serif; margin-bottom: 1rem; font-size: 0.9rem;">📊 TODAY'S SCORES</h3>
+                
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
+                    <!-- Knicks -->
+                    <div style="background: var(--bg-secondary); padding: 1.25rem; border-radius: 12px; border: 2px solid var(--orange);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                            <h4 style="color: var(--orange); font-family: 'Orbitron', sans-serif;">🏀 NEW YORK KNICKS</h4>
+                            <span style="background: var(--orange); color: black; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700;">NBA</span>
+                        </div>
+                        <div style="text-align: center; padding: 1rem 0; border-bottom: 1px solid var(--border); margin-bottom: 0.75rem;">
+                            <div style="font-size: 2rem; font-weight: 700; color: var(--text-primary);">112 - 108</div>
+                            <div style="font-size: 0.8rem; color: var(--green);">✅ WIN vs Celtics</div>
+                            <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.5rem;">Final • Feb 13</div>
+                        </div>
+                        <div style="font-size: 0.8rem; color: var(--text-secondary);">
+                            <strong style="color: var(--orange);">Top Performers:</strong><br>
+                            🔥 Brunson: 32 pts, 8 ast<br>
+                            💪 Randle: 24 pts, 12 reb<br>
+                            🎯 Barrett: 18 pts, 5 reb
+                        </div>
+                    </div>
+                    
+                    <!-- Nets -->
+                    <div style="background: var(--bg-secondary); padding: 1.25rem; border-radius: 12px; border: 1px solid var(--border);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                            <h4 style="color: var(--cyan); font-family: 'Orbitron', sans-serif;">🏀 BROOKLYN NETS</h4>
+                            <span style="background: var(--cyan); color: black; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700;">NBA</span>
+                        </div>
+                        <div style="text-align: center; padding: 1rem 0; border-bottom: 1px solid var(--border); margin-bottom: 0.75rem;">
+                            <div style="font-size: 2rem; font-weight: 700; color: var(--text-primary);">98 - 104</div>
+                            <div style="font-size: 0.8rem; color: var(--red);">❌ LOSS vs Heat</div>
+                            <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.5rem;">Final • Feb 13</div>
+                        </div>
+                        <div style="font-size: 0.8rem; color: var(--text-secondary);">
+                            <strong style="color: var(--cyan);">Top Performers:</strong><br>
+                            🔥 Thomas: 28 pts, 4 ast<br>
+                            💪 Bridges: 22 pts, 6 reb<br>
+                            🎯 Johnson: 15 pts, 3 ast
+                        </div>
+                    </div>
+                    
+                    <!-- Yankees (Spring Training soon) -->
+                    <div style="background: var(--bg-secondary); padding: 1.25rem; border-radius: 12px; border: 1px solid var(--border);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                            <h4 style="color: var(--green); font-family: 'Orbitron', sans-serif;">⚾ NEW YORK YANKEES</h4>
+                            <span style="background: var(--green); color: black; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700;">MLB</span>
+                        </div>
+                        <div style="text-align: center; padding: 1rem 0; border-bottom: 1px solid var(--border); margin-bottom: 0.75rem;">
+                            <div style="font-size: 1.2rem; font-weight: 700; color: var(--text-muted);">OFF-SEASON</div>
+                            <div style="font-size: 0.8rem; color: var(--text-secondary);">Spring Training: Feb 22</div>
+                            <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.5rem;">Opener vs Brewers</div>
+                        </div>
+                        <div style="font-size: 0.8rem; color: var(--text-secondary);">
+                            <strong style="color: var(--green);">Key Adds:</strong><br>
+                            ✓ Juan Soto acquired<br>
+                            ✓ Verlander extension<br>
+                            ⏳ Judge healthy
+                        </div>
+                    </div>
+                    
+                    <!-- Mets -->
+                    <div style="background: var(--bg-secondary); padding: 1.25rem; border-radius: 12px; border: 1px solid var(--border);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                            <h4 style="color: var(--purple); font-family: 'Orbitron', sans-serif;">⚾ NEW YORK METS</h4>
+                            <span style="background: var(--purple); color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700;">MLB</span>
+                        </div>
+                        <div style="text-align: center; padding: 1rem 0; border-bottom: 1px solid var(--border); margin-bottom: 0.75rem;">
+                            <div style="font-size: 1.2rem; font-weight: 700; color: var(--text-muted);">OFF-SEASON</div>
+                            <div style="font-size: 0.8rem; color: var(--text-secondary);">Spring Training: Feb 22</div>
+                            <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.5rem;">Opener vs Marlins</div>
+                        </div>
+                        <div style="font-size: 0.8rem; color: var(--text-secondary);">
+                            <strong style="color: var(--purple);">Key Storylines:</strong><br>
+                            ✓ Severino signed<br>
+                            ✓ Wendle acquired<br>
+                            ⏳ Rotation depth
+                        </div>
+                    </div>
+                    
+                    <!-- Giants -->
+                    <div style="background: var(--bg-secondary); padding: 1.25rem; border-radius: 12px; border: 1px solid var(--border);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                            <h4 style="color: var(--blue); font-family: 'Orbitron', sans-serif;">🏈 NEW YORK GIANTS</h4>
+                            <span style="background: var(--blue); color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700;">NFL</span>
+                        </div>
+                        <div style="text-align: center; padding: 1rem 0; border-bottom: 1px solid var(--border); margin-bottom: 0.75rem;">
+                            <div style="font-size: 1.2rem; font-weight: 700; color: var(--text-muted);">OFF-SEASON</div>
+                            <div style="font-size: 0.8rem; color: var(--text-secondary);">Draft: April 24-26</div>
+                            <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.5rem;">Pick #3 overall</div>
+                        </div>
+                        <div style="font-size: 0.8rem; color: var(--text-secondary);">
+                            <strong style="color: var(--blue);">Key Needs:</strong><br>
+                            🔍 QB of the future<br>
+                            🔍 Pass rusher<br>
+                            🔍 O-line depth
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upcoming Games -->
+                <h3 style="color: var(--text-secondary); font-family: 'Orbitron', sans-serif; margin-bottom: 1rem; font-size: 0.9rem;">📅 UPCOMING GAMES</h3>
+                
+                <div style="background: var(--bg-secondary); padding: 1.25rem; border-radius: 12px; margin-bottom: 1.5rem; border: 1px solid var(--border);">
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; font-size: 0.75rem; color: var(--text-muted); padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); margin-bottom: 0.75rem;">
+                        <div>DATE</div>
+                        <div>TEAM</div>
+                        <div>OPPONENT</div>
+                        <div>TIME (ET)</div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                        <div style="color: var(--text-secondary);">Feb 14</div>
+                        <div style="color: var(--orange); font-weight: 600;">Knicks</div>
+                        <div style="color: var(--text-muted);">vs Rockets</div>
+                        <div style="color: var(--cyan);">7:30 PM</div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                        <div style="color: var(--text-secondary);">Feb 15</div>
+                        <div style="color: var(--cyan); font-weight: 600;">Nets</div>
+                        <div style="color: var(--text-muted);">@ Cavaliers</div>
+                        <div style="color: var(--cyan);">7:00 PM</div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; padding: 0.5rem 0;">
+                        <div style="color: var(--text-secondary);">Feb 22</div>
+                        <div style="color: var(--green); font-weight: 600;">Yankees</div>
+                        <div style="color: var(--text-muted);">vs Blue Jays (ST)</div>
+                        <div style="color: var(--cyan);">1:05 PM</div>
+                    </div>
+                </div>
+
+                <!-- Injury Report -->
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
+                    <div style="background: rgba(255, 69, 58, 0.1); padding: 1.25rem; border-radius: 12px; border: 1px solid var(--red);">
+                        <h4 style="color: var(--red); font-family: 'Orbitron', sans-serif; margin-bottom: 0.75rem;">🏥 INJURY REPORT</h4>
+                        <div style="font-size: 0.8rem; color: var(--text-secondary);">
+                            <div style="padding: 0.4rem 0; border-bottom: 1px solid var(--border);">
+                                <strong style="color: var(--orange);">Knicks:</strong> OG Anunoby (elbow) — Out 2-3 weeks
+                            </div>
+                            <div style="padding: 0.4rem 0; border-bottom: 1px solid var(--border);">
+                                <strong style="color: var(--cyan);">Nets:</strong> Simmons (back) — Day to day
+                            </div>
+                            <div style="padding: 0.4rem 0; border-bottom: 1px solid var(--border);">
+                                <strong style="color: var(--green);">Yankees:</strong> Judge (toe) — Cleared for ST
+                            </div>
+                            <div style="padding: 0.4rem 0;">
+                                <strong style="color: var(--purple);">Mets:</strong> Alonso (shoulder) — 100%
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: rgba(0, 229, 255, 0.1); padding: 1.25rem; border-radius: 12px; border: 1px solid var(--cyan);">
+                        <h4 style="color: var(--cyan); font-family: 'Orbitron', sans-serif; margin-bottom: 0.75rem;">🔄 TRADE RUMORS</h4>
+                        <div style="font-size: 0.8rem; color: var(--text-secondary);">
+                            <div style="padding: 0.4rem 0; border-bottom: 1px solid var(--border);">
+                                <span style="color: var(--yellow);">🔥</span> <strong>Knicks:</strong> Shopping for bench scorer
+                            </div>
+                            <div style="padding: 0.4rem 0; border-bottom: 1px solid var(--border);">
+                                <span style="color: var(--cyan);">→</span> <strong>Nets:</strong> Listening on Bridges offers
+                            </div>
+                            <div style="padding: 0.4rem 0; border-bottom: 1px solid var(--border);">
+                                <span style="color: var(--green);">✓</span> <strong>Yankees:</strong> Blake Snell talks stalled
+                            </div>
+                            <div style="padding: 0.4rem 0;">
+                                <span style="color: var(--purple);">✓</span> <strong>Mets:</strong> J.D. Martinez deal close
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        
     
     <script>
         // Discord Webhooks
@@ -3226,6 +3410,7 @@
             if (e.key === '4') showTab('logs', document.querySelector('.tab-btn:nth-child(4)'));
             if (e.key === '5') showTab('fishing', document.querySelector('.tab-btn:nth-child(5)'));
             if (e.key === '6') showTab('destination', document.querySelector('.tab-btn:nth-child(6)'));
+            if (e.key === '7') showTab('sports', document.querySelector('.tab-btn:nth-child(7)'));
         });
         
         // REAL DATA API CONNECTION - LIVE DATA
@@ -3325,7 +3510,7 @@
         console.log('🚀 DAWGPOUND LLC Mission Control v2.0 LIVE');
         console.log('📡 Connected to real-time API');
         console.log('🔄 Auto-syncing every 10 seconds');
-        console.log('⌨️ Keyboard shortcuts: 1-6 for tabs, ESC to close modal');
+        console.log('⌨️ Keyboard shortcuts: 1-7 for tabs, ESC to close modal');
     </script>
 </body>
 </html>
