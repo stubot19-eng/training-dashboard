@@ -1441,6 +1441,7 @@
         <button class="tab-btn" onclick="showTab('fishing', this)">◈ FISHING</button>
         <button class="tab-btn" onclick="showTab('destination', this)">◈ DESTINATIONS</button>
         <button class="tab-btn" onclick="showTab('sports', this)">◈ SPORTS</button>
+        <button class="tab-btn" onclick="showTab('fitness', this)">◈ FITNESS</button>
     </nav>
     
     <main>
@@ -3153,6 +3154,219 @@
             </div>
         </div>
         
+        <!-- FITNESS TAB -->
+        <div id="fitness" class="tab-content">
+            <div class="card" style="border-color: var(--green);">
+                <div class="card-header" style="border-color: var(--green);">
+                    <h2 style="color: var(--green);">💪 BRYCE'S FITNESS HQ</h2>
+                    <span style="font-size: 0.7rem; color: var(--text-muted);">Heavy Lifting Program • Cut Protocol Active</span>
+                </div>
+
+                <!-- Current Stats -->
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
+                    <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 12px; text-align: center; border: 1px solid var(--border);">
+                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem;">CURRENT WEIGHT</div>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--cyan);">192</div>
+                        <div style="font-size: 0.7rem; color: var(--text-muted);">lbs</div>
+                    </div>
+                    <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 12px; text-align: center; border: 1px solid var(--border);">
+                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem;">GOAL WEIGHT</div>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--green);">185</div>
+                        <div style="font-size: 0.7rem; color: var(--text-muted);">lbs (-7 to go)</div>
+                    </div>
+                    <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 12px; text-align: center; border: 1px solid var(--border);">
+                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem;">DAILY CALORIES</div>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--orange);">2,600</div>
+                        <div style="font-size: 0.7rem; color: var(--text-muted);">cut protocol</div>
+                    </div>
+                    <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 12px; text-align: center; border: 1px solid var(--border);">
+                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem;">DAILY PROTEIN</div>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--purple);">230g</div>
+                        <div style="font-size: 0.7rem; color: var(--text-muted);">target</div>
+                    </div>
+                </div>
+
+                <!-- Today's Workout -->
+                <div style="background: linear-gradient(135deg, rgba(48, 209, 88, 0.15), rgba(0, 0, 0, 0.4)); padding: 1.5rem; border-radius: 16px; margin-bottom: 1.5rem; border: 2px solid var(--green);">
+                    <h3 style="color: var(--green); font-family: 'Orbitron', sans-serif; margin-bottom: 1rem;">📅 TODAY'S WORKOUT</h3>
+                    
+                    <div id="todaysWorkout">
+                        <div style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem;">SATURDAY — PULL B (Back Thickness)</div>
+                        <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">45-60 min • Rest 2-3 min between sets</div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr; gap: 0.75rem;">
+                            <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <div style="font-weight: 600; color: var(--text-primary);">Chest-Supported Row</div>
+                                    <div style="font-size: 0.75rem; color: var(--text-muted);">4×8-10 • Heavy</div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="font-size: 0.8rem; color: var(--green);">Goal: 50+ lb</div>
+                                </div>
+                            </div>
+                            <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <div style="font-weight: 600; color: var(--text-primary);">Barbell Row</div>
+                                    <div style="font-size: 0.75rem; color: var(--text-muted);">3×8-10 • Controlled</div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="font-size: 0.8rem; color: var(--cyan);">PR: TBD</div>
+                                </div>
+                            </div>
+                            <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <div style="font-weight: 600; color: var(--text-primary);">Face Pulls</div>
+                                    <div style="font-size: 0.75rem; color: var(--text-muted);">4×15-20 • Rear delts</div>
+                                </div>
+                            </div>
+                            <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <div style="font-weight: 600; color: var(--text-primary);">Hammer Curls</div>
+                                    <div style="font-size: 0.75rem; color: var(--text-muted);">3×10-12 • Brachialis</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Weekly Schedule -->
+                <h3 style="color: var(--text-secondary); font-family: 'Orbitron', sans-serif; margin-bottom: 1rem; font-size: 0.9rem;">📊 WEEKLY SCHEDULE</h3>
+                
+                <div style="background: var(--bg-secondary); padding: 1.25rem; border-radius: 12px; margin-bottom: 1.5rem; border: 1px solid var(--border);">
+                    <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem; text-align: center;">
+                        <div style="padding: 0.75rem; background: var(--bg-void); border-radius: 8px; opacity: 0.5;">
+                            <div style="font-size: 0.7rem; color: var(--text-muted);">MON</div>
+                            <div style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 600;">PUSH A</div>
+                            <div style="font-size: 0.6rem; color: var(--text-muted);">Chest</div>
+                        </div>
+                        <div style="padding: 0.75rem; background: var(--bg-void); border-radius: 8px; opacity: 0.5;">
+                            <div style="font-size: 0.7rem; color: var(--text-muted);">TUE</div>
+                            <div style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 600;">PULL A</div>
+                            <div style="font-size: 0.6rem; color: var(--text-muted);">Width</div>
+                        </div>
+                        <div style="padding: 0.75rem; background: var(--bg-void); border-radius: 8px; opacity: 0.5;">
+                            <div style="font-size: 0.7rem; color: var(--text-muted);">WED</div>
+                            <div style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 600;">LEGS A</div>
+                            <div style="font-size: 0.6rem; color: var(--text-muted);">Quads</div>
+                        </div>
+                        <div style="padding: 0.75rem; background: var(--bg-void); border-radius: 8px; opacity: 0.5;">
+                            <div style="font-size: 0.7rem; color: var(--text-muted);">THU</div>
+                            <div style="font-size: 0.8rem; color: var(--yellow); font-weight: 600;">REST</div>
+                            <div style="font-size: 0.6rem; color: var(--text-muted);">Recovery</div>
+                        </div>
+                        <div style="padding: 0.75rem; background: var(--bg-void); border-radius: 8px; opacity: 0.5;">
+                            <div style="font-size: 0.7rem; color: var(--text-muted);">FRI</div>
+                            <div style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 600;">PUSH B</div>
+                            <div style="font-size: 0.6rem; color: var(--text-muted);">Shoulders</div>
+                        </div>
+                        <div style="padding: 0.75rem; background: rgba(48, 209, 88, 0.2); border-radius: 8px; border: 2px solid var(--green);">
+                            <div style="font-size: 0.7rem; color: var(--green);">SAT</div>
+                            <div style="font-size: 0.8rem; color: var(--green); font-weight: 700;">PULL B</div>
+                            <div style="font-size: 0.6rem; color: var(--text-muted);">Thickness</div>
+                        </div>
+                        <div style="padding: 0.75rem; background: var(--bg-void); border-radius: 8px;">
+                            <div style="font-size: 0.7rem; color: var(--text-muted);">SUN</div>
+                            <div style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 600;">LEGS B</div>
+                            <div style="font-size: 0.6rem; color: var(--text-muted);">Posterior</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PRs & Goals -->
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
+                    <div style="background: rgba(255, 214, 10, 0.1); padding: 1.25rem; border-radius: 12px; border: 1px solid var(--yellow);">
+                        <h4 style="color: var(--yellow); font-family: 'Orbitron', sans-serif; margin-bottom: 0.75rem;">🏆 CURRENT PRs</h4>
+                        <div style="font-size: 0.85rem; color: var(--text-secondary);">
+                            <div style="display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px solid var(--border);">
+                                <span>DB Bench Press</span><span style="color: var(--green); font-weight: 700;">65 lbs × 8</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px solid var(--border);">
+                                <span>Lat Pulldown</span><span style="color: var(--green); font-weight: 700;">120 lbs × 8</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px solid var(--border);">
+                                <span>Leg Press</span><span style="color: var(--green); font-weight: 700;">250 lbs × 10</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px solid var(--border);">
+                                <span>DB Shoulder Press</span><span style="color: var(--yellow); font-weight: 700;">40 lbs × 6</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 0.4rem 0;">
+                                <span>Romanian Deadlift</span><span style="color: var(--yellow); font-weight: 700;">50 lbs × 10</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: rgba(189, 0, 255, 0.1); padding: 1.25rem; border-radius: 12px; border: 1px solid var(--purple);">
+                        <h4 style="color: var(--purple); font-family: 'Orbitron', sans-serif; margin-bottom: 0.75rem;">🎯 NEXT MILESTONES</h4>
+                        <div style="font-size: 0.85rem; color: var(--text-secondary);">
+                            <div style="display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px solid var(--border);">
+                                <span>DB Bench Press</span><span style="color: var(--purple);">70 lbs × 8</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px solid var(--border);">
+                                <span>Lat Pulldown</span><span style="color: var(--purple);">135 lbs × 8</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px solid var(--border);">
+                                <span>Leg Press</span><span style="color: var(--purple);">300 lbs × 10</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px solid var(--border);">
+                                <span>DB Shoulder Press</span><span style="color: var(--purple);">45 lbs × 8</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 0.4rem 0;">
+                                <span>Weight Goal</span><span style="color: var(--green);">185 lbs</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Workout History -->
+                <h3 style="color: var(--text-secondary); font-family: 'Orbitron', sans-serif; margin-bottom: 1rem; font-size: 0.9rem;">📋 RECENT WORKOUTS</h3>
+                
+                <div style="background: var(--bg-secondary); padding: 1.25rem; border-radius: 12px; border: 1px solid var(--border); max-height: 300px; overflow-y: auto;">
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; font-size: 0.75rem; color: var(--text-muted); padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); margin-bottom: 0.75rem;">
+                        <div>DATE</div>
+                        <div>WORKOUT</div>
+                        <div>VOLUME</div>
+                        <div>STATUS</div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                        <div style="color: var(--text-secondary);">Feb 12</div>
+                        <div style="color: var(--orange);">Push B</div>
+                        <div style="color: var(--text-muted);">Shoulders</div>
+                        <div><span style="background: var(--green); color: black; padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.6rem; font-weight: 700;">DONE</span></div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                        <div style="color: var(--text-secondary);">Feb 11</div>
+                        <div style="color: var(--cyan);">Rest</div>
+                        <div style="color: var(--text-muted);">—</div>
+                        <div><span style="background: var(--yellow); color: black; padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.6rem; font-weight: 700;">REST</span></div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                        <div style="color: var(--text-secondary);">Feb 10</div>
+                        <div style="color: var(--green);">Legs A</div>
+                        <div style="color: var(--text-muted);">Quads</div>
+                        <div><span style="background: var(--green); color: black; padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.6rem; font-weight: 700;">DONE</span></div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                        <div style="color: var(--text-secondary);">Feb 9</div>
+                        <div style="color: var(--cyan);">Pull A</div>
+                        <div style="color: var(--text-muted);">Width</div>
+                        <div><span style="background: var(--green); color: black; padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.6rem; font-weight: 700;">DONE</span></div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; padding: 0.5rem 0;">
+                        <div style="color: var(--text-secondary);">Feb 8</div>
+                        <div style="color: var(--orange);">Push A</div>
+                        <div style="color: var(--text-muted);">Chest</div>
+                        <div><span style="background: var(--green); color: black; padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.6rem; font-weight: 700;">DONE</span></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        
     
     <script>
         // Discord Webhooks
@@ -3484,6 +3698,7 @@
             if (e.key === '5') showTab('fishing', document.querySelector('.tab-btn:nth-child(5)'));
             if (e.key === '6') showTab('destination', document.querySelector('.tab-btn:nth-child(6)'));
             if (e.key === '7') showTab('sports', document.querySelector('.tab-btn:nth-child(7)'));
+            if (e.key === '8') showTab('fitness', document.querySelector('.tab-btn:nth-child(8)'));
         });
         
         // REAL DATA API CONNECTION - LIVE DATA
@@ -3623,7 +3838,7 @@
         console.log('🚀 The Sanctum Mission Control v2.0 LIVE');
         console.log('📡 Connected to real-time API');
         console.log('🔄 Auto-syncing every 10 seconds');
-        console.log('⌨️ Keyboard shortcuts: 1-7 for tabs, ESC to close modal');
+        console.log('⌨️ Keyboard shortcuts: 1-8 for tabs, ESC to close modal');
     </script>
 </body>
 </html>
