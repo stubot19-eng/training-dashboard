@@ -3617,10 +3617,13 @@
         // NOTE: Bearer token moved to VPS backend for security
         // Frontend calls proxy endpoint, backend handles X API authentication
         
+        // Twitter Proxy API
+        const TWITTER_API = 'http://187.77.23.202:3002';
+        
         async function fetchTweets() {
             try {
                 // Call VPS proxy endpoint (token secured server-side)
-                const response = await fetch(`${API_BASE}/api/tweets/wojespn`);
+                const response = await fetch(`${TWITTER_API}/api/tweets/wojespn`);
                 
                 if (!response.ok) {
                     throw new Error(`HTTP ${response.status}`);
