@@ -2294,22 +2294,84 @@
             if (e.key === '4') showTab('logs', document.querySelector('.tab-btn:nth-child(4)'));
         });
         
-        // Simulate live data updates
-        function simulateLiveData() {
-            // Randomly fluctuate the spend slightly
-            const spendEl = document.getElementById('todaySpend');
-            if (spendEl) {
-                const currentSpend = parseFloat(spendEl.textContent);
-                const newSpend = (currentSpend + (Math.random() * 0.02 - 0.005)).toFixed(2);
-                spendEl.textContent = newSpend;
+        // REAL DATA API CONNECTION
+        const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3001' : '';
+        
+        async function fetchRealData() {
+            try {
+                const response = await fetch(`${API_BASE}/api/status`);
+                const data = await response.json();
+                
+                // Update LLM spend
+                const spendEl = document.getElementById('todaySpend');
+                if (spendEl && data.llmSpend.today > 0) {
+                    spendEl.textContent = '$' + data.llmSpend.today;
+                }
+                
+                // Update bot status indicators
+                updateBotStatus('stu', data.bots.stu.online);
+                updateBotStatus('fitbot', data.bots.fitbot.online);
+                updateBotStatus('sourcebot', data.bots.sourcebot.online);
+                updateBotStatus('auditbot', data.bots.auditbot.online);
+                
+                // Update uptime
+                const uptimeEl = document.getElementById('uptime');
+                if (uptimeEl) {
+                    uptimeEl.textContent = data.system.uptimeFormatted;
+                }
+                
+                console.log('📊 Real data synced:', data.timestamp);
+            } catch (error) {
+                console.log('⚠️ API not available, using cached data');
             }
         }
         
-        // Update every 30 seconds
-        setInterval(simulateLiveData, 30000);
+        function updateBotStatus(botId, isOnline) {
+            const card = document.querySelector(`[data-agent="${botId}"]`);
+            if (card) {
+                const statusEl = card.querySelector('.agent-status');
+                if (statusEl) {
+                    statusEl.textContent = isOnline ? 'ONLINE' : 'OFFLINE';
+                    statusEl.className = 'agent-status ' + (isOnline ? 'online' : 'standby');
+                }
+            }
+        }
         
-        console.log('🚀 SWARM OS Mission Control v2.0 initialized');
-        console.log('📡 Discord webhooks loaded');
+        // Fetch real data immediately and every 10 seconds
+        fetchRealData();
+        setInterval(fetchRealData, 10000);
+        
+        // Fetch logs from API
+        async function fetchLogs() {
+            try {
+                const response = await fetch(`${API_BASE}/api/logs`);
+                const logs = await response.json();
+                if (logs.length > 0) {
+                    updateActivityFeed(logs);
+                }
+            } catch (e) {
+                console.log('Logs API not available');
+            }
+        }
+        
+        function updateActivityFeed(logs) {
+            const feed = document.getElementById('activityFeed');
+            if (!feed) return;
+            
+            feed.innerHTML = logs.map(log => `
+                <div class="log-entry ${log.type}">
+                    <div class="log-time">${new Date(log.timestamp).toLocaleTimeString()}</div>
+                    <div class="log-message">${log.message}</div>
+                </div>
+            `).join('');
+        }
+        
+        fetchLogs();
+        setInterval(fetchLogs, 30000);
+        
+        console.log('🚀 SWARM OS Mission Control v2.0 LIVE');
+        console.log('📡 Connected to real-time API');
+        console.log('🔄 Auto-syncing every 10 seconds');
         console.log('⌨️ Keyboard shortcuts: 1-4 for tabs, ESC to close modal');
     </script>
 </body>
