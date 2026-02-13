@@ -2294,35 +2294,54 @@
             if (e.key === '4') showTab('logs', document.querySelector('.tab-btn:nth-child(4)'));
         });
         
-        // REAL DATA API CONNECTION
-        const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3001' : '';
+        // REAL DATA API CONNECTION - LIVE DATA
+        const API_BASE = 'http://187.77.23.202:3001'; // Your VPS IP
         
         async function fetchRealData() {
             try {
                 const response = await fetch(`${API_BASE}/api/status`);
                 const data = await response.json();
                 
-                // Update LLM spend
+                // Update LLM spend - REAL
                 const spendEl = document.getElementById('todaySpend');
-                if (spendEl && data.llmSpend.today > 0) {
-                    spendEl.textContent = '$' + data.llmSpend.today;
+                if (spendEl && data.llmSpend) {
+                    spendEl.textContent = '$' + data.llmSpend.today.toFixed(2);
+                    spendEl.setAttribute('data-live', 'true');
                 }
                 
-                // Update bot status indicators
-                updateBotStatus('stu', data.bots.stu.online);
-                updateBotStatus('fitbot', data.bots.fitbot.online);
-                updateBotStatus('sourcebot', data.bots.sourcebot.online);
-                updateBotStatus('auditbot', data.bots.auditbot.online);
+                // Update monthly spend - REAL
+                const monthEl = document.getElementById('monthSpend');
+                if (monthEl && data.llmSpend) {
+                    monthEl.textContent = '$' + data.llmSpend.month.toFixed(2);
+                }
                 
-                // Update uptime
+                // Update bot status - REAL
+                updateBotStatus('stu', data.bots.stu.online);
+                updateBotStatus('fitbot', data.bots.fabio.online);
+                updateBotStatus('sourcebot', data.bots.sally.online);
+                updateBotStatus('auditbot', data.bots.adrian.online);
+                
+                // Update uptime - REAL
                 const uptimeEl = document.getElementById('uptime');
-                if (uptimeEl) {
+                if (uptimeEl && data.system) {
                     uptimeEl.textContent = data.system.uptimeFormatted;
                 }
                 
-                console.log('📊 Real data synced:', data.timestamp);
+                // Show live indicator
+                const liveIndicator = document.getElementById('liveIndicator');
+                if (liveIndicator) {
+                    liveIndicator.textContent = '🟢 LIVE';
+                    liveIndicator.style.color = '#00ff88';
+                }
+                
+                console.log('📊 LIVE DATA:', data.timestamp);
             } catch (error) {
-                console.log('⚠️ API not available, using cached data');
+                console.log('⚠️ API not available:', error.message);
+                const liveIndicator = document.getElementById('liveIndicator');
+                if (liveIndicator) {
+                    liveIndicator.textContent = '🔴 OFFLINE';
+                    liveIndicator.style.color = '#ff453a';
+                }
             }
         }
         
