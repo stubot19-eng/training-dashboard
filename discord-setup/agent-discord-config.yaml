@@ -1,0 +1,97 @@
+# SWARM OS - Agent Discord Integration Config
+
+# This file maps agents to their Discord webhook endpoints
+# Place this in your SWARM OS config directory
+
+agents:
+  stu:
+    name: "Stu"
+    role: "LeadOrchestrator"
+    webhooks:
+      primary: "${WEBHOOK_GENERAL}"
+      missions: "${WEBHOOK_MISSIONS}"
+      logs: "${WEBHOOK_LOGS}"
+    channels:
+      - "#general"
+      - "#missions"
+      - "#logs"
+    avatar_url: "https://cdn.discordapp.com/embed/avatars/0.png"
+    color: "0x00D4AA"
+    
+  fitbot:
+    name: "FitBot"
+    role: "Agent"
+    webhooks:
+      primary: "${WEBHOOK_FITNESS}"
+      chat: "${WEBHOOK_AGENT_CHAT}"
+    channels:
+      - "#fitness"
+      - "#agent-chat"
+    avatar_url: "https://cdn.discordapp.com/embed/avatars/1.png"
+    color: "0x00CC41"
+    
+  sourcebot:
+    name: "SourceBot"
+    role: "Agent"
+    webhooks:
+      primary: "${WEBHOOK_SOURCING}"
+      chat: "${WEBHOOK_AGENT_CHAT}"
+    channels:
+      - "#sourcing"
+      - "#agent-chat"
+    avatar_url: "https://cdn.discordapp.com/embed/avatars/2.png"
+    color: "0x00AAFF"
+    
+  auditbot:
+    name: "AuditBot"
+    role: "Agent"
+    webhooks:
+      primary: "${WEBHOOK_AUDIT}"
+      logs: "${WEBHOOK_LOGS}"
+      chat: "${WEBHOOK_AGENT_CHAT}"
+    channels:
+      - "#audit"
+      - "#logs"
+      - "#agent-chat"
+    avatar_url: "https://cdn.discordapp.com/embed/avatars/3.png"
+    color: "0xFF4444"
+
+# Message templates
+messages:
+  startup: |
+    🚀 **{agent_name} ONLINE**
+    ━━━━━━━━━━━━━━━━━━━━━━
+    Status: 🟢 Operational
+    Role: {role}
+    Channels: {channels}
+    
+    Ready for commands.
+    
+  mission_start: |
+    🔴 **MISSION: {mission_name}**
+    ━━━━━━━━━━━━━━━━━━━━━━
+    Agent: {agent_name}
+    Priority: {priority}
+    Objective: {objective}
+    Status: 🔵 In Progress
+    
+  mission_complete: |
+    ✅ **MISSION COMPLETE: {mission_name}**
+    ━━━━━━━━━━━━━━━━━━━━━━
+    Agent: {agent_name}
+    Duration: {duration}
+    Outcome: Success
+    
+  status_update: |
+    📝 **{agent_name} | Status Update**
+    
+    {message}
+    
+    Timestamp: {timestamp}
+    
+  alert: |
+    ⚠️ **ALERT | {severity}**
+    ━━━━━━━━━━━━━━━━━━━━━━
+    Source: {agent_name}
+    Issue: {message}
+    Action: {action_required}
