@@ -413,9 +413,64 @@ Notes: felt strong, slept 7hrs</code>
             </ol>
         </div>
 
+        <div class="section" style="background: linear-gradient(135deg, rgba(0,212,255,0.1), rgba(123,44,191,0.1)); border: 1px solid #00d4ff;">
+            <h2>🎵 Daily Lyric</h2>
+            <p id="daily-lyric" style="font-size: 1.2rem; font-style: italic; color: #fff; text-align: center; padding: 20px;"></p>
+            <p id="daily-artist" style="text-align: center; color: #888; font-size: 0.9rem;"></p>
+        </div>
+
         <footer style="text-align: center; padding: 30px; color: #666;">
             <p>Built for Bryce | Updated: Feb 13, 2026</p>
         </footer>
+
+        <script>
+            const lyrics = [
+                { text: "Pick your next move, you can leave or live with it", artist: "Kanye West - Runaway" },
+                { text: "Started from the bottom now we're here", artist: "Drake" },
+                { text: "The moment you give up is the moment you let someone else win", artist: "Kobe Bryant" },
+                { text: "Be the change you wish to see in the world", artist: "Mahatma Gandhi" },
+                { text: "It ain't about how hard you hit. It's about how hard you can get hit and keep moving forward", artist: "Rocky Balboa" },
+                { text: "Discipline is doing what needs to be done, even if you don't want to do it", artist: "Unknown" },
+                { text: "Success is not final, failure is not fatal: it is the courage to continue that counts", artist: "Winston Churchill" },
+                { text: "The only bad workout is the one that didn't happen", artist: "Unknown" },
+                { text: "Your body can stand almost anything. It's your mind that you have to convince", artist: "Unknown" },
+                { text: "Don't stop when you're tired. Stop when you're done", artist: "Unknown" },
+                { text: "Sweat is just fat crying", artist: "Unknown" },
+                { text: "The pain you feel today will be the strength you feel tomorrow", artist: "Unknown" },
+                { text: "Train insane or remain the same", artist: "Unknown" },
+                { text: "Strive for progress, not perfection", artist: "Unknown" },
+                { text: "You don't have to be extreme, just consistent", artist: "Unknown" },
+                { text: "Fitness is not about being better than someone else. It's about being better than you were yesterday", artist: "Unknown" },
+                { text: "The hardest lift of all is lifting your butt off the couch", artist: "Unknown" },
+                { text: "Strength does not come from what you can do. It comes from overcoming the things you once thought you couldn't", artist: "Rikki Rogers" },
+                { text: "We are what we repeatedly do. Excellence, then, is not an act, but a habit", artist: "Aristotle" },
+                { text: "Take care of your body. It's the only place you have to live", artist: "Jim Rohn" },
+                { text: "Action is the foundational key to all success", artist: "Pablo Picasso" },
+                { text: "The only way to do great work is to love what you do", artist: "Steve Jobs" },
+                { text: "Believe you can and you're halfway there", artist: "Theodore Roosevelt" },
+                { text: "Every expert was once a beginner", artist: "Unknown" },
+                { text: "The difference between try and triumph is just a little umph", artist: "Unknown" },
+                { text: "What seems impossible today will one day become your warm-up", artist: "Unknown" },
+                { text: "Make your body the sexiest outfit you own", artist: "Unknown" },
+                { text: "Energy and persistence conquer all things", artist: "Benjamin Franklin" },
+                { text: "When you feel like quitting, think about why you started", artist: "Unknown" },
+                { text: "Do something today that your future self will thank you for", artist: "Unknown" },
+                { text: "A one hour workout is 4% of your day. No excuses", artist: "Unknown" }
+            ];
+
+            function getDailyLyric() {
+                const now = new Date();
+                const start = new Date(now.getFullYear(), 0, 0);
+                const diff = now - start;
+                const oneDay = 1000 * 60 * 60 * 24;
+                const dayOfYear = Math.floor(diff / oneDay);
+                return lyrics[dayOfYear % lyrics.length];
+            }
+
+            const today = getDailyLyric();
+            document.getElementById('daily-lyric').textContent = `"${today.text}"`;
+            document.getElementById('daily-artist').textContent = `— ${today.artist}`;
+        </script>
     </div>
 </body>
 </html>
