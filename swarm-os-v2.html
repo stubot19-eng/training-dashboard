@@ -1440,7 +1440,6 @@
         <button class="tab-btn" onclick="showTab('logs', this)">◈ LOGS</button>
         <button class="tab-btn" onclick="showTab('fishing', this)">◈ FISHING</button>
         <button class="tab-btn" onclick="showTab('destination', this)">◈ DESTINATIONS</button>
-        <button class="tab-btn" onclick="showTab('trading', this)">◈ TRADING</button>
     </nav>
     
     <main>
@@ -1455,7 +1454,7 @@
                 </div>
                 <div class="metric-box">
                     <div class="metric-icon">🤖</div>
-                    <div class="metric-value" style="color: var(--green);">6</div>
+                    <div class="metric-value" style="color: var(--green);">5</div>
                     <div class="metric-label">Active Agents</div>
                     <div class="metric-change positive">All operational</div>
                 </div>
@@ -1733,40 +1732,6 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Chad -->
-                    <div class="agent-card" onclick="openAgentModal('chad')">
-                        <div class="agent-avatar bot">📈</div>
-                        <div class="agent-header">
-                            <span class="agent-name">CHAD</span>
-                            <span class="agent-status online">Active</span>
-                        </div>
-                        <div class="agent-role">Penny Stock Scout</div>
-                        <div class="agent-function">Sub-$5 breakouts, volume spikes, catalyst alerts</div>
-                        <div class="agent-channels">
-                            <span class="channel-badge telegram">📱 @ChadTrader_bot</span>
-                            <span class="channel-badge discord">💬 #trading-floor</span>
-                        </div>
-                        <div class="agent-stats">
-                            <div class="stat">
-                                <div class="stat-value">12</div>
-                                <div class="stat-label">Tickers</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-value">+34%</div>
-                                <div class="stat-label">7D Avg</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-value">3</div>
-                                <div class="stat-label">Alerts</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="card">
-                <div class="card-header">
                     <h2>Discord Integration</h2>
                 </div>
                 <div class="discord-channels">
@@ -2953,165 +2918,6 @@
             </div>
         </div>
         
-        <!-- TRADING TAB -->
-        <div id="trading" class="tab-content">
-            <div class="card" style="border-color: var(--green);">
-                <div class="card-header" style="border-color: var(--green);">
-                    <h2 style="color: var(--green);">📈 PENNY STOCKS WATCHLIST</h2>
-                    <span style="font-size: 0.7rem; color: var(--text-muted);">High Risk, High Reward — Under $5 Plays</span>
-                </div>
-
-                <!-- Disclaimer -->
-                <div style="background: rgba(255, 69, 58, 0.1); padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem; border: 1px solid var(--red);">
-                    <div style="font-size: 0.85rem; color: var(--text-secondary);">
-                        <strong style="color: var(--red);">⚠️ RISK WARNING:</strong> Penny stocks are highly speculative. Only trade with money you can afford to lose. Not financial advice. Do your own research.
-                    </div>
-                </div>
-
-                <!-- Active Penny Stocks -->
-                <h3 style="color: var(--text-secondary); font-family: 'Orbitron', sans-serif; margin-bottom: 1rem; font-size: 0.9rem;">🔥 ACTIVE WATCHLIST</h3>
-                
-                <div style="background: var(--bg-secondary); padding: 1.25rem; border-radius: 12px; margin-bottom: 1.5rem; border: 1px solid var(--border);">
-                    <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 1rem; font-size: 0.75rem; color: var(--text-muted); padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); margin-bottom: 0.75rem;">
-                        <div>TICKER</div>
-                        <div>PRICE</div>
-                        <div>CATALYST</div>
-                        <div>VOLUME</div>
-                        <div>TARGET</div>
-                        <div>STATUS</div>
-                    </div>
-                    
-                    <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 1rem; padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
-                        <div style="font-weight: 700; color: var(--text-primary);">VERB</div>
-                        <div style="color: var(--cyan);">$0.42</div>
-                        <div style="color: var(--text-secondary);">AI Partnership</div>
-                        <div style="color: var(--yellow);">45M</div>
-                        <div style="color: var(--green);">$0.75</div>
-                        <div><span style="background: var(--green); color: black; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700;">RUNNING</span></div>
-                    </div>
-                    
-                    <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 1rem; padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
-                        <div style="font-weight: 700; color: var(--text-primary);">TTOO</div>
-                        <div style="color: var(--cyan);">$1.85</div>
-                        <div style="color: var(--text-secondary);">FDA News</div>
-                        <div style="color: var(--yellow);">28M</div>
-                        <div style="color: var(--green);">$2.50</div>
-                        <div><span style="background: var(--yellow); color: black; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700;">WATCHING</span></div>
-                    </div>
-                    
-                    <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 1rem; padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
-                        <div style="font-weight: 700; color: var(--text-primary);">NVOS</div>
-                        <div style="color: var(--cyan);">$0.15</div>
-                        <div style="color: var(--text-secondary);">Merger Rumor</div>
-                        <div style="color: var(--yellow);">89M</div>
-                        <div style="color: var(--green);">$0.30</div>
-                        <div><span style="background: var(--green); color: black; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700;">RUNNING</span></div>
-                    </div>
-                    
-                    <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 1rem; padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
-                        <div style="font-weight: 700; color: var(--text-primary);">GNS</div>
-                        <div style="color: var(--cyan);">$2.40</div>
-                        <div style="color: var(--text-secondary);">Short Squeeze</div>
-                        <div style="color: var(--yellow);">12M</div>
-                        <div style="color: var(--green);">$3.50</div>
-                        <div><span style="background: var(--red); color: white; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700;">PULLBACK</span></div>
-                    </div>
-                    
-                    <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 1rem; padding: 0.75rem 0;">
-                        <div style="font-weight: 700; color: var(--text-primary);">AMC</div>
-                        <div style="color: var(--cyan);">$4.85</div>
-                        <div style="color: var(--text-secondary);">Meme Momentum</div>
-                        <div style="color: var(--yellow);">156M</div>
-                        <div style="color: var(--green);">$6.00</div>
-                        <div><span style="background: var(--yellow); color: black; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700;">WATCHING</span></div>
-                    </div>
-                </div>
-
-                <!-- Key Metrics -->
-                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
-                    <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 12px; text-align: center; border: 1px solid var(--border);">
-                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem;">WATCHLIST SIZE</div>
-                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--cyan);">12</div>
-                        <div style="font-size: 0.7rem; color: var(--text-muted);">active tickers</div>
-                    </div>
-                    <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 12px; text-align: center; border: 1px solid var(--border);">
-                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem;">AVG GAIN (7D)</div>
-                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--green);">+34%</div>
-                        <div style="font-size: 0.7rem; color: var(--text-muted);">watchlist avg</div>
-                    </div>
-                    <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 12px; text-align: center; border: 1px solid var(--border);">
-                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem;">BREAKOUT ALERTS</div>
-                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--yellow);">3</div>
-                        <div style="font-size: 0.7rem; color: var(--text-muted);">today</div>
-                    </div>
-                    <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 12px; text-align: center; border: 1px solid var(--border);">
-                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem;">RISK LEVEL</div>
-                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--red);">HIGH</div>
-                        <div style="font-size: 0.7rem; color: var(--text-muted);">penny stocks</div>
-                    </div>
-                </div>
-
-                <!-- Scan Criteria & Alerts -->
-                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
-                    <div style="background: var(--bg-secondary); padding: 1.25rem; border-radius: 12px; border: 1px solid var(--border);">
-                        <h4 style="color: var(--cyan); font-family: 'Orbitron', sans-serif; margin-bottom: 0.75rem;">🔍 CHAD SCAN CRITERIA</h4>
-                        <div style="font-size: 0.8rem; color: var(--text-secondary);">
-                            <div style="padding: 0.4rem 0; border-bottom: 1px solid var(--border);">
-                                <span style="color: var(--green);">✓</span> Price under $5
-                            </div>
-                            <div style="padding: 0.4rem 0; border-bottom: 1px solid var(--border);">
-                                <span style="color: var(--green);">✓</span> Volume > 10M daily
-                            </div>
-                            <div style="padding: 0.4rem 0; border-bottom: 1px solid var(--border);">
-                                <span style="color: var(--green);">✓</span> Recent news/catalyst
-                            </div>
-                            <div style="padding: 0.4rem 0; border-bottom: 1px solid var(--border);">
-                                <span style="color: var(--green);">✓</span> Float < 100M
-                            </div>
-                            <div style="padding: 0.4rem 0;">
-                                <span style="color: var(--green);">✓</span> Relative volume spike
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div style="background: var(--bg-secondary); padding: 1.25rem; border-radius: 12px; border: 1px solid var(--border);">
-                        <h4 style="color: var(--orange); font-family: 'Orbitron', sans-serif; margin-bottom: 0.75rem;">🔔 BREAKOUT ALERTS</h4>
-                        <div style="font-size: 0.8rem; color: var(--text-secondary);">
-                            <div style="padding: 0.4rem 0; border-bottom: 1px solid var(--border);">
-                                <span style="color: var(--green);">🚀</span> <strong>VERB</strong> — Volume surge 300%
-                            </div>
-                            <div style="padding: 0.4rem 0; border-bottom: 1px solid var(--border);">
-                                <span style="color: var(--yellow);">⏰</span> <strong>TTOO</strong> — FDA decision pending
-                            </div>
-                            <div style="padding: 0.4rem 0; border-bottom: 1px solid var(--border);">
-                                <span style="color: var(--green);">🚀</span> <strong>NVOS</strong> — Breaking $0.20 resistance
-                            </div>
-                            <div style="padding: 0.4rem 0;">
-                                <span style="color: var(--cyan);">📊</span> <strong>GNS</strong> — Short interest climbing
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </main>
-    
-    <!-- Agent Modal -->
-    <div class="modal-overlay" id="agentModal" onclick="closeAgentModal(event)">
-        <div class="modal" onclick="event.stopPropagation()">
-            <div class="modal-header">
-                <h2 id="modalTitle">
-                    <span id="modalIcon">🤖</span>
-                    <span id="modalName">Agent Details</span>
-                </h2>
-                <button class="modal-close" onclick="closeAgentModal()">×</button>
-            </div>
-            <div class="modal-body" id="modalBody">
-                <!-- Populated by JS -->
-            </div>
-        </div>
-    </div>
     
     <script>
         // Discord Webhooks
@@ -3121,7 +2927,6 @@
             sourcing: 'https://discordapp.com/api/webhooks/1471913899329589420/bikMi7tgGGrVdgbTZ15_QC06N4viqFR20oqXgK1jTCiUKS_8ds-Sg4CNaRBMz1JRVogs',
             audit: 'https://discordapp.com/api/webhooks/1471913903842656306/u6zO2zB8l7GhMbX-9RAntEIvywk528wA7ZuKABwmC3gSDVKTfVewArd_Cmhsphtr2Pi9',
             logs: 'https://discordapp.com/api/webhooks/1471913904937373761/oIY5wXNXkCrJ94vNKTWcK1tNuASp4t07u_rG_4Jmv6hVHvXrpv5o4-pGs13HWuihSl9Q',
-            trading: 'https://discordapp.com/api/webhooks/TRADING_WEBHOOK_PLACEHOLDER'
         };
         
         // Clock and Date
@@ -3265,28 +3070,6 @@
                 metrics: [
                     { value: '1', label: 'Audits' },
                     { value: '4', label: 'Issues' },
-                    { value: '3', label: 'Critical' }
-                ]
-            },
-            chad: {
-                icon: '📈',
-                name: 'Chad',
-                role: 'Penny Stock Scout Agent',
-                status: 'Active',
-                statusClass: 'online',
-                telegram: '@ChadTrader_bot',
-                discord: '#trading-floor',
-                description: 'High-risk, high-reward penny stock hunter. Scans for sub-$5 breakouts, volume spikes, and catalyst-driven momentum plays.',
-                responsibilities: [
-                    'Scan for penny stocks under $5 with volume spikes',
-                    'Alert on breakout candidates and momentum plays',
-                    'Track news catalysts and SEC filings',
-                    'Monitor short interest and float data',
-                    'Generate daily penny stock watchlists'
-                ],
-                metrics: [
-                    { value: '12', label: 'Tickers' },
-                    { value: '+34%', label: '7D Avg Gain' },
                     { value: '3', label: 'Alerts Today' }
                 ]
             }
@@ -3443,7 +3226,6 @@
             if (e.key === '4') showTab('logs', document.querySelector('.tab-btn:nth-child(4)'));
             if (e.key === '5') showTab('fishing', document.querySelector('.tab-btn:nth-child(5)'));
             if (e.key === '6') showTab('destination', document.querySelector('.tab-btn:nth-child(6)'));
-            if (e.key === '7') showTab('trading', document.querySelector('.tab-btn:nth-child(7)'));
         });
         
         // REAL DATA API CONNECTION - LIVE DATA
@@ -3543,7 +3325,7 @@
         console.log('🚀 DAWGPOUND LLC Mission Control v2.0 LIVE');
         console.log('📡 Connected to real-time API');
         console.log('🔄 Auto-syncing every 10 seconds');
-        console.log('⌨️ Keyboard shortcuts: 1-7 for tabs, ESC to close modal');
+        console.log('⌨️ Keyboard shortcuts: 1-6 for tabs, ESC to close modal');
     </script>
 </body>
 </html>
