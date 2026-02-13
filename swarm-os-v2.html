@@ -3129,15 +3129,7 @@
                         </a>
                     </div>
                     <div style="font-size: 0.8rem; color: var(--text-muted); text-align: center;">
-                        Click any account to view live tweets. Madden Bot scans these feeds 7x daily.
-                    </div>
-                </div>
-                
-                <!-- Live Tweets Container -->
-                <div id="tweetFeed" style="max-height: 400px; overflow-y: auto; padding-right: 0.5rem;">
-                    <div style="text-align: center; padding: 2rem; color: var(--text-muted);">
-                        <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🐦</div>
-                        <div>Click the SPORTS tab to load live tweets</div>
+                        Click any account to view live tweets on X.com
                     </div>
                 </div>
 
@@ -3612,70 +3604,6 @@
         
         // Fetch sports data when Sports tab is active
         document.querySelector('.tab-btn[onclick*="sports"]').addEventListener('click', fetchSportsData);
-        
-        // X/TWITTER API - Live Tweet Feed (Token secured on backend)
-        // NOTE: Bearer token moved to VPS backend for security
-        // Frontend calls proxy endpoint, backend handles X API authentication
-        
-        // Twitter Proxy API
-        const TWITTER_API = 'http://187.77.23.202:3002';
-        
-        async function fetchTweets() {
-            try {
-                // Call VPS proxy endpoint (token secured server-side)
-                const response = await fetch(`${TWITTER_API}/api/tweets/wojespn`);
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}`);
-                }
-                
-                const data = await response.json();
-                console.log('🐦 Tweets fetched:', data);
-                displayTweets(data.data);
-                
-            } catch (error) {
-                console.log('⚠️ X API error:', error.message);
-                showTweetError();
-            }
-        }
-        
-        function displayTweets(tweets) {
-            const tweetContainer = document.getElementById('tweetFeed');
-            if (!tweetContainer || !tweets) return;
-            
-            tweetContainer.innerHTML = tweets.map(tweet => `
-                <div style="background: rgba(29, 161, 242, 0.1); padding: 1rem; border-radius: 12px; margin-bottom: 0.75rem; border: 1px solid rgba(29, 161, 242, 0.3);">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                        <span style="font-weight: 700; color: #1DA1F2;">@wojespn</span>
-                        <span style="font-size: 0.7rem; color: var(--text-muted);">${new Date(tweet.created_at).toLocaleTimeString()}</span>
-                    </div>
-                    <div style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5;">${tweet.text}</div>
-                    <div style="display: flex; gap: 1rem; margin-top: 0.5rem; font-size: 0.75rem; color: var(--text-muted);">
-                        <span>❤️ ${tweet.public_metrics?.like_count || 0}</span>
-                        <span>🔄 ${tweet.public_metrics?.retweet_count || 0}</span>
-                        <span>💬 ${tweet.public_metrics?.reply_count || 0}</span>
-                    </div>
-                </div>
-            `).join('');
-        }
-        
-        function showTweetError() {
-            const tweetContainer = document.getElementById('tweetFeed');
-            if (tweetContainer) {
-                tweetContainer.innerHTML = `
-                    <div style="background: rgba(255, 69, 58, 0.1); padding: 1rem; border-radius: 12px; border: 1px solid var(--red); text-align: center;">
-                        <div style="color: var(--red); font-size: 0.9rem;">⚠️ Unable to load tweets</div>
-                        <div style="color: var(--text-muted); font-size: 0.75rem; margin-top: 0.5rem;">Click Twitter links above to view on X.com</div>
-                    </div>
-                `;
-            }
-        }
-        
-        // Fetch tweets when Sports tab is clicked
-        document.querySelector('.tab-btn[onclick*="sports"]')?.addEventListener('click', () => {
-            fetchSportsData();
-            fetchTweets();
-        });
         
         function updateActivityFeed(logs) {
             const feed = document.getElementById('activityFeed');
