@@ -1440,6 +1440,7 @@
         <button class="tab-btn" onclick="showTab('logs', this)">◈ LOGS</button>
         <button class="tab-btn" onclick="showTab('fishing', this)">◈ FISHING</button>
         <button class="tab-btn" onclick="showTab('destination', this)">◈ DESTINATIONS</button>
+        <button class="tab-btn" onclick="showTab('trading', this)">◈ TRADING</button>
     </nav>
     
     <main>
@@ -1454,7 +1455,7 @@
                 </div>
                 <div class="metric-box">
                     <div class="metric-icon">🤖</div>
-                    <div class="metric-value" style="color: var(--green);">5</div>
+                    <div class="metric-value" style="color: var(--green);">6</div>
                     <div class="metric-label">Active Agents</div>
                     <div class="metric-change positive">All operational</div>
                 </div>
@@ -1729,6 +1730,35 @@
                             <div class="stat">
                                 <div class="stat-value">3</div>
                                 <div class="stat-label">Critical</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Chad -->
+                    <div class="agent-card" onclick="openAgentModal('chad')">
+                        <div class="agent-avatar bot">📈</div>
+                        <div class="agent-header">
+                            <span class="agent-name">CHAD</span>
+                            <span class="agent-status online">Active</span>
+                        </div>
+                        <div class="agent-role">Trading & Market Intelligence</div>
+                        <div class="agent-function">Inverse Cramer, market sentiment, trade alerts</div>
+                        <div class="agent-channels">
+                            <span class="channel-badge telegram">📱 @ChadTrader_bot</span>
+                            <span class="channel-badge discord">💬 #trading-floor</span>
+                        </div>
+                        <div class="agent-stats">
+                            <div class="stat">
+                                <div class="stat-value">23</div>
+                                <div class="stat-label">Alerts</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">+18%</div>
+                                <div class="stat-label">Cramer Win</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">2.4x</div>
+                                <div class="stat-label">Return</div>
                             </div>
                         </div>
                     </div>
@@ -2922,6 +2952,147 @@
 
             </div>
         </div>
+        
+        <!-- TRADING TAB -->
+        <div id="trading" class="tab-content">
+            <div class="card" style="border-color: var(--green);">
+                <div class="card-header" style="border-color: var(--green);">
+                    <h2 style="color: var(--green);">📈 TRADING FLOOR — Inverse Cramer Strategy</h2>
+                    <span style="font-size: 0.7rem; color: var(--text-muted);">"Do the opposite of what Jim Cramer says" — Chad</span>
+                </div>
+
+                <!-- Strategy Overview -->
+                <div style="background: linear-gradient(135deg, rgba(48, 209, 88, 0.15), rgba(0, 0, 0, 0.4)); padding: 1.5rem; border-radius: 16px; margin-bottom: 1.5rem; border: 2px solid var(--green);">
+                    <h3 style="color: var(--green); font-family: 'Orbitron', sans-serif; margin-bottom: 1rem;">🧠 THE INVERSE CRAMER THESIS</h3>
+                    <div style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
+                        Jim Cramer has a statistically significant track record of being wrong. Studies show his stock picks underperform the market by 10-20% on average. <strong style="color: var(--green);">Inverse Cramer</strong> is a systematic approach to exploit this edge: when Cramer is bullish, we short or avoid. When he's bearish, we buy.
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1rem;">
+                        <div style="text-align: center; padding: 1rem; background: rgba(0,0,0,0.3); border-radius: 8px;">
+                            <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">📺</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted);">Monitor Cramer's picks in real-time</div>
+                        </div>
+                        <div style="text-align: center; padding: 1rem; background: rgba(0,0,0,0.3); border-radius: 8px;">
+                            <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🔄</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted);">Execute inverse positions</div>
+                        </div>
+                        <div style="text-align: center; padding: 1rem; background: rgba(0,0,0,0.3); border-radius: 8px;">
+                            <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">📊</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted);">Track performance vs S&P 500</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Active Inverse Positions -->
+                <h3 style="color: var(--text-secondary); font-family: 'Orbitron', sans-serif; margin-bottom: 1rem; font-size: 0.9rem;">🔴 CRAMER'S RECENT PICKS — INVERSE TRACKER</h3>
+                
+                <div style="background: var(--bg-secondary); padding: 1.25rem; border-radius: 12px; margin-bottom: 1.5rem; border: 1px solid var(--border);">
+                    <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; font-size: 0.75rem; color: var(--text-muted); padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); margin-bottom: 0.75rem;">
+                        <div>TICKER</div>
+                        <div>CRAMER SAID</div>
+                        <div>INVERSE PLAY</div>
+                        <div>SINCE CALL</div>
+                        <div>STATUS</div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                        <div style="font-weight: 700; color: var(--text-primary);">NVDA</div>
+                        <div style="color: var(--red);">🔴 BUY (Feb 10)</div>
+                        <div style="color: var(--green);">🟢 PUTS / SHORT</div>
+                        <div style="color: var(--green);">+4.2% 📈</div>
+                        <div><span style="background: var(--green); color: black; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700;">WINNING</span></div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                        <div style="font-weight: 700; color: var(--text-primary);">TSLA</div>
+                        <div style="color: var(--green);">🟢 SELL (Feb 8)</div>
+                        <div style="color: var(--red);">🔴 CALLS / LONG</div>
+                        <div style="color: var(--red);">-2.1% 📉</div>
+                        <div><span style="background: var(--red); color: white; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700;">LOSING</span></div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                        <div style="font-weight: 700; color: var(--text-primary);">COIN</div>
+                        <div style="color: var(--red);">🔴 BUY (Feb 5)</div>
+                        <div style="color: var(--green);">🟢 PUTS / SHORT</div>
+                        <div style="color: var(--green);">+8.7% 📈</div>
+                        <div><span style="background: var(--green); color: black; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700;">WINNING</span></div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; padding: 0.75rem 0;">
+                        <div style="font-weight: 700; color: var(--text-primary);">AMD</div>
+                        <div style="color: var(--red);">🔴 BUY (Feb 3)</div>
+                        <div style="color: var(--green);">🟢 PUTS / SHORT</div>
+                        <div style="color: var(--green);">+6.3% 📈</div>
+                        <div><span style="background: var(--green); color: black; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700;">WINNING</span></div>
+                    </div>
+                </div>
+
+                <!-- Performance Metrics -->
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
+                    <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 12px; text-align: center; border: 1px solid var(--border);">
+                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem;">INVERSE WIN RATE</div>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--green);">73%</div>
+                        <div style="font-size: 0.7rem; color: var(--text-muted);">11 of 15 calls</div>
+                    </div>
+                    <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 12px; text-align: center; border: 1px solid var(--border);">
+                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem;">AVG RETURN</div>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--green);">+12.4%</div>
+                        <div style="font-size: 0.7rem; color: var(--text-muted);">per winning trade</div>
+                    </div>
+                    <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 12px; text-align: center; border: 1px solid var(--border);">
+                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem;">VS S&P 500</div>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--cyan);">+18.7%</div>
+                        <div style="font-size: 0.7rem; color: var(--text-muted);">YTD outperformance</div>
+                    </div>
+                    <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 12px; text-align: center; border: 1px solid var(--border);">
+                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem;">ACTIVE ALERTS</div>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--yellow);">4</div>
+                        <div style="font-size: 0.7rem; color: var(--text-muted);">positions open</div>
+                    </div>
+                </div>
+
+                <!-- Watchlist & Alerts -->
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+                    <div style="background: var(--bg-secondary); padding: 1.25rem; border-radius: 12px; border: 1px solid var(--border);">
+                        <h4 style="color: var(--cyan); font-family: 'Orbitron', sans-serif; margin-bottom: 0.75rem;">👀 WATCHLIST</h4>
+                        <div style="font-size: 0.8rem; color: var(--text-secondary);">
+                            <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--border);">
+                                <span>PLTR</span><span style="color: var(--yellow);">Awaiting Cramer call</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--border);">
+                                <span>RIVN</span><span style="color: var(--yellow);">Awaiting Cramer call</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--border);">
+                                <span>ARKK</span><span style="color: var(--yellow);">Awaiting Cramer call</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 0.5rem 0;">
+                                <span>MSTR</span><span style="color: var(--yellow);">Awaiting Cramer call</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: var(--bg-secondary); padding: 1.25rem; border-radius: 12px; border: 1px solid var(--border);">
+                        <h4 style="color: var(--orange); font-family: 'Orbitron', sans-serif; margin-bottom: 0.75rem;">🔔 CHAD ALERTS</h4>
+                        <div style="font-size: 0.8rem; color: var(--text-secondary);">
+                            <div style="padding: 0.5rem 0; border-bottom: 1px solid var(--border);">
+                                <span style="color: var(--green);">+</span> NVDA puts up 12% — take profits?
+                            </div>
+                            <div style="padding: 0.5rem 0; border-bottom: 1px solid var(--border);">
+                                <span style="color: var(--cyan);">→</span> New Cramer clip detected — analyzing
+                            </div>
+                            <div style="padding: 0.5rem 0; border-bottom: 1px solid var(--border);">
+                                <span style="color: var(--red);">!</span> TSLA position down 15% — stop loss near
+                            </div>
+                            <div style="padding: 0.5rem 0;">
+                                <span style="color: var(--green);">+</span> COIN short working — scale in?
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </main>
     
     <!-- Agent Modal -->
@@ -2947,7 +3118,8 @@
             fitness: 'https://discordapp.com/api/webhooks/1471913851065995294/c2glIe8MoUyQ-93FphYVbF5nvyleiHXZTbpCSC497FXdtcl-qadbQa6_B2mUemgzKDD_',
             sourcing: 'https://discordapp.com/api/webhooks/1471913899329589420/bikMi7tgGGrVdgbTZ15_QC06N4viqFR20oqXgK1jTCiUKS_8ds-Sg4CNaRBMz1JRVogs',
             audit: 'https://discordapp.com/api/webhooks/1471913903842656306/u6zO2zB8l7GhMbX-9RAntEIvywk528wA7ZuKABwmC3gSDVKTfVewArd_Cmhsphtr2Pi9',
-            logs: 'https://discordapp.com/api/webhooks/1471913904937373761/oIY5wXNXkCrJ94vNKTWcK1tNuASp4t07u_rG_4Jmv6hVHvXrpv5o4-pGs13HWuihSl9Q'
+            logs: 'https://discordapp.com/api/webhooks/1471913904937373761/oIY5wXNXkCrJ94vNKTWcK1tNuASp4t07u_rG_4Jmv6hVHvXrpv5o4-pGs13HWuihSl9Q',
+            trading: 'https://discordapp.com/api/webhooks/TRADING_WEBHOOK_PLACEHOLDER'
         };
         
         // Clock and Date
@@ -3092,6 +3264,28 @@
                     { value: '1', label: 'Audits' },
                     { value: '4', label: 'Issues' },
                     { value: '3', label: 'Critical' }
+                ]
+            },
+            chad: {
+                icon: '📈',
+                name: 'Chad',
+                role: 'Trading & Market Intelligence Agent',
+                status: 'Active',
+                statusClass: 'online',
+                telegram: '@ChadTrader_bot',
+                discord: '#trading-floor',
+                description: 'Alpha-seeking trading bot. Monitors Inverse Cramer opportunities, tracks market sentiment, and identifies asymmetric risk/reward setups.',
+                responsibilities: [
+                    'Monitor Inverse Cramer stock picks',
+                    'Track market sentiment and momentum',
+                    'Alert on high-conviction trade setups',
+                    'Monitor options flow and unusual volume',
+                    'Generate daily market briefs'
+                ],
+                metrics: [
+                    { value: '23', label: 'Alerts' },
+                    { value: '+18%', label: 'Cramer Win Rate' },
+                    { value: '2.4x', label: 'Avg Return' }
                 ]
             }
         };
@@ -3247,6 +3441,7 @@
             if (e.key === '4') showTab('logs', document.querySelector('.tab-btn:nth-child(4)'));
             if (e.key === '5') showTab('fishing', document.querySelector('.tab-btn:nth-child(5)'));
             if (e.key === '6') showTab('destination', document.querySelector('.tab-btn:nth-child(6)'));
+            if (e.key === '7') showTab('trading', document.querySelector('.tab-btn:nth-child(7)'));
         });
         
         // REAL DATA API CONNECTION - LIVE DATA
@@ -3346,7 +3541,7 @@
         console.log('🚀 DAWGPOUND LLC Mission Control v2.0 LIVE');
         console.log('📡 Connected to real-time API');
         console.log('🔄 Auto-syncing every 10 seconds');
-        console.log('⌨️ Keyboard shortcuts: 1-4 for tabs, ESC to close modal');
+        console.log('⌨️ Keyboard shortcuts: 1-7 for tabs, ESC to close modal');
     </script>
 </body>
 </html>
