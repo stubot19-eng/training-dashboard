@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SWARM OS — Mission Control</title>
+    <title>DAWGPOUND LLC — Mission Control</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -1413,7 +1413,7 @@
                 <span class="logo-core">S</span>
             </div>
             <div class="logo-text">
-                <h1>SWARM OS</h1>
+                <h1>DAWGPOUND LLC</h1>
                 <p>Mission Control</p>
             </div>
         </div>
@@ -1480,7 +1480,7 @@
                             <div class="activity-time">17:30</div>
                             <div class="activity-content">
                                 <h4>Dashboard Update <span class="activity-badge">DEPLOY</span></h4>
-                                <p>SWARM OS v2.0 — Mission Control aesthetic deployed</p>
+                                <p>DAWGPOUND LLC v2.0 — Mission Control aesthetic deployed</p>
                             </div>
                         </div>
                         <div class="activity-item">
@@ -1919,7 +1919,7 @@
                     <span class="log-timestamp">17:34:00</span>
                     <span class="log-level info">INFO</span>
                     <span style="color: var(--cyan);">[DEPLOY]</span>
-                    <div class="log-message">SWARM OS v2.0 Mission Control dashboard deployed to production</div>
+                    <div class="log-message">DAWGPOUND LLC v2.0 Mission Control dashboard deployed to production</div>
                 </div>
                 
                 <div class="log-entry success">
@@ -2225,7 +2225,7 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         content: message,
-                        username: 'SWARM OS',
+                        username: 'DAWGPOUND LLC',
                         avatar_url: 'https://i.imgur.com/AfFp7pu.png'
                     })
                 });
@@ -2243,7 +2243,7 @@
         }
         
         function testWebhook(channel) {
-            sendDiscordMessage(channel, `🔔 **Webhook Test** — Connection verified from SWARM OS Mission Control at ${new Date().toLocaleTimeString()}`);
+            sendDiscordMessage(channel, `🔔 **Webhook Test** — Connection verified from DAWGPOUND LLC Mission Control at ${new Date().toLocaleTimeString()}`);
         }
         
         // Notification system
@@ -2361,7 +2361,7 @@
         
         // Fetch real data immediately and every 10 seconds
         fetchRealData();
-        setInterval(fetchRealData, 10000);
+        setInterval(fetchRealData, 30000);
         
         // Fetch logs from API
         async function fetchLogs() {
@@ -2391,7 +2391,7 @@
         fetchLogs();
         setInterval(fetchLogs, 30000);
         
-        console.log('🚀 SWARM OS Mission Control v2.0 LIVE');
+        console.log('🚀 DAWGPOUND LLC Mission Control v2.0 LIVE');
         console.log('📡 Connected to real-time API');
         console.log('🔄 Auto-syncing every 10 seconds');
         console.log('⌨️ Keyboard shortcuts: 1-4 for tabs, ESC to close modal');
