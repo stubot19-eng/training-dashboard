@@ -1438,6 +1438,7 @@
         <button class="tab-btn" onclick="showTab('agents', this)">◈ AGENTS</button>
         <button class="tab-btn" onclick="showTab('operations', this)">◈ OPERATIONS</button>
         <button class="tab-btn" onclick="showTab('logs', this)">◈ LOGS</button>
+        <button class="tab-btn" onclick="showTab('fishing', this)">◈ FISHING</button>
     </nav>
     
     <main>
@@ -1972,6 +1973,206 @@
                 </div>
             </div>
         </div>
+        
+        <!-- FISHING TAB -->
+        <div id="fishing" class="tab-content">
+            <div class="card" style="border-color: var(--cyan);">
+                <div class="card-header" style="border-color: var(--cyan);">
+                    <h2 style="color: var(--cyan);">🎣 DAWGPOUND Fishing Intel</h2>
+                    <span style="font-size: 0.7rem; color: var(--text-muted);">Northeast Fly Fishing Intelligence</span>
+                </div>
+                
+                <!-- Featured River -->
+                <div style="background: linear-gradient(135deg, rgba(0, 229, 255, 0.1), rgba(0, 0, 0, 0.3)); padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border: 1px solid var(--cyan);">
+                    <h3 style="color: var(--cyan); font-family: 'Orbitron', sans-serif; margin-bottom: 0.5rem;">⭐ This Week's Featured River</h3>
+                    <div style="font-size: 1.3rem; font-weight: 600; margin-bottom: 0.5rem;">Beaverkill River — Roscoe, NY</div>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Historic trout water. Classic Catskills dry fly fishing. Check CFS before heading out.</p>
+                </div>
+                
+                <!-- My Rivers Grid -->
+                <h3 style="color: var(--text-secondary); font-family: 'Orbitron', sans-serif; margin-bottom: 1rem; font-size: 0.9rem;">🌊 MY RIVERS</h3>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
+                    
+                    <!-- West Branch Delaware -->
+                    <div style="background: var(--bg-secondary); padding: 1.25rem; border-radius: 12px; border: 1px solid var(--border);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                            <h4 style="color: var(--cyan); font-family: 'Orbitron', sans-serif;">West Branch Delaware</h4>
+                            <span style="background: var(--green); color: black; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.7rem; font-weight: 600;">🟢 GOOD</span>
+                        </div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">📍 Hale Eddy, NY</div>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--cyan); margin-bottom: 0.5rem;">685 CFS</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.75rem;">Ideal: 600-900 CFS</div>
+                        <div style="font-size: 0.8rem; color: var(--text-secondary);">
+                            <strong>Top Spots:</strong><br>
+                            • Upper Main Stem Pool<br>
+                            • Hale Eddy Riffle<br>
+                            • Staircase Pool
+                        </div>
+                        <a href="https://waterdata.usgs.gov/nwis/uv?site_no=01426500" target="_blank" style="display: inline-block; margin-top: 0.75rem; color: var(--cyan); font-size: 0.75rem; text-decoration: none;">🔗 USGS Gauge →</a>
+                    </div>
+                    
+                    <!-- Farmington River -->
+                    <div style="background: var(--bg-secondary); padding: 1.25rem; border-radius: 12px; border: 1px solid var(--border);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                            <h4 style="color: var(--cyan); font-family: 'Orbitron', sans-serif;">Farmington River</h4>
+                            <span style="background: var(--green); color: black; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.7rem; font-weight: 600;">🟢 GOOD</span>
+                        </div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">📍 Riverton, CT</div>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--cyan); margin-bottom: 0.5rem;">420 CFS</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.75rem;">Ideal: 300-600 CFS</div>
+                        <div style="font-size: 0.8rem; color: var(--text-secondary);">
+                            <strong>Top Spots:</strong><br>
+                            • ⭐ Church Pool (Favorite)<br>
+                            • Greenwoods Pool<br>
+                            • Boneyard Run
+                        </div>
+                        <a href="https://waterdata.usgs.gov/nwis/uv?site_no=01188090" target="_blank" style="display: inline-block; margin-top: 0.75rem; color: var(--cyan); font-size: 0.75rem; text-decoration: none;">🔗 USGS Gauge →</a>
+                    </div>
+                    
+                    <!-- Walloomsac River -->
+                    <div style="background: var(--bg-secondary); padding: 1.25rem; border-radius: 12px; border: 1px solid var(--border);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                            <h4 style="color: var(--cyan); font-family: 'Orbitron', sans-serif;">Walloomsac River</h4>
+                            <span style="background: var(--yellow); color: black; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.7rem; font-weight: 600;">🟡 HIGH</span>
+                        </div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">📍 North Bennington, VT</div>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--yellow); margin-bottom: 0.5rem;">920 CFS</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.75rem;">Ideal: 200-500 CFS</div>
+                        <div style="font-size: 0.8rem; color: var(--text-secondary);">
+                            <strong>Top Spots:</strong><br>
+                            • Paper Mill Pool<br>
+                            • The Flats<br>
+                            • Toll Gate Pool
+                        </div>
+                        <a href="https://waterdata.usgs.gov/nwis/uv?site_no=01332000" target="_blank" style="display: inline-block; margin-top: 0.75rem; color: var(--cyan); font-size: 0.75rem; text-decoration: none;">🔗 USGS Gauge →</a>
+                    </div>
+                    
+                    <!-- Russell Pond -->
+                    <div style="background: var(--bg-secondary); padding: 1.25rem; border-radius: 12px; border: 1px solid var(--purple);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                            <h4 style="color: var(--purple); font-family: 'Orbitron', sans-serif;">Russell Pond</h4>
+                            <span style="background: var(--purple); color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.7rem; font-weight: 600;">❄️ COLD</span>
+                        </div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">📍 Baxter State Park, ME</div>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--purple); margin-bottom: 0.5rem;">12°F / 18" Snow</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.75rem;">Brook Trout • Catch & Release</div>
+                        <div style="font-size: 0.8rem; color: var(--text-secondary);">
+                            <strong>Access:</strong><br>
+                            • Russell Pond Outlet<br>
+                            • Winter: Snowmobile/Ice<br>
+                            • Summer: Hike from Chimney Pond
+                        </div>
+                        <a href="https://baxterstatepark.org/" target="_blank" style="display: inline-block; margin-top: 0.75rem; color: var(--purple); font-size: 0.75rem; text-decoration: none;">🔗 BSP Info →</a>
+                    </div>
+                </div>
+                
+                <!-- Match the Hatch -->
+                <div style="background: var(--bg-secondary); padding: 1.25rem; border-radius: 12px; margin-bottom: 1.5rem;">
+                    <h3 style="color: var(--green); font-family: 'Orbitron', sans-serif; margin-bottom: 1rem; font-size: 0.9rem;">🪰 MATCH THE HATCH</h3>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 2rem; margin-bottom: 0.5rem;">🪰</div>
+                            <div style="font-weight: 600; color: var(--text-primary);">Blue Winged Olive</div>
+                            <div style="font-size: 0.75rem; color: var(--text-muted);">#18-20</div>
+                            <div style="margin-top: 0.5rem; font-size: 0.7rem; color: var(--cyan);">Peak: 11am-3pm</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 2rem; margin-bottom: 0.5rem;">🪰</div>
+                            <div style="font-weight: 600; color: var(--text-primary);">Midges</div>
+                            <div style="font-size: 0.75rem; color: var(--text-muted);">#20-24</div>
+                            <div style="margin-top: 0.5rem; font-size: 0.7rem; color: var(--cyan);">All Day</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 2rem; margin-bottom: 0.5rem;">🪰</div>
+                            <div style="font-weight: 600; color: var(--text-primary);">Stoneflies</div>
+                            <div style="font-size: 0.75rem; color: var(--text-muted);">#14-16</div>
+                            <div style="margin-top: 0.5rem; font-size: 0.7rem; color: var(--cyan);">Warmer Days</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border);">
+                        <strong style="color: var(--green);">This Week's Fly Box:</strong>
+                        <div style="display: flex; gap: 1rem; margin-top: 0.5rem; flex-wrap: wrap;">
+                            <span style="background: var(--bg-tertiary); padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.8rem;">Zebra Midge #20</span>
+                            <span style="background: var(--bg-tertiary); padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.8rem;">BWO Parachute #18</span>
+                            <span style="background: var(--bg-tertiary); padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.8rem;">Griffith's Gnat #18</span>
+                            <span style="background: var(--bg-tertiary); padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.8rem;">Pheasant Tail #16</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 7-Day Weather -->
+                <div style="background: var(--bg-secondary); padding: 1.25rem; border-radius: 12px; margin-bottom: 1.5rem;">
+                    <h3 style="color: var(--yellow); font-family: 'Orbitron', sans-serif; margin-bottom: 1rem; font-size: 0.9rem;">🌤️ 7-DAY FORECAST — WEST BRANCH DELAWARE</h3>
+                    <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem;">
+                        <div style="text-align: center; padding: 0.75rem; background: var(--bg-void); border-radius: 8px;">
+                            <div style="font-size: 0.7rem; color: var(--text-muted);">TODAY</div>
+                            <div style="font-size: 1.5rem; margin: 0.5rem 0;">❄️</div>
+                            <div style="font-size: 0.8rem;">28°/38°F</div>
+                            <div style="font-size: 0.65rem; color: var(--cyan);">0.2" rain</div>
+                        </div>
+                        <div style="text-align: center; padding: 0.75rem; background: var(--bg-void); border-radius: 8px;">
+                            <div style="font-size: 0.7rem; color: var(--text-muted);">SAT</div>
+                            <div style="font-size: 1.5rem; margin: 0.5rem 0;">☀️</div>
+                            <div style="font-size: 0.8rem;">22°/35°F</div>
+                            <div style="font-size: 0.65rem; color: var(--green);">Clear</div>
+                        </div>
+                        <div style="text-align: center; padding: 0.75rem; background: var(--bg-void); border-radius: 8px;">
+                            <div style="font-size: 0.7rem; color: var(--text-muted);">SUN</div>
+                            <div style="font-size: 1.5rem; margin: 0.5rem 0;">☁️</div>
+                            <div style="font-size: 0.8rem;">25°/40°F</div>
+                            <div style="font-size: 0.65rem; color: var(--text-muted);">Cloudy</div>
+                        </div>
+                        <div style="text-align: center; padding: 0.75rem; background: var(--bg-void); border-radius: 8px;">
+                            <div style="font-size: 0.7rem; color: var(--text-muted);">MON</div>
+                            <div style="font-size: 1.5rem; margin: 0.5rem 0;">🌧️</div>
+                            <div style="font-size: 0.8rem;">30°/45°F</div>
+                            <div style="font-size: 0.65rem; color: var(--cyan);">0.5" rain</div>
+                        </div>
+                        <div style="text-align: center; padding: 0.75rem; background: var(--bg-void); border-radius: 8px;">
+                            <div style="font-size: 0.7rem; color: var(--text-muted);">TUE</div>
+                            <div style="font-size: 1.5rem; margin: 0.5rem 0;">☀️</div>
+                            <div style="font-size: 0.8rem;">20°/32°F</div>
+                            <div style="font-size: 0.65rem; color: var(--green);">Clear</div>
+                        </div>
+                        <div style="text-align: center; padding: 0.75rem; background: var(--bg-void); border-radius: 8px;">
+                            <div style="font-size: 0.7rem; color: var(--text-muted);">WED</div>
+                            <div style="font-size: 1.5rem; margin: 0.5rem 0;">❄️</div>
+                            <div style="font-size: 0.8rem;">18°/28°F</div>
+                            <div style="font-size: 0.65rem; color: var(--cyan);">2-4" snow</div>
+                        </div>
+                        <div style="text-align: center; padding: 0.75rem; background: var(--bg-void); border-radius: 8px;">
+                            <div style="font-size: 0.7rem; color: var(--text-muted);">THU</div>
+                            <div style="font-size: 1.5rem; margin: 0.5rem 0;">☀️</div>
+                            <div style="font-size: 0.8rem;">15°/30°F</div>
+                            <div style="font-size: 0.65rem; color: var(--green);">Clear</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Resources & Links -->
+                <div style="background: var(--bg-secondary); padding: 1.25rem; border-radius: 12px;">
+                    <h3 style="color: var(--text-secondary); font-family: 'Orbitron', sans-serif; margin-bottom: 1rem; font-size: 0.9rem;">🔗 RESOURCES</h3>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+                        <a href="https://waterdata.usgs.gov/nwis" target="_blank" style="display: block; padding: 1rem; background: var(--bg-tertiary); border-radius: 8px; text-decoration: none; color: var(--text-primary); border: 1px solid var(--border); transition: all 0.3s;">
+                            <div style="font-weight: 600; color: var(--cyan);">USGS Water Data</div>
+                            <div style="font-size: 0.75rem; color: var(--text-muted);">Real-time flows & gauges</div>
+                        </a>
+                        <a href="https://www.orvis.com/fly-fishing-hatch-charts" target="_blank" style="display: block; padding: 1rem; background: var(--bg-tertiary); border-radius: 8px; text-decoration: none; color: var(--text-primary); border: 1px solid var(--border);">
+                            <div style="font-weight: 600; color: var(--cyan);">Orvis Hatch Chart</div>
+                            <div style="font-size: 0.75rem; color: var(--text-muted);">Seasonal bug guide</div>
+                        </a>
+                        <a href="https://www.troutnut.com/hatch/" target="_blank" style="display: block; padding: 1rem; background: var(--bg-tertiary); border-radius: 8px; text-decoration: none; color: var(--text-primary); border: 1px solid var(--border);">
+                            <div style="font-weight: 600; color: var(--cyan);">Troutnut Hatch</div>
+                            <div style="font-size: 0.75rem; color: var(--text-muted);">Detailed entomology</div>
+                        </a>
+                        <a href="https://www.westbranchangler.com/" target="_blank" style="display: block; padding: 1rem; background: var(--bg-tertiary); border-radius: 8px; text-decoration: none; color: var(--text-primary); border: 1px solid var(--border);">
+                            <div style="font-weight: 600; color: var(--cyan);">WB Angler</div>
+                            <div style="font-size: 0.75rem; color: var(--text-muted);">Local shop & reports</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
     
     <!-- Agent Modal -->
@@ -2295,6 +2496,7 @@
             if (e.key === '2') showTab('agents', document.querySelector('.tab-btn:nth-child(2)'));
             if (e.key === '3') showTab('operations', document.querySelector('.tab-btn:nth-child(3)'));
             if (e.key === '4') showTab('logs', document.querySelector('.tab-btn:nth-child(4)'));
+            if (e.key === '5') showTab('fishing', document.querySelector('.tab-btn:nth-child(5)'));
         });
         
         // REAL DATA API CONNECTION - LIVE DATA
