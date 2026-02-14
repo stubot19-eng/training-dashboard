@@ -3187,45 +3187,30 @@
                     </div>
                 </div>
 
-                <!-- Today's Workout -->
+                <!-- Today's Workout Status -->
                 <div style="background: linear-gradient(135deg, rgba(48, 209, 88, 0.15), rgba(0, 0, 0, 0.4)); padding: 1.5rem; border-radius: 16px; margin-bottom: 1.5rem; border: 2px solid var(--green);">
-                    <h3 style="color: var(--green); font-family: 'Orbitron', sans-serif; margin-bottom: 1rem;">📅 TODAY'S WORKOUT</h3>
+                    <h3 style="color: var(--green); font-family: 'Orbitron', sans-serif; margin-bottom: 1rem;">📅 WORKOUT STATUS</h3>
                     
-                    <div id="todaysWorkout">
-                        <div style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem;">SATURDAY — PULL B (Back Thickness)</div>
-                        <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">45-60 min • Rest 2-3 min between sets</div>
-                        
-                        <div style="display: grid; grid-template-columns: 1fr; gap: 0.75rem;">
-                            <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
-                                <div>
-                                    <div style="font-weight: 600; color: var(--text-primary);">Chest-Supported Row</div>
-                                    <div style="font-size: 0.75rem; color: var(--text-muted);">4×8-10 • Heavy</div>
-                                </div>
-                                <div style="text-align: right;">
-                                    <div style="font-size: 0.8rem; color: var(--green);">Goal: 50+ lb</div>
-                                </div>
-                            </div>
-                            <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
-                                <div>
-                                    <div style="font-weight: 600; color: var(--text-primary);">Barbell Row</div>
-                                    <div style="font-size: 0.75rem; color: var(--text-muted);">3×8-10 • Controlled</div>
-                                </div>
-                                <div style="text-align: right;">
-                                    <div style="font-size: 0.8rem; color: var(--cyan);">PR: TBD</div>
-                                </div>
-                            </div>
-                            <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
-                                <div>
-                                    <div style="font-weight: 600; color: var(--text-primary);">Face Pulls</div>
-                                    <div style="font-size: 0.75rem; color: var(--text-muted);">4×15-20 • Rear delts</div>
-                                </div>
-                            </div>
-                            <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
-                                <div>
-                                    <div style="font-weight: 600; color: var(--text-primary);">Hammer Curls</div>
-                                    <div style="font-size: 0.75rem; color: var(--text-muted);">3×10-12 • Brachialis</div>
-                                </div>
-                            </div>
+                    <!-- Today's Completed Workout -->
+                    <div style="background: rgba(48, 209, 88, 0.2); padding: 1rem; border-radius: 12px; margin-bottom: 1rem; border: 1px solid var(--green);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                            <div style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary);">SATURDAY — PUSH A (CHEST)</div>
+                            <span style="background: var(--green); color: black; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.7rem; font-weight: 700;">✅ DONE</span>
+                        </div>
+                        <div style="font-size: 0.85rem; color: var(--text-secondary);">
+                            Hit 70 lb DBs on bench! Solid chest day in the books.
+                        </div>
+                    </div>
+                    
+                    <!-- Tomorrow's Workout Preview -->
+                    <div style="background: rgba(189, 0, 255, 0.1); padding: 1rem; border-radius: 12px; border: 1px solid var(--purple);">
+                        <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">🔮 TOMORROW'S WORKOUT</div>
+                        <div style="font-size: 1rem; font-weight: 700; color: var(--purple); margin-bottom: 0.5rem;">SUNDAY — LEGS B (POSTERIOR)</div>
+                        <div style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5;">
+                            • Romanian Deadlift 4×8-10<br>
+                            • Leg Curl 3×12-15<br>
+                            • Bulgarian Split Squat 3×10-12<br>
+                            • Plank 3×60 sec
                         </div>
                     </div>
                 </div>
@@ -3260,15 +3245,15 @@
                             <div style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 600;">PUSH B</div>
                             <div style="font-size: 0.6rem; color: var(--text-muted);">Shoulders</div>
                         </div>
-                        <div style="padding: 0.75rem; background: rgba(48, 209, 88, 0.2); border-radius: 8px; border: 2px solid var(--green);">
+                        <div style="padding: 0.75rem; background: rgba(48, 209, 88, 0.2); border-radius: 8px; border: 2px solid var(--green); position: relative;">
                             <div style="font-size: 0.7rem; color: var(--green);">SAT</div>
-                            <div style="font-size: 0.8rem; color: var(--green); font-weight: 700;">PULL B</div>
-                            <div style="font-size: 0.6rem; color: var(--text-muted);">Thickness</div>
+                            <div style="font-size: 0.8rem; color: var(--green); font-weight: 700;">PUSH A</div>
+                            <div style="font-size: 0.6rem; color: var(--text-muted);">DONE ✅</div>
                         </div>
-                        <div style="padding: 0.75rem; background: var(--bg-void); border-radius: 8px;">
-                            <div style="font-size: 0.7rem; color: var(--text-muted);">SUN</div>
-                            <div style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 600;">LEGS B</div>
-                            <div style="font-size: 0.6rem; color: var(--text-muted);">Posterior</div>
+                        <div style="padding: 0.75rem; background: rgba(189, 0, 255, 0.2); border-radius: 8px; border: 2px solid var(--purple);">
+                            <div style="font-size: 0.7rem; color: var(--purple);">SUN</div>
+                            <div style="font-size: 0.8rem; color: var(--purple); font-weight: 700;">LEGS B</div>
+                            <div style="font-size: 0.6rem; color: var(--text-muted);">NEXT →</div>
                         </div>
                     </div>
                 </div>
