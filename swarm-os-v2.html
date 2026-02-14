@@ -1442,6 +1442,7 @@
         <button class="tab-btn" onclick="showTab('destination', this)">◈ DESTINATIONS</button>
         <button class="tab-btn" onclick="showTab('sports', this)">◈ SPORTS</button>
         <button class="tab-btn" onclick="showTab('fitness', this)">◈ FITNESS</button>
+        <button class="tab-btn" onclick="showTab('travel', this)">◈ TRAVEL</button>
     </nav>
     
     <main>
@@ -3367,6 +3368,174 @@
             </div>
         </div>
         
+        <!-- TRAVEL TAB -->
+        <div id="travel" class="tab-content">
+            <div class="card" style="border-color: var(--cyan);">
+                <div class="card-header" style="border-color: var(--cyan);">
+                    <h2 style="color: var(--cyan);">✈️ EUROPE TRIP — SEPT 17-27</h2>
+                    <span style="font-size: 0.7rem; color: var(--text-muted);">Copenhagen/Stockholm → Barcelona Wedding</span>
+                </div>
+
+                <!-- Trip Overview -->
+                <div style="background: linear-gradient(135deg, rgba(0, 229, 255, 0.15), rgba(0, 0, 0, 0.4)); padding: 1.5rem; border-radius: 16px; margin-bottom: 1.5rem; border: 2px solid var(--cyan);">
+                    <h3 style="color: var(--cyan); font-family: 'Orbitron', sans-serif; margin-bottom: 1rem;">🗓️ TRIP TIMELINE</h3>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+                        <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 12px; text-align: center; border: 1px solid var(--green);">
+                            <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem;">SEPT 17-23</div>
+                            <div style="font-weight: 700; color: var(--green); margin-bottom: 0.5rem;">LEG 1</div>
+                            <div style="font-size: 0.9rem; color: var(--text-secondary);">Copenhagen OR Stockholm</div>
+                            <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.5rem;">6-7 days • TBD</div>
+                        </div>
+                        
+                        <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 12px; text-align: center; border: 1px solid var(--yellow);">
+                            <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem;">SEPT 24</div>
+                            <div style="font-weight: 700; color: var(--yellow); margin-bottom: 0.5rem;">WEDDING</div>
+                            <div style="font-size: 0.9rem; color: var(--text-secondary);">Barcelona</div>
+                            <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.5rem;">Main Event 🎉</div>
+                        </div>
+                        
+                        <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 12px; text-align: center; border: 1px solid var(--purple);">
+                            <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem;">SEPT 25-27</div>
+                            <div style="font-weight: 700; color: var(--purple); margin-bottom: 0.5rem;">LEG 2</div>
+                            <div style="font-size: 0.9rem; color: var(--text-secondary);">Barcelona</div>
+                            <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.5rem;">3 days • Explore</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Destination Options -->
+                <h3 style="color: var(--text-secondary); font-family: 'Orbitron', sans-serif; margin-bottom: 1rem; font-size: 0.9rem;">🎯 LEG 1 OPTIONS (Pick One)</h3>
+                
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
+                    <!-- Copenhagen -->
+                    <div style="background: rgba(0, 229, 255, 0.1); padding: 1.25rem; border-radius: 12px; border: 2px solid var(--cyan);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                            <h4 style="color: var(--cyan); font-family: 'Orbitron', sans-serif;">🇩🇰 COPENHAGEN</h4>
+                            <span style="background: var(--cyan); color: black; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700;">OPTION A</span>
+                        </div>
+                        <div style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+                            <strong style="color: var(--green);">Highlights:</strong><br>
+                            • Nyhavn waterfront<br>
+                            • Tivoli Gardens<br>
+                            • Little Mermaid<br>
+                            • Christiania district<br>
+                            • World-class dining<br><br>
+                            <strong style="color: var(--green);">Flight to Barcelona:</strong> ~3 hrs<br>
+                            <strong style="color: var(--green);">Vibe:</strong> Hygge, design, cycling
+                        </div>
+                    </div>
+                    
+                    <!-- Stockholm -->
+                    <div style="background: rgba(189, 0, 255, 0.1); padding: 1.25rem; border-radius: 12px; border: 1px solid var(--purple);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                            <h4 style="color: var(--purple); font-family: 'Orbitron', sans-serif;">🇸🇪 STOCKHOLM</h4>
+                            <span style="background: var(--purple); color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700;">OPTION B</span>
+                        </div>
+                        <div style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+                            <strong style="color: var(--green);">Highlights:</strong><br>
+                            • Gamla Stan (Old Town)<br>
+                            • Archipelago boat tour<br>
+                            • ABBA Museum<br>
+                            • Vasa Museum<br>
+                            • Nordic cuisine<br><br>
+                            <strong style="color: var(--green);">Flight to Barcelona:</strong> ~3.5 hrs<br>
+                            <strong style="color: var(--green);">Vibe:</strong> Islands, history, chic
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Other Options -->
+                <div style="background: var(--bg-secondary); padding: 1.25rem; border-radius: 12px; margin-bottom: 1.5rem; border: 1px solid var(--border);">
+                    <h4 style="color: var(--yellow); font-family: 'Orbitron', sans-serif; margin-bottom: 0.75rem;">🌍 OTHER OPTIONS TO CONSIDER</h4>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; font-size: 0.8rem; color: var(--text-secondary);">
+                        <div>
+                            <strong style="color: var(--text-primary);">🇳🇴 Oslo</strong><br>
+                            Fjords, Viking history<br>
+                            <span style="color: var(--text-muted);">Flight: 3.5 hrs</span>
+                        </div>
+                        <div>
+                            <strong style="color: var(--text-primary);">🇫🇮 Helsinki</strong><br>
+                            Saunas, design district<br>
+                            <span style="color: var(--text-muted);">Flight: 4 hrs</span>
+                        </div>
+                        <div>
+                            <strong style="color: var(--text-primary);">🇩🇪 Berlin</strong><br>
+                            History, nightlife<br>
+                            <span style="color: var(--text-muted);">Flight: 2.5 hrs</span>
+                        </div>
+                        <div>
+                            <strong style="color: var(--text-primary);">🇳🇱 Amsterdam</strong><br>
+                            Canals, museums<br>
+                            <span style="color: var(--text-muted);">Flight: 2 hrs</span>
+                        </div>
+                        <div>
+                            <strong style="color: var(--text-primary);">🇨🇭 Zurich</strong><br>
+                            Alps, banking city<br>
+                            <span style="color: var(--text-muted);">Flight: 1.5 hrs</span>
+                        </div>
+                        <div>
+                            <strong style="color: var(--text-primary);">🇮🇹 Milan</strong><br>
+                            Fashion, food, lakes<br>
+                            <span style="color: var(--text-muted);">Flight: 1.5 hrs</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Barcelona Wedding -->
+                <h3 style="color: var(--text-secondary); font-family: 'Orbitron', sans-serif; margin-bottom: 1rem; font-size: 0.9rem;">💒 BARCELONA — SEPT 24-27</h3>
+                
+                <div style="background: rgba(255, 214, 10, 0.1); padding: 1.25rem; border-radius: 12px; margin-bottom: 1.5rem; border: 1px solid var(--yellow);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <h4 style="color: var(--yellow); font-family: 'Orbitron', sans-serif;">🇪🇸 MAIN EVENT</h4>
+                        <span style="background: var(--red); color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700;">WEDDING DAY</span>
+                    </div>
+                    
+                    <div style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1rem;">
+                        <strong style="color: var(--yellow);">September 24:</strong> Wedding day<br>
+                        <strong style="color: var(--green);">September 25-27:</strong> Explore Barcelona
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; font-size: 0.8rem; color: var(--text-secondary);">
+                        <div>
+                            <strong style="color: var(--text-primary);">Must-See:</strong><br>
+                            • Sagrada Familia<br>
+                            • Park Güell<br>
+                            • Gothic Quarter<br>
+                            • La Rambla
+                        </div>
+                        <div>
+                            <strong style="color: var(--text-primary);">Must-Do:</strong><br>
+                            • Tapas crawl<br>
+                            • Beach (Barceloneta)<br>
+                            • Flamenco show<br>
+                            • Wine tasting
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Checklist -->
+                <div style="background: var(--bg-secondary); padding: 1.25rem; border-radius: 12px; border: 1px solid var(--border);">
+                    <h4 style="color: var(--green); font-family: 'Orbitron', sans-serif; margin-bottom: 0.75rem;">✅ PLANNING CHECKLIST</h4>
+                    <div style="font-size: 0.85rem; color: var(--text-secondary); columns: 2; column-gap: 1rem;">
+                        <div style="break-inside: avoid; margin-bottom: 0.5rem;">☐ Pick Leg 1 destination</div>
+                        <div style="break-inside: avoid; margin-bottom: 0.5rem;">☐ Book flights (JFK → Europe)</div>
+                        <div style="break-inside: avoid; margin-bottom: 0.5rem;">☐ Book Leg 1 hotel (6 nights)</div>
+                        <div style="break-inside: avoid; margin-bottom: 0.5rem;">☐ Book Barcelona hotel (4 nights)</div>
+                        <div style="break-inside: avoid; margin-bottom: 0.5rem;">☐ Check passport expiration</div>
+                        <div style="break-inside: avoid; margin-bottom: 0.5rem;">☐ Book travel insurance</div>
+                        <div style="break-inside: avoid; margin-bottom: 0.5rem;">☐ Download offline maps</div>
+                        <div style="break-inside: avoid; margin-bottom: 0.5rem;">☐ Notify banks of travel</div>
+                        <div style="break-inside: avoid; margin-bottom: 0.5rem;">☐ Get Euros</div>
+                        <div style="break-inside: avoid; margin-bottom: 0.5rem;">☐ RSVP to wedding</div>
+                        <div style="break-inside: avoid; margin-bottom: 0.5rem;">☐ Research restaurants</div>
+                        <div style="break-inside: avoid; margin-bottom: 0.5rem;">☐ Pack wedding attire</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        
     
     <script>
         // Discord Webhooks
@@ -3699,6 +3868,7 @@
             if (e.key === '6') showTab('destination', document.querySelector('.tab-btn:nth-child(6)'));
             if (e.key === '7') showTab('sports', document.querySelector('.tab-btn:nth-child(7)'));
             if (e.key === '8') showTab('fitness', document.querySelector('.tab-btn:nth-child(8)'));
+            if (e.key === '9') showTab('travel', document.querySelector('.tab-btn:nth-child(9)'));
         });
         
         // REAL DATA API CONNECTION - LIVE DATA
@@ -3838,7 +4008,7 @@
         console.log('🚀 The Spectrum Mission Control v2.0 LIVE');
         console.log('📡 Connected to real-time API');
         console.log('🔄 Auto-syncing every 10 seconds');
-        console.log('⌨️ Keyboard shortcuts: 1-8 for tabs, ESC to close modal');
+        console.log('⌨️ Keyboard shortcuts: 1-9 for tabs, ESC to close modal');
     </script>
 </body>
 </html>
