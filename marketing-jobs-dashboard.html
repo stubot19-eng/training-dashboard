@@ -277,6 +277,9 @@
     <div class="header">
         <h1>📊 MARKETING JOBS HQ</h1>
         <div class="header-subtitle">Director & VP Level Roles • E-commerce & Tech • NYC + Remote</div>
+        <div style="background: rgba(255, 149, 0, 0.1); border: 1px solid var(--orange); padding: 0.75rem 1rem; border-radius: 8px; margin-top: 1rem; font-size: 0.8rem; color: var(--orange);">
+            ⚠️ <strong>NOTE:</strong> These are example roles at real companies. Click "📝 Apply" buttons will work once real job URLs are added. Use "📧" for outreach templates.
+        </div>
     </div>
 
     <div class="filters">
@@ -332,6 +335,16 @@
                 <a href="https://himalayas.app/jobs" target="_blank" class="source-link">Himalayas (Remote)</a>
             </div>
         </div>
+
+        <div class="sources-section" style="border-color: var(--green);">
+            <h3 style="color: var(--green);">➕ ADD NEW JOB</h3>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">
+                Find a role on LinkedIn/Indeed? Send Stu the URL and I'll add it with a custom outreach template.
+            </p>
+            <div style="background: var(--bg-void); padding: 1rem; border-radius: 8px; border: 1px dashed var(--border); text-align: center; color: var(--text-muted); font-size: 0.85rem;">
+                💬 Text Stu: "Add job: [paste URL here]"
+            </div>
+        </div>
     </div>
 
     <!-- Outreach Modal -->
@@ -350,7 +363,7 @@
     </div>
 
     <script>
-        // Sample job data - to be replaced with actual scraped data
+        // Job listings - add real apply links by texting Stu the URL
         const jobs = [
             {
                 company: "Shopify",
@@ -358,6 +371,7 @@
                 role: "VP of Product Marketing",
                 salary: "$280K - $320K",
                 location: "Remote (USA)",
+                applyLink: "",
                 contact: { name: "Sarah Chen", title: "Chief Marketing Officer" },
                 status: "new",
                 outreach: `Subject: VP Product Marketing — Creator Economy + B2B SaaS Experience
@@ -395,6 +409,7 @@ Best,
                 role: "Director of Marketing",
                 salary: "$200K - $250K",
                 location: "New York, NY",
+                applyLink: "",
                 contact: { name: "Amanda Mills", title: "SVP of Marketing" },
                 status: "new",
                 outreach: `Subject: Director of Marketing — B2B SaaS + Brand Building Experience
@@ -434,6 +449,7 @@ Best,
                 role: "VP of Marketing",
                 salary: "$220K - $280K",
                 location: "New York, NY",
+                applyLink: "",
                 contact: { name: "Jenn Hyman", title: "CEO" },
                 status: "new",
                 outreach: `Subject: VP Marketing — Subscription SaaS & E-commerce Experience
@@ -469,6 +485,7 @@ Best,
                 role: "Director of Product Marketing",
                 salary: "$190K - $240K",
                 location: "Remote (USA)",
+                applyLink: "",
                 contact: { name: "Tomás Mendez", title: "VP Product Marketing" },
                 status: "new",
                 outreach: `Subject: Director of Product Marketing — Creator Economy Platform Experience
@@ -506,6 +523,7 @@ Best,
                 role: "VP of Brand & Marketing",
                 salary: "$210K - $270K",
                 location: "New York, NY",
+                applyLink: "",
                 contact: { name: "Joey Zwillinger", title: "Co-CEO" },
                 status: "new",
                 outreach: `Subject: VP Brand & Marketing — Sustainable DTC Background
@@ -537,6 +555,7 @@ Best,
                 role: "Director of Growth Marketing",
                 salary: "$195K - $250K",
                 location: "New York, NY",
+                applyLink: "",
                 contact: { name: "Kyle Leahy", title: "CEO" },
                 status: "new",
                 outreach: `Subject: Director of Growth Marketing — Beauty DTC & Community Building
@@ -568,6 +587,7 @@ Best,
                 role: "VP of Marketing",
                 salary: "$230K - $290K",
                 location: "Remote (USA)",
+                applyLink: "",
                 contact: { name: "Carlos Cashman", title: "CEO" },
                 status: "new",
                 outreach: `Subject: VP Marketing — Creator Economy + E-commerce Platform Experience
@@ -605,6 +625,7 @@ Best,
                 role: "Director of Digital Marketing",
                 salary: "$185K - $230K",
                 location: "New York, NY",
+                applyLink: "",
                 contact: { name: "Neil Blumenthal", title: "Co-CEO" },
                 status: "new",
                 outreach: `Subject: Director of Digital Marketing — Omnichannel Retail Experience
@@ -648,6 +669,7 @@ Best,
                     </div>
                     <div class="location">${job.location}</div>
                     <div class="actions">
+                        <a href="${job.applyLink || '#' }" target="_blank" class="btn btn-primary" style="text-decoration: none; ${!job.applyLink ? 'opacity: 0.5; pointer-events: none;' : ''}">📝</a>
                         <button class="btn btn-secondary" onclick="showOutreach(${idx})">📧</button>
                     </div>
                 </div>
