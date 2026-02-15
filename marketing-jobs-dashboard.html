@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketing Jobs HQ — Director & VP Roles</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-void: #060608;
+            --border: #2a2a3a;
+            --cyan: #00d4ff;
+            --purple: #bd00ff;
+            --green: #30d158;
+            --orange: #ff9500;
+            --red: #ff3b30;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --text-muted: #6a6a7a;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+        }
+        .header {
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-void));
+            padding: 2rem;
+            border-bottom: 2px solid var(--cyan);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            color: var(--cyan);
+            margin-bottom: 0.5rem;
+        }
+        .header-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        .filters {
+            display: flex;
+            gap: 1rem;
+            padding: 1.5rem 2rem;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+        .filter-tag {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid var(--cyan);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--cyan);
+        }
+        .filter-tag.salary { border-color: var(--green); color: var(--green); background: rgba(48, 209, 88, 0.1); }
+        .filter-tag.location { border-color: var(--purple); color: var(--purple); background: rgba(189, 0, 255, 0.1); }
+        .container { padding: 2rem; max-width: 1400px; margin: 0 auto; }
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--cyan);
+        }
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+        .jobs-table {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+        .table-header {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr 1fr 80px;
+            padding: 1rem 1.5rem;
+            background: rgba(0, 212, 255, 0.05);
+            border-bottom: 1px solid var(--border);
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .job-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr 1fr 80px;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            align-items: center;
+            transition: background 0.2s;
+        }
+        .job-row:hover { background: rgba(255,255,255,0.02); }
+        .job-row:last-child { border-bottom: none; }
+        .company-cell {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .company-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+        .company-size {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+        .role-title {
+            color: var(--cyan);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .salary {
+            color: var(--green);
+            font-weight: 600;
+        }
+        .location {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+        .contact-person {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        .contact-person .name {
+            color: var(--purple);
+            font-weight: 600;
+        }
+        .contact-person .title {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+        .actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .btn {
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+        .btn-primary {
+            background: var(--cyan);
+            color: black;
+        }
+        .btn-primary:hover { background: #00a8cc; }
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+        .btn-secondary:hover { border-color: var(--cyan); color: var(--cyan); }
+        .outreach-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .outreach-modal.active { display: flex; }
+        .modal-content {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-header h3 { font-family: 'Orbitron', sans-serif; color: var(--cyan); }
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        .modal-body {
+            padding: 1.5rem;
+        }
+        .prompt-box {
+            background: var(--bg-void);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            white-space: pre-wrap;
+            margin-top: 1rem;
+        }
+        .sources-section {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+        .sources-section h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--orange);
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+        .sources-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+        .source-link {
+            display: block;
+            padding: 1rem;
+            background: var(--bg-void);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        .source-link:hover {
+            border-color: var(--cyan);
+            color: var(--cyan);
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .status-new { background: var(--green); color: black; }
+        .status-applied { background: var(--orange); color: black; }
+        .status-interview { background: var(--purple); color: white; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📊 MARKETING JOBS HQ</h1>
+        <div class="header-subtitle">Director & VP Level Roles • E-commerce & Tech • NYC + Remote</div>
+    </div>
+
+    <div class="filters">
+        <span class="filter-tag salary">💰 $190K - $300K Base</span>
+        <span class="filter-tag location">📍 NYC + Remote (USA)</span>
+        <span class="filter-tag">🎯 Director / VP Marketing</span>
+        <span class="filter-tag">🎯 VP Product Marketing</span>
+        <span class="filter-tag">🏢 E-commerce • Tech • SaaS</span>
+    </div>
+
+    <div class="container">
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-value" id="totalJobs">0</div>
+                <div class="stat-label">TOTAL ROLES</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="nycJobs">0</div>
+                <div class="stat-label">NYC BASED</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="remoteJobs">0</div>
+                <div class="stat-label">REMOTE</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="avgSalary">$245K</div>
+                <div class="stat-label">AVG BASE</div>
+            </div>
+        </div>
+
+        <div class="jobs-table">
+            <div class="table-header">
+                <div>COMPANY</div>
+                <div>ROLE</div>
+                <div>SALARY</div>
+                <div>CONTACT</div>
+                <div>LOCATION</div>
+                <div>ACTION</div>
+            </div>
+            <div id="jobsList">
+                <!-- Jobs will be populated here -->
+            </div>
+        </div>
+
+        <div class="sources-section">
+            <h3>🔍 JOB BOARD SOURCES</h3>
+            <div class="sources-grid">
+                <a href="https://www.linkedin.com/jobs/search/?keywords=director%20marketing%20ecommerce&f_TPR=r86400&f_SB2=1" target="_blank" class="source-link">LinkedIn Jobs</a>
+                <a href="https://www.indeed.com/q-vp-marketing-l-new-york-ny-jobs.html" target="_blank" class="source-link">Indeed</a>
+                <a href="https://angel.co/jobs" target="_blank" class="source-link">Wellfound (AngelList)</a>
+                <a href="https://www.glassdoor.com/Job/new-york-marketing-director-jobs-SRCH_IL.0,8_IC1132348_KO9,26.htm" target="_blank" class="source-link">Glassdoor</a>
+                <a href="https://www.builtin.com/jobs" target="_blank" class="source-link">Built In NYC</a>
+                <a href="https://himalayas.app/jobs" target="_blank" class="source-link">Himalayas (Remote)</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Outreach Modal -->
+    <div class="outreach-modal" id="outreachModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>📧 OUTREACH TEMPLATE</h3>
+                <button class="modal-close" onclick="closeModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">Copy this template and customize for your outreach:</p>
+                <div class="prompt-box" id="outreachPrompt"></div>
+                <button class="btn btn-primary" style="margin-top: 1rem; width: 100%;" onclick="copyPrompt()">📋 COPY TO CLIPBOARD</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample job data - to be replaced with actual scraped data
+        const jobs = [
+            {
+                company: "Shopify",
+                size: "10,000+ employees",
+                role: "VP of Product Marketing",
+                salary: "$280K - $320K",
+                location: "Remote (USA)",
+                contact: { name: "Sarah Chen", title: "Chief Marketing Officer" },
+                status: "new",
+                outreach: `Subject: VP Product Marketing — 10+ Years Scaling E-commerce Brands
+
+Hi Sarah,
+
+I came across Shopify's VP of Product Marketing opening and had to reach out. I've spent the last decade driving growth for e-commerce brands — most recently as [Current Title] at [Company], where I [specific achievement with metrics].
+
+What excites me about Shopify:
+• Your merchant-first approach to product development
+• The opportunity to shape narrative for a platform powering millions of businesses
+• The intersection of B2B SaaS and e-commerce growth
+
+At [Previous Company], I led product marketing through a [funding round/acquisition/expansion], growing ARR from $X to $Y and building a team of [N] marketers. I specialize in:
+• Go-to-market strategy for complex product launches
+• Positioning against competitors like BigCommerce and WooCommerce
+• Enabling sales teams with messaging that converts enterprise merchants
+
+I'd love to discuss how my experience scaling e-commerce marketing teams could support Shopify's next phase of growth.
+
+Would you be open to a brief conversation this week?
+
+Best,
+[Your Name]
+[LinkedIn URL]`
+            },
+            {
+                company: "Peloton",
+                size: "5,000-10,000 employees",
+                role: "Director of Marketing",
+                salary: "$200K - $250K",
+                location: "New York, NY",
+                contact: { name: "Amanda Mills", title: "SVP of Marketing" },
+                status: "new",
+                outreach: `Subject: Director of Marketing — Fitness Tech & Growth Background
+
+Hi Amanda,
+
+Peloton's Director of Marketing role caught my attention — I've followed the brand's evolution and admire how you've navigated the post-pandemic landscape while rebuilding momentum.
+
+My background:
+• [X] years leading marketing for [fitness/tech/e-commerce] brands
+• Grew [Previous Company] from [X] to [Y] customers through [specific channels]
+• Deep expertise in performance marketing, brand positioning, and CRM
+
+I'm particularly drawn to Peloton's renewed focus on [recent initiative from news/earnings]. Having led marketing through [similar situation], I understand the balancing act of performance metrics and brand rebuilding.
+
+Key wins in my current role:
+• Reduced CAC by X% while scaling spend $XM
+• Launched [campaign/initiative] that drove [metric]
+• Built and mentored team of [N] marketers
+
+I'd welcome the opportunity to discuss how I could contribute to Peloton's next chapter.
+
+Available for a call this week?
+
+Best,
+[Your Name]`
+            },
+            {
+                company: "Rent the Runway",
+                size: "1,000-5,000 employees",
+                role: "VP of Marketing",
+                salary: "$220K - $280K",
+                location: "New York, NY",
+                contact: { name: "Jenn Hyman", title: "CEO" },
+                status: "new",
+                outreach: `Subject: VP Marketing — Circular Fashion & Subscription Experience
+
+Hi Jenn,
+
+Rent the Runway has always been on my radar as a pioneer in circular fashion and subscription retail. I'm reaching out about the VP of Marketing opportunity.
+
+My experience aligns closely with RTR's challenges and opportunities:
+• Led marketing for [subscription/fashion/e-commerce] company with [X] subscribers
+• Expertise in lifecycle marketing, retention, and reducing churn
+• Track record of building brand loyalty in competitive markets
+
+Recent achievements:
+• Improved retention by X% through [initiative]
+• Launched [campaign] that increased LTV by $X
+• Managed $XM marketing budget with [ROI metric]
+
+I believe my background in subscription business models and fashion/retail marketing could help accelerate RTR's growth. Would love to share more about my vision for the role.
+
+Can we schedule 15 minutes?
+
+Best,
+[Your Name]`
+            },
+            {
+                company: "Wayfair",
+                size: "10,000+ employees",
+                role: "Director of Product Marketing",
+                salary: "$190K - $240K",
+                location: "Remote (USA)",
+                contact: { name: "Tomás Mendez", title: "VP Product Marketing" },
+                status: "new",
+                outreach: `Subject: Director of Product Marketing — E-commerce & Marketplace Background
+
+Hi Tomás,
+
+Wayfair's Director of Product Marketing role is exactly the kind of challenge I'm looking for next. I've spent [X] years in e-commerce product marketing, most recently at [Company].
+
+What I bring:
+• Deep experience in marketplace/e-commerce product positioning
+• Track record of launching products that drove $XM in revenue
+• Expertise in competitive intelligence and differentiation strategy
+• Background managing cross-functional launches with product, sales, and engineering
+
+Notable wins:
+• Launched [product/feature] that increased conversion by X%
+• Developed messaging framework used across [N] product lines
+• Enabled sales team to close [X]% more enterprise deals
+
+I'm particularly interested in Wayfair's focus on [recent initiative from news]. I'd love to discuss how my product marketing experience could help drive adoption and revenue.
+
+Open to a conversation this week?
+
+Best,
+[Your Name]`
+            },
+            {
+                company: "Allbirds",
+                size: "500-1,000 employees",
+                role: "VP of Brand & Marketing",
+                salary: "$210K - $270K",
+                location: "New York, NY",
+                contact: { name: "Joey Zwillinger", title: "Co-CEO" },
+                status: "new",
+                outreach: `Subject: VP Brand & Marketing — Sustainable DTC Background
+
+Hi Joey,
+
+I've admired Allbirds since the early days — building a brand around sustainability without compromising on style is no small feat. I'm reaching out about the VP of Brand & Marketing role.
+
+My background in sustainable/DTC brands:
+• [X] years leading marketing for [sustainable/DTC/e-commerce] brands
+• Built brand campaigns that drove [metric] while maintaining [sustainability values]
+• Experience navigating the challenges of scaling DTC while expanding retail presence
+
+Recent work:
+• Led rebrand that increased brand awareness by X%
+• Grew organic social following by X% through authentic storytelling
+• Managed $XM budget across digital, OOH, and experiential
+
+I believe Allbirds is at an inflection point, and my experience scaling mission-driven brands could help accelerate growth while staying true to your sustainability roots.
+
+Would love to discuss further — available this week?
+
+Best,
+[Your Name]`
+            },
+            {
+                company: "Glossier",
+                size: "500-1,000 employees",
+                role: "Director of Growth Marketing",
+                salary: "$195K - $250K",
+                location: "New York, NY",
+                contact: { name: "Kyle Leahy", title: "CEO" },
+                status: "new",
+                outreach: `Subject: Director of Growth Marketing — Beauty DTC & Community Building
+
+Hi Kyle,
+
+Glossier's community-first approach to beauty has always stood out to me. I'm reaching out about the Director of Growth Marketing opportunity.
+
+My growth marketing background:
+• [X] years leading growth for [beauty/DTC/e-commerce] brands
+• Built acquisition engines that scaled from $X to $YM in ad spend profitably
+• Deep expertise in paid social, influencer marketing, and community-driven growth
+
+Key achievements:
+• Reduced CAC by X% while scaling spend Xx
+• Built influencer program that drove [metric]
+• Launched [channel/strategy] that became top [X] acquisition source
+
+I'm excited about Glossier's [recent initiative/news] and believe my growth marketing experience could help drive the next phase of customer acquisition.
+
+Can we find time to chat this week?
+
+Best,
+[Your Name]`
+            },
+            {
+                company: "Thrasio",
+                size: "1,000-5,000 employees",
+                role: "VP of Marketing",
+                salary: "$230K - $290K",
+                location: "Remote (USA)",
+                contact: { name: "Carlos Cashman", title: "CEO" },
+                status: "new",
+                outreach: `Subject: VP Marketing — Amazon & E-commerce Aggregation Experience
+
+Hi Carlos,
+
+Thrasio's model of acquiring and scaling Amazon brands is fascinating — I've followed the aggregator space closely and am reaching out about the VP of Marketing role.
+
+My e-commerce marketing background:
+• [X] years in Amazon/e-commerce marketing
+• Managed marketing for [N] brands with combined $XM in revenue
+• Expertise in Amazon advertising, DSP, and off-Amazon DTC growth
+
+What I've delivered:
+• Scaled Amazon ad spend from $X to $YM while maintaining [ROAS metric]
+• Launched DTC channels that reduced dependency on Amazon
+• Built marketing infrastructure across [N] brands
+
+I understand the unique challenges of marketing within the aggregator model and believe I could help Thrasio's portfolio brands achieve profitable growth.
+
+Would love to discuss — available this week?
+
+Best,
+[Your Name]`
+            },
+            {
+                company: "Warby Parker",
+                size: "3,000-5,000 employees",
+                role: "Director of Digital Marketing",
+                salary: "$185K - $230K",
+                location: "New York, NY",
+                contact: { name: "Neil Blumenthal", title: "Co-CEO" },
+                status: "new",
+                outreach: `Subject: Director of Digital Marketing — Omnichannel Retail Experience
+
+Hi Neil,
+
+Warby Parker defined what it means to be a digital-native brand with physical retail. I'm reaching out about the Director of Digital Marketing opportunity.
+
+My omnichannel marketing background:
+• [X] years leading digital marketing for [DTC/retail/e-commerce] brands
+• Built integrated campaigns across digital and physical touchpoints
+• Expertise in performance marketing, CRM, and retail marketing
+
+Recent wins:
+• Drove [metric] through integrated online-to-store campaigns
+• Scaled digital spend Xx while improving ROAS by X%
+• Launched [initiative] that increased store traffic by X%
+
+I admire Warby Parker's continued innovation in the eyewear space and would love to contribute to your digital marketing efforts.
+
+Open to a conversation?
+
+Best,
+[Your Name]`
+            }
+        ];
+
+        function renderJobs() {
+            const list = document.getElementById('jobsList');
+            list.innerHTML = jobs.map((job, idx) => `
+                <div class="job-row">
+                    <div class="company-cell">
+                        <span class="company-name">${job.company}</span>
+                        <span class="company-size">${job.size}</span>
+                    </div>
+                    <div class="role-title">${job.role}</div>
+                    <div class="salary">${job.salary}</div>
+                    <div class="contact-person">
+                        <span class="name">${job.contact.name}</span>
+                        <span class="title">${job.contact.title}</span>
+                    </div>
+                    <div class="location">${job.location}</div>
+                    <div class="actions">
+                        <button class="btn btn-secondary" onclick="showOutreach(${idx})">📧</button>
+                    </div>
+                </div>
+            `).join('');
+
+            // Update stats
+            document.getElementById('totalJobs').textContent = jobs.length;
+            document.getElementById('nycJobs').textContent = jobs.filter(j => j.location.includes('NY')).length;
+            document.getElementById('remoteJobs').textContent = jobs.filter(j => j.location.includes('Remote')).length;
+        }
+
+        function showOutreach(idx) {
+            const job = jobs[idx];
+            document.getElementById('outreachPrompt').textContent = job.outreach;
+            document.getElementById('outreachModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('outreachModal').classList.remove('active');
+        }
+
+        function copyPrompt() {
+            const text = document.getElementById('outreachPrompt').textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Copied to clipboard!');
+            });
+        }
+
+        // Close modal on outside click
+        document.getElementById('outreachModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        // Initialize
+        renderJobs();
+    </script>
+</body>
+</html>
